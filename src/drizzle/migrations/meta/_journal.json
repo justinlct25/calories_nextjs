@@ -1,0 +1,41 @@
+{
+  "version": "5",
+  "dialect": "pg",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1708624537111,
+      "tag": "0000_breezy_manta",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1708636746853,
+      "tag": "0001_funny_martin_li",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1708641632340,
+      "tag": "0002_exotic_leader",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1708691561729,
+      "tag": "0003_brown_roland_deschain",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "5",
+      "when": 1708770218670,
+      "tag": "0004_sleepy_argent",
+      "breakpoints": true
+    }
+  ]
+}
