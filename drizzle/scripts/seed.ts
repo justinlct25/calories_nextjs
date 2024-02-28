@@ -1,4 +1,4 @@
-import { NewAccount, insertAccount } from "@/src/drizzle/queries/accounts.query";
+import { NewAccount, insertAccount } from "@/drizzle/queries/auth-accounts.query";
 
 async function main() {
     const newAccount: NewAccount = {
@@ -7,7 +7,7 @@ async function main() {
         password: "justin"
     };
     const res = await insertAccount(newAccount);
-    console.log("insert account success", res);
+    // console.log("insert account success", res);
     process.exit();
 }
 

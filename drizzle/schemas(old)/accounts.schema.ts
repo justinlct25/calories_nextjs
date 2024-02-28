@@ -21,7 +21,7 @@ export const accounts = pgTable("accounts", {
     createdAt: timestamp("created_at").defaultNow().notNull(),
   });
   
-  export const accountsRelations = relations(accounts, ({ many }) => ({
-      roles: many(accountsToRoles),
-  }));
+export const accountsRelations = relations(accounts, ({ many }) => ({
+    roles: many(accountsToRoles),
+}));
 

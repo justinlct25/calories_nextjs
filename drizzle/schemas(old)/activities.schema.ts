@@ -11,6 +11,7 @@ import {
 } from "drizzle-orm/pg-core"
 import { relations } from 'drizzle-orm'
 import { admins } from "./admins.schema";
+import { usersToActivities } from "./users-to-activities.schema";
 
 
 
@@ -32,5 +33,5 @@ export const activitiesRelations = relations(activities, ({ one, many }) => ({
         fields: [activities.creatorId],
         references: [admins.id],
     }),
-
+    participants: many(usersToActivities)
 }))
