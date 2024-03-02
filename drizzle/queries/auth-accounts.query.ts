@@ -3,8 +3,9 @@ import { drizzle } from "drizzle-orm/vercel-postgres";
 import { sql } from "@vercel/postgres";
 import { accounts } from "../schemas/auth-accounts.schema";
 import * as accountSchema from "../schemas/auth-accounts.schema";
+import { db } from "@/lib/db";
 
-export const db = drizzle(sql, { schema: { ...accountSchema } });
+// export const db = drizzle(sql, { schema: { ...accountSchema } });
 
 export const getAccounts = async () => {
     const result = await db.select().from(accounts); // sql-like style

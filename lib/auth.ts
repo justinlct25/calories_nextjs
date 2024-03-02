@@ -15,10 +15,17 @@ export const {
     auth,
 } = NextAuth({
     adapter: DrizzleAdapter(db),
+    session: {
+        strategy: 'jwt' // not necessary as jwt is default
+    },
+    pages: {
+        signIn: '/sign-in',
+    },
     providers: [
         GoogleProvider({
             clientId: process.env.AUTH_GOOGLE_ID,
             clientSecret: process.env.AUTH_GOOGLE_SECRET,
+            allowDangerousEmailAccountLinking: true
         }),
         CredentialsProvider({
             name: "Credentials",
@@ -37,15 +44,31 @@ export const {
                 }
                 return {
                     id: `${existingUser.id}`,
-                    username: existingUser.name,
+                    name: existingUser.name,
                     email: existingUser.email
                 };
             }
         })
     ],
     callbacks: {
+        async jwt({ token, user}) {
+            console.log(token, user)
+            if (user) {
+                return {
+                    ...token,
+                    name: user.name,
+                }
+            }
+            return token
+        },
         async session({ session, user, token }) {
-            return session;
+            return {
+                ...session,
+                user: {
+                    ...session.user,
+                    name: token.name,
+                }
+            };
         },
     },
 })

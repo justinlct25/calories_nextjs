@@ -13,9 +13,9 @@ export const getUserByEmail = async (email: string) => {
     return user;
 }
 
-export const getUsersByUsername = async (username: string) => {
+export const getUsersByUsername = async (name: string) => {
     const users = db.query.users.findMany({
-        where: (users, { eq }) => eq(users.username, username)
+        where: (users, { eq }) => eq(users.name, name)
     })
     return users;
 }

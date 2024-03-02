@@ -2,7 +2,7 @@ import { NewAccount, insertAccount } from "@/drizzle/queries/auth-accounts.query
 
 async function main() {
     const newAccount: NewAccount = {
-        username: "Justin",
+        name: "Justin",
         email: "justin@gmail.com",
         password: "justin"
     };

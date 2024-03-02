@@ -15,7 +15,7 @@ import { accountsToRoles } from "./accounts-to-roles.schema";
 
 export const accounts = pgTable("accounts", {
     id: serial("id").primaryKey(),
-    username: text("username").notNull(),
+    name: text("name").notNull(),
     email: text("email").notNull(),
     password: text("password").notNull(),
     createdAt: timestamp("created_at").defaultNow().notNull(),

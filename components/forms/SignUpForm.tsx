@@ -16,10 +16,22 @@ import * as z from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import Link from 'next/link'
 import GoogleSignInBtn from "../GoogleSignInBtn";
+import { useRouter } from 'next/navigation'
+import { useToast } from "../ui/use-toast";
+
+
+export const userSignUpFormSchema = z.object({
+    name: z.string().min(1, "Username is required").max(30),
+    email: z.string().min(1, 'Email is required').email('Invalid email'),
+    password: z
+        .string()
+        .min(1, 'Password is required')
+        .min(8, 'Password must have more than 8 characters'),
+})
 
 // Define schema for form validation
-export const userSignUpFormSchema = z.object({
-    username: z.string().min(1, 'Username is required').max(30),
+export const userSignUpFormSchemaWithValidation = z.object({
+    name: z.string().min(1, 'Username is required').max(30),
     email: z.string().min(1, 'Email is required').email('Invalid email'),
     password: z
         .string()
@@ -34,28 +46,39 @@ export const userSignUpFormSchema = z.object({
 })
 
 const SignUpForm = () => {
-    const form = useForm<z.infer<typeof userSignUpFormSchema>>({
-        resolver: zodResolver(userSignUpFormSchema),
+    const router = useRouter();
+    const { toast } = useToast();
+    const form = useForm<z.infer<typeof userSignUpFormSchemaWithValidation>>({
+        resolver: zodResolver(userSignUpFormSchemaWithValidation),
         defaultValues: {
-            username: '',
+            name: '',
             email: '',
             password: '',
             confirmPassword: ''
         }
     });
 
-    const onSubmit = async (values: z.infer<typeof userSignUpFormSchema>) => {
+    const onSubmit = async (values: z.infer<typeof userSignUpFormSchemaWithValidation>) => {
         const response = await fetch('/api/user', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                username: values.username,
+                name: values.name,
                 email: values.email,
                 password: values.password
             })
         })
+        if (response.ok) {
+            router.push('/sign-in');
+        } else {
+            toast({
+                title: "Error",
+                description: "Oops! Something went wrong!",
+                variant: 'destructive'
+            })
+        }
     }
 
     return (
@@ -64,7 +87,7 @@ const SignUpForm = () => {
                 <div className='space-y-2'>
                     <FormField
                         control={form.control}
-                        name="username"
+                        name="name"
                         render={({ field }) => (
                             <FormItem>
                                 <FormLabel>Username</FormLabel>

@@ -9,7 +9,7 @@ import {
 
 export const users = pgTable("user", {
   id: text("id").notNull().primaryKey(),
-  username: text("username"),
+  name: text("name"),
   email: text("email").notNull(),
   emailVerified: timestamp("emailVerified", { mode: "date" }),
   password: text("string"),
