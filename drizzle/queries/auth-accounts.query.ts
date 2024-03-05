@@ -1,6 +1,4 @@
 import "@/lib/config"
-import { drizzle } from "drizzle-orm/vercel-postgres";
-import { sql } from "@vercel/postgres";
 import { accounts } from "../schemas/auth-accounts.schema";
 import * as accountSchema from "../schemas/auth-accounts.schema";
 import { db } from "@/lib/db";

@@ -2,7 +2,7 @@ import { DrizzleAdapter } from "@auth/drizzle-adapter";
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google"
 import CredentialsProvider from "next-auth/providers/credentials"
-import { db } from "./db";
+import { db } from "@/lib/db";
 // import { getUserByEmail } from "@/drizzle/queries/auths-users.query";
 // import pgDrizzleAdapter from "@auth/drizzle-adapter"
 import { getUserByEmail } from "@/drizzle/queries/auths-users.query";
