@@ -11,4 +11,3 @@ steps:
   args: ['run', 'deploy', 'calories-nextjs-docker-image', '--image', 'asia-east1-docker.pkg.dev/calories-nextjs/calories-nextjs-docker-repo/calories-nextjs-docker-image:tag1', '--region', 'asia-east1']
 images:
 - 'asia-east1-docker.pkg.dev/calories-nextjs/calories-nextjs-docker-repo/calories-nextjs-docker-image:tag1'
-
