@@ -14,6 +14,7 @@ export const {
     handlers: { GET, POST },
     auth,
 } = NextAuth({
+    trustHost: true,
     adapter: DrizzleAdapter(db),
     session: {
         strategy: 'jwt' // not necessary as jwt is default
