@@ -1,6 +1,16 @@
 # base image
 FROM node:18-alpine
 
+# environment variables
+ARG POSTGRES_URL
+ARG AUTH_GOOGLE_ID
+ARG AUTH_GOOGLE_SECRET
+ARG AUTH_SECRET
+ENV POSTGRES_URL=$POSTGRES_URL \
+    AUTH_GOOGLE_ID=$AUTH_GOOGLE_ID \
+    AUTH_GOOGLE_SECRET=$AUTH_GOOGLE_SECRET \
+    AUTH_SECRET=$AUTH_SECRET
+
 # Create and change to the app directory
 WORKDIR /app
 
