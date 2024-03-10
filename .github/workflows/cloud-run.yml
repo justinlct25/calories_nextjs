@@ -8,7 +8,7 @@ on:
 
 env:
   PROJECT_ID: ${{ secrets.CLOUD_RUN_PROJECT_NAME }}
-  REGION: asian-east2
+  REGION: us-central1
   REPO_NAME: calories-nextjs
   POSTGRES_URL: ${{ secrets.POSTGRES_URL}}
   AUTH_GOOGLE_ID: ${{ secrets.AUTH_GOOGLE_ID }}
