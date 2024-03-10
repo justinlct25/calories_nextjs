@@ -10,6 +10,10 @@ env:
   PROJECT_ID: ${{ secrets.CLOUD_RUN_PROJECT_NAME }}
   REGION: asian-east2
   REPO_NAME: calories-nextjs
+  POSTGRES_URL: ${{ secrets.POSTGRES_URL}}
+  AUTH_GOOGLE_ID: ${{ secrets.AUTH_GOOGLE_ID }}
+  AUTH_GOOGLE_SECRET: ${{ secrets.AUTH_GOOGLE_SECRET }}
+  AUTH_SECRET: ${{ secrets.AUTH_SECRET }}
 
 jobs:
   build-and-deploy:
@@ -46,5 +50,7 @@ jobs:
           --region $REGION \
           --image gcr.io/$PROJECT_ID/$REPO_NAME:$GITHUB_SHA \
           --platform "managed" \
-          --set-env-vars POSTGRES_URL=${{secrets.POSTGRES_URL}} AUTH_GOOGLE_ID=${{secrets.AUTH_GOOGLE_ID}} AUTH_GOOGLE_SECRET=${{secrets.AUTH_GOOGLE_SECRET}} AUTH_SECRET=${{secrets.AUTH_SECRET}}
           --quiet
+          
+          
+      # --set-env-vars POSTGRES_URL=${{secrets.POSTGRES_URL}} AUTH_GOOGLE_ID=${{secrets.AUTH_GOOGLE_ID}} AUTH_GOOGLE_SECRET=${{secrets.AUTH_GOOGLE_SECRET}} AUTH_SECRET=${{secrets.AUTH_SECRET}}
