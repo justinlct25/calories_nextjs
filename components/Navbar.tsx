@@ -14,7 +14,7 @@ const Navbar = async () => {
             <div className='container flex items-center justify-between'>
                 <Link href='/'>
                     <HandMetal />
-                    Test12
+                    Test13
                 </Link>
                 {session?.user ? (
                     <UserAccountNav />

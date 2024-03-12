@@ -13,7 +13,7 @@ const GoogleSignInBtn: FC<GoogleSignInBtnProps> = ({ children }) => {
     const loginWithGoogle = async () => {
         try {
             setIsLoading(true);
-            await signIn('google', { callbackUrl: '/admin'});
+            await signIn('google', { callbackUrl: 'https://calories-nextjs-76xw4bfrga-uc.a.run.app/admin'});
         } catch(err) {
             setIsLoading(false);
         } finally {
