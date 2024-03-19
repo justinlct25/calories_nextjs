@@ -3,12 +3,13 @@ import {
     pgTable,
     text,
     primaryKey,
-   integer
+   integer,
+   serial
   } from "drizzle-orm/pg-core"
   
 
 export const users = pgTable("user", {
-  id: text("id").notNull().primaryKey(),
+  id: serial("id").notNull().primaryKey(),
   name: text("name"),
   email: text("email").notNull(),
   emailVerified: timestamp("emailVerified", { mode: "date" }),
