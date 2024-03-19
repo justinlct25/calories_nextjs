@@ -19,7 +19,7 @@ import { donorsToActivities } from "./donors-to-activities.schema";
 
 export const donors = pgTable("donor", {
     id: serial("id").primaryKey(),
-    userId: integer("user_id").references(() => users.id),
+    userId: text("user_id").references(() => users.id),
     genderOptionId: integer("gender_option_id").references(() => genderOptions.id),
     name: text("name").notNull(),
     icon: text("icon").default("default_user.png"),

@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS "activity" (
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "admin" (
 	"id" serial PRIMARY KEY NOT NULL,
-	"user_id" integer,
+	"user_id" text,
 	"name" text NOT NULL,
 	"icon" text DEFAULT 'default_admin.png',
 	"created_at" timestamp DEFAULT now() NOT NULL
@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS "donors_to_activities" (
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "donor" (
 	"id" serial PRIMARY KEY NOT NULL,
-	"user_id" integer,
+	"user_id" text,
 	"gender_option_id" integer,
 	"name" text NOT NULL,
 	"icon" text DEFAULT 'default_user.png',
@@ -40,8 +40,8 @@ CREATE TABLE IF NOT EXISTS "donor" (
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "friend" (
-	"user_1_id" integer,
-	"user_2_id" integer,
+	"user_1_id" text,
+	"user_2_id" text,
 	CONSTRAINT "friend_user_1_id_user_2_id_pk" PRIMARY KEY("user_1_id","user_2_id")
 );
 --> statement-breakpoint
@@ -57,12 +57,11 @@ CREATE TABLE IF NOT EXISTS "role" (
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "users_to_roles" (
-	"user_id" integer NOT NULL,
+	"user_id" text NOT NULL,
 	"role_id" integer NOT NULL,
 	CONSTRAINT "users_to_roles_user_id_role_id_pk" PRIMARY KEY("user_id","role_id")
 );
 --> statement-breakpoint
-ALTER TABLE "user" ALTER COLUMN "id" SET DATA TYPE serial;--> statement-breakpoint
 DO $$ BEGIN
  ALTER TABLE "activity" ADD CONSTRAINT "activity_creator_id_admin_id_fk" FOREIGN KEY ("creator_id") REFERENCES "admin"("id") ON DELETE no action ON UPDATE no action;
 EXCEPTION

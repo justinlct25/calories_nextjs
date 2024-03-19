@@ -1,5 +1,5 @@
 {
-  "id": "67e3dce0-a53d-4952-b1ec-e675818dcd72",
+  "id": "eefd6268-83c4-497e-a241-a6fe2f02b100",
   "prevId": "6e489591-4f82-42ac-b86f-d5080d90ea85",
   "version": "5",
   "dialect": "pg",
@@ -186,7 +186,7 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "serial",
+          "type": "text",
           "primaryKey": true,
           "notNull": true
         },
@@ -311,7 +311,7 @@
         },
         "user_id": {
           "name": "user_id",
-          "type": "integer",
+          "type": "text",
           "primaryKey": false,
           "notNull": false
         },
@@ -424,7 +424,7 @@
         },
         "user_id": {
           "name": "user_id",
-          "type": "integer",
+          "type": "text",
           "primaryKey": false,
           "notNull": false
         },
@@ -535,13 +535,13 @@
       "columns": {
         "user_1_id": {
           "name": "user_1_id",
-          "type": "integer",
+          "type": "text",
           "primaryKey": false,
           "notNull": false
         },
         "user_2_id": {
           "name": "user_2_id",
-          "type": "integer",
+          "type": "text",
           "primaryKey": false,
           "notNull": false
         }
@@ -642,7 +642,7 @@
       "columns": {
         "user_id": {
           "name": "user_id",
-          "type": "integer",
+          "type": "text",
           "primaryKey": false,
           "notNull": true
         },

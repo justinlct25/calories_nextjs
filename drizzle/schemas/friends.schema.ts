@@ -15,8 +15,8 @@ import { users } from "./users.schema";
 
 
 export const friends = pgTable("friend", {
-    user1Id: integer("user_1_id").references(() => users.id),
-    user2Id: integer("user_2_id").references(() => users.id)
+    user1Id: text("user_1_id").references(() => users.id),
+    user2Id: text("user_2_id").references(() => users.id)
 }, (t) => ({
     pk: primaryKey(t.user1Id, t.user2Id)
 }));

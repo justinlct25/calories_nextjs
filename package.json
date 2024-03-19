@@ -9,6 +9,7 @@
         "lint": "next lint",
         "generate": "drizzle-kit generate:pg",
         "migrate": "npx tsx drizzle/scripts/migrate.ts",
+        "drop": "drizzle-kit drop",
         "seed": "npx tsx drizzle/scripts/seed.ts",
         "push": "drizzle-kit push:pg"
     },

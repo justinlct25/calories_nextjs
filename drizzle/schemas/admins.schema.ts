@@ -15,7 +15,7 @@ import { activities } from "./activities.schema";
 
 export const admins = pgTable("admin", {
     id: serial("id").primaryKey(),
-    userId: integer("user_id").references(() => users.id),
+    userId: text("user_id").references(() => users.id),
     name: text("name").notNull(),
     icon: text("icon").default("default_admin.png"),
     createdAt: timestamp("created_at").defaultNow().notNull(),

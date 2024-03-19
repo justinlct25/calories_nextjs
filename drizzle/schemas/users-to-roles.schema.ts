@@ -14,7 +14,7 @@ import { roles } from "./roles.schema"
 import { users } from "./users.schema"
 
 export const usersToRoles = pgTable('users_to_roles', {
-    userId: integer('user_id').notNull().references(() => users.id),
+    userId: text('user_id').notNull().references(() => users.id),
     roleId: integer('role_id').notNull().references(() => roles.id),
 }, (t) => ({
     pk: primaryKey(t.userId, t.roleId)
