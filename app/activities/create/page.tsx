@@ -7,7 +7,7 @@ import { useState } from "react";
 
 const page = async () => {
 
-    const [content, setContent] = useState<string>('')
+    // const [content, setContent] = useState<string>('')
 
     return (
         <div>
