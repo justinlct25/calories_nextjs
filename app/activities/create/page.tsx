@@ -5,7 +5,8 @@ import ActivityCreateForm from "@/components/forms/ActivityCreateForm";
 import { useState } from "react";
 
 
-const page = async () => {
+
+export default async function ActivityCreation() {
 
     const [content, setContent] = useState<string>('')
 
@@ -18,4 +19,3 @@ const page = async () => {
     )
 } 
 
-export default page;
