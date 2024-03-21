@@ -1,4 +1,4 @@
-import { getUserByEmail, insertUser } from "@/drizzle/queries/auths-users.query";
+import { getUserByEmail, insertUser } from "@/drizzle/queries/auth-users.query";
 import { NextResponse } from "next/server";
 import { hash } from "bcrypt";
 import * as z from 'zod';

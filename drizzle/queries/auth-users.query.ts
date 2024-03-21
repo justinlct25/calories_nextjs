@@ -1,9 +1,6 @@
 import { db } from "@/lib/db";
-import { DrizzleAdapter } from "@auth/drizzle-adapter";
-import { Adapter } from "@auth/core/adapters";
 import { users } from "../schemas/users.schema";
 
-// const drizzleAdapter: Adapter = DrizzleAdapter(db);
 
 export const getUserByEmail = async (email: string) => {
     // return drizzleAdapter.getUserByEmail?.(email);

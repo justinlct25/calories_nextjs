@@ -1,21 +1,32 @@
-
+'use client'
 
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Toolbar from "./Toolbar";
 import Underline from "@tiptap/extension-underline";
 import BulletList from "@tiptap/extension-bullet-list";
+import OrderedList from "@tiptap/extension-ordered-list";
+import Image from "@tiptap/extension-image"
 
 const Tiptap = ({ onChange, content }: any) => {
   const handleChange = (newContent: string) => {
-    // onChange(newContent);
+    onChange(newContent);
   };
   const editor = useEditor({
     extensions: [StarterKit, Underline, BulletList.configure({
       HTMLAttributes: {
-        class: 'list-disc'
+        class: 'list-disc ml-5'
       }
-    })],
+    }),
+    OrderedList.configure({
+      HTMLAttributes: {
+        class: 'list-decimal ml-5'
+      }
+    }),
+    Image.configure({
+      inline: true,
+    })
+  ],
     editorProps: {
       attributes: {
         class:

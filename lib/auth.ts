@@ -5,7 +5,7 @@ import CredentialsProvider from "next-auth/providers/credentials"
 import { db } from "./db";
 // import { getUserByEmail } from "@/drizzle/queries/auths-users.query";
 // import pgDrizzleAdapter from "@auth/drizzle-adapter"
-import { getUserByEmail } from "@/drizzle/queries/auths-users.query";
+import { getUserByEmail } from "@/drizzle/queries/auth-users.query";
 import { compare } from "bcrypt";
 
 
