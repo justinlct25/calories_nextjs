@@ -22,6 +22,9 @@ export const admins = pgTable("admin", {
 });
 
 export const adminsRelations = relations(admins, ({ one, many }) => ({
-    user: one(users),
+    user: one(users, {
+        fields: [admins.userId],
+        references: [users.id]
+    }),
     createdActivities: many(activities)
 }));

@@ -30,6 +30,7 @@ export async function POST(req: Request) {
                 name: name,
                 password: hashedPassword,
             })
+            if (!newUser) return NextResponse.json({user: null, message: "Duplicate role or email"}, {status: 409})
             const { password: newUserPassword, ...rest } = newUser;
             return NextResponse.json(
                 {user: newUser, message: "User created successfully"}, 

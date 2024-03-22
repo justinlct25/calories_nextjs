@@ -27,8 +27,8 @@ export const activityCreateForm = z.object({
     name: z.string().min(1, 'Activity name is required').max(100),
     startAt: z.string().datetime(),
     endAt: z.string().datetime(),
-    quota: z.number(),
-    price: z.number()
+    quota: z.number().optional(),
+    price: z.number().optional()
 })
 
 const ActivityCreateForm = () => {
@@ -37,11 +37,9 @@ const ActivityCreateForm = () => {
     const form = useForm<z.infer<typeof activityCreateForm>>({
         resolver: zodResolver(activityCreateForm),
         defaultValues: {
-            name: '',
-            startAt: '',
-            endAt: '',
-            quota: 0,
-            price: 0
+            name: 'Activity1',
+            startAt: (new Date('2024-03-21T09:00')).toISOString(), // Default start time
+            endAt: (new Date('2024-03-21T10:00')).toISOString(),   // Default end time
         }
     })
     const [description, setDescription] = useState<string>('');
@@ -56,13 +54,14 @@ const ActivityCreateForm = () => {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                            name: values.name,
-                            startAt: values.startAt,
-                            endAt: values.endAt,
-                            quota: values.quota,
-                            price: values.price,
-                        })
+                        name: values.name,
+                        startAt: values.startAt,
+                        endAt: values.endAt,
+                        quota: values.quota,
+                        price: values.price,
                     })
+                })
+        console.log(response);
         const descriptionWithUploadedImgLinks = await processTiptapImageUrls(description);
     }
 

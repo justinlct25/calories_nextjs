@@ -46,7 +46,9 @@ export const {
                 return {
                     id: `${existingUser.id}`,
                     name: existingUser.name,
-                    email: existingUser.email
+                    email: existingUser.email,
+                    // admin: existingUser.admin,
+                    // donor: existingUser.donor
                 };
             }
         })
@@ -54,10 +56,13 @@ export const {
     callbacks: {
         async jwt({ token, user}) {
             console.log(token, user)
-            if (user) {
+            if (user && user.email) {
+                // const existingUser = await getUserByEmail(user.email);
                 return {
                     ...token,
                     name: user.name,
+                    // admin: existingUser?.admin,
+                    // donor: existingUser?.donor
                 }
             }
             return token
@@ -68,6 +73,8 @@ export const {
                 user: {
                     ...session.user,
                     name: token.name,
+                    // admin: token.admin,
+                    // donor: token.donor
                 }
             };
         },

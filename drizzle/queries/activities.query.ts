@@ -6,6 +6,13 @@ export const getAllActivities = async () => {
     return activities;
 }
 
+export const getActivityByName = async (name: string) => {
+    const activity = db.query.activities.findFirst({
+        where: (activities, { eq }) => eq(activities.name, name)
+    })
+    return activity;
+}
+
 type NewActivity = typeof activities.$inferInsert
 export const insertActivity = async (activity: NewActivity) => {
     return await db.insert(activities).values({

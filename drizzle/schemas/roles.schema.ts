@@ -5,6 +5,7 @@ import {
 } from "drizzle-orm/pg-core"
 import { relations } from 'drizzle-orm'
 import { usersToRoles } from "./users-to-roles.schema";
+import { users } from "./users.schema";
 
 export const roles = pgTable("role", {
     id: serial("id").primaryKey(),
@@ -12,6 +13,6 @@ export const roles = pgTable("role", {
     description: text("description")
 });
 
-export const rolesRelations = relations(roles, ({ many }) => ({
-    accountsToRoles: many(usersToRoles),
+export const rolesRelations = relations(roles, ({ one, many }) => ({
+    users: many(usersToRoles),
 }))

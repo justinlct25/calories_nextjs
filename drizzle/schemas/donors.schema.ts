@@ -23,8 +23,8 @@ export const donors = pgTable("donor", {
     genderOptionId: integer("gender_option_id").references(() => genderOptions.id),
     name: text("name").notNull(),
     icon: text("icon").default("default_user.png"),
-    firstname: text("firstname").notNull(),
-    lastname: text("lastname").notNull(),
+    firstname: text("firstname"),
+    lastname: text("lastname"),
     phone: text("phone"),
     weight: decimal("weight"),
     birth: date("birth"),
@@ -35,7 +35,10 @@ export const donors = pgTable("donor", {
 });
 
 export const donorsRelations = relations(donors, ({ one, many }) => ({
-    user: one(users), // one-to-one
+    user: one(users, {
+        fields: [donors.userId],
+        references: [users.id]
+    }), // one-to-one
     gender: one(genderOptions, {
         fields: [donors.genderOptionId],
         references: [genderOptions.id],

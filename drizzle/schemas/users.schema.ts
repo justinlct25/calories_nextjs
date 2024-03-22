@@ -5,6 +5,11 @@ import {
     primaryKey,
    integer
   } from "drizzle-orm/pg-core"
+import { relations } from 'drizzle-orm'
+import { roles } from "./roles.schema"
+import { admins } from "./admins.schema"
+import { donors } from "./donors.schema"
+import { usersToRoles } from "./users-to-roles.schema"
   
 
 export const users = pgTable("user", {
@@ -15,4 +20,11 @@ export const users = pgTable("user", {
   password: text("string"),
   image: text("image"),
 })
+
+
+export const usersRelations = relations(users, ({ one, many }) => ({
+  roles: many(usersToRoles),
+  admin: one(admins),
+  donor: one(donors)
+}));
 
