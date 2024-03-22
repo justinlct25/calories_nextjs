@@ -47,11 +47,8 @@ export const insertUser = async (user: NewUserWithoutId, roleName: string = ROLE
                 id: crypto.randomUUID()
             }).returning().then((res) => res[0] ?? null)
             await db.insert(usersToRoles).values({userId: newUser.id, roleId: roleId});
-            if (roleName == ROLE_NAMES.ADMIN) {
-                await db.insert(admins).values({ userId: newUser.id, name: newUser.name || '' }).returning().then((res) => res[0] ?? null)
-            } else if (roleName == ROLE_NAMES.DONOR) {
-                await db.insert(donors).values({userId: newUser.id, name: newUser.name || '', }).returning().then((res) => res[0] ?? null)
-            }
+            if (roleName == ROLE_NAMES.ADMIN) await db.insert(admins).values({ userId: newUser.id, name: newUser.name || '' }).returning().then((res) => res[0] ?? null) 
+            await db.insert(donors).values({userId: newUser.id, name: newUser.name || '', }).returning().then((res) => res[0] ?? null)
             return newUser;
         })
         return newUser;

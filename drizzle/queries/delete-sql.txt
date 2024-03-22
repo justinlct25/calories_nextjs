@@ -1,0 +1,5 @@
+delete from "admin";
+delete from "donor";
+delete from "users_to_roles";
+delete from "role";
+delete from "user";
