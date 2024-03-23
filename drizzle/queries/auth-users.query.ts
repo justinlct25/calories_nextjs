@@ -39,15 +39,23 @@ export const insertUser = async (user: NewUserWithoutId, roleName: string = ROLE
     try {
         const newUser = await db.transaction(async (tx) => {
             const roleId = (await db.query.roles.findFirst({where: (roles, { eq }) => eq(roles.name, roleName)}))?.id
-            if (!roleId) {console.log(`Role ${roleName} is not exist`); return null;}
+            if (!roleId) {
+                console.log(`Role ${roleName} is not exist`);
+                return null;
+            }
             const existingUser = await db.query.users.findFirst({where: (users, { eq }) => eq(users.email, user.email)})
-            if (existingUser){console.log(`User with email ${user.email} already exist`); return null;}
+            if (existingUser){
+                console.log(`User with email ${user.email} already exist`);
+                return null;
+            }
             const newUser = await db.insert(users).values({
                 ...user,
                 id: crypto.randomUUID()
             }).returning().then((res) => res[0] ?? null)
             await db.insert(usersToRoles).values({userId: newUser.id, roleId: roleId});
-            if (roleName == ROLE_NAMES.ADMIN) await db.insert(admins).values({ userId: newUser.id, name: newUser.name || '' }).returning().then((res) => res[0] ?? null) 
+            if (roleName == ROLE_NAMES.ADMIN){
+                await db.insert(admins).values({ userId: newUser.id, name: newUser.name || '' }).returning().then((res) => res[0] ?? null);
+            }
             await db.insert(donors).values({userId: newUser.id, name: newUser.name || '', }).returning().then((res) => res[0] ?? null)
             return newUser;
         })

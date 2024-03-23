@@ -35,11 +35,22 @@ const Toolbar = ({ editor, content }: Props) => {
     const onImageClick = () => {
         imageRef.current!.click();
       };
-    const handleImageUpload = (file: File | null) => {
+
+    // const handleImageUpload = (file: File | null) => {
+    //     if (!file) return;
+    //     const url = URL.createObjectURL(file);
+    //     console.log(url)
+    //     editor?.chain().focus().setImage({ src: url }).run()
+    // }
+    
+    const handleImageUpload = (file: File) => {
         if (!file) return;
-        const url = URL.createObjectURL(file);
-        console.log(url)
-        editor?.chain().focus().setImage({ src: url }).run()
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            const base64String = reader.result as string || '';
+            editor?.chain().focus().setImage({ src: base64String }).run()
+        }
+        reader.readAsDataURL(file);
     }
 
 

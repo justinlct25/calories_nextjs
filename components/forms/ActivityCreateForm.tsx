@@ -20,7 +20,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Tiptap from "@/components/rich-txt-editor/Tiptap";
 import DatePicker from "react-datepicker";
 import 'react-datepicker/dist/react-datepicker.css';
-import { processTiptapImageUrls } from "@/utils/tiptapImageHelper";
+import { processTiptapImageUrls } from "@/utils/tiptapImageHelper(old)";
 
 
 export const activityCreateForm = z.object({
@@ -42,9 +42,10 @@ const ActivityCreateForm = () => {
             endAt: (new Date('2024-03-21T10:00')).toISOString(),   // Default end time
         }
     })
-    const [description, setDescription] = useState<string>('');
-    const handleDescriptionChange = (content: any) => {
-        setDescription(content)
+    const [descriptionHTML, setDescriptionHTML] = useState<string>('');
+    const handleDescriptionEditorChange = (content: any) => {
+        setDescriptionHTML(content)
+        console.log(content)
     }
 
     const onSubmit = async (values: z.infer<typeof activityCreateForm>) => {
@@ -59,10 +60,11 @@ const ActivityCreateForm = () => {
                         endAt: values.endAt,
                         quota: values.quota,
                         price: values.price,
+                        description: descriptionHTML
                     })
                 })
         console.log(response);
-        const descriptionWithUploadedImgLinks = await processTiptapImageUrls(description);
+        // const descriptionWithUploadedImgLinks = await processTiptapImageUrls(description);
     }
 
     return (
@@ -153,12 +155,15 @@ const ActivityCreateForm = () => {
                             )}
                         />
                     </div>
+                    <div>
+                        <FormLabel>Description</FormLabel>
+                    </div>
                     <Button className='w-full mt-6' type="submit">Create</Button>
                 </form>
             </Form>
             <Tiptap
-                content={description}
-                onChange={(newContent: string) => {handleDescriptionChange(newContent)}}
+                content={descriptionHTML}
+                onChange={(newContent: string) => {handleDescriptionEditorChange(newContent)}}
             />
         </div>
     )

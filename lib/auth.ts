@@ -53,30 +53,45 @@ export const {
             }
         })
     ],
+    // callbacks: {
+    //     async jwt({ token, user}) {
+    //         console.log(token, user)
+    //         if (user && user.email) {
+    //             // const existingUser = await getUserByEmail(user.email);
+    //             return {
+    //                 ...token,
+    //                 id: user.id,
+    //                 name: user.name,
+    //                 // admin: existingUser?.admin,
+    //                 // donor: existingUser?.donor
+    //             }
+    //         }
+    //         return token
+    //     },
+    //     async session({ session, user, token }) {
+    //         return {
+    //             ...session,
+    //             user: {
+    //                 ...session.user,
+    //                 // name: token.name,
+    //                 // admin: token.admin,
+    //                 // donor: token.donor
+    //             }
+    //         };
+    //     },
+    // },
     callbacks: {
-        async jwt({ token, user}) {
-            console.log(token, user)
-            if (user && user.email) {
-                // const existingUser = await getUserByEmail(user.email);
-                return {
-                    ...token,
-                    name: user.name,
-                    // admin: existingUser?.admin,
-                    // donor: existingUser?.donor
-                }
-            }
-            return token
+        session: async ({ session, token }) => {
+          if (session?.user) {
+            session.user.id = token.sub || "";
+          }
+          return session;
         },
-        async session({ session, user, token }) {
-            return {
-                ...session,
-                user: {
-                    ...session.user,
-                    name: token.name,
-                    // admin: token.admin,
-                    // donor: token.donor
-                }
-            };
+        jwt: async ({ user, token }) => {
+          if (user) {
+            token.uid = user.id;
+          }
+          return token;
         },
-    },
+      },
 })

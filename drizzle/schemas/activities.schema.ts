@@ -23,8 +23,8 @@ export const activities = pgTable("activity", {
     endAt: timestamp("end_at"),
     quota: integer("quota"),
     price: decimal("price"),
+    description: text("description"),
     // location
-    // description: editable
     createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 

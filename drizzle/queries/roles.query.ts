@@ -1,5 +1,6 @@
 import { db } from "@/lib/db"
 import { roles } from "../schemas/roles.schema"
+import { usersToRoles } from "../schemas/users-to-roles.schema";
 
 export const getAllRoles = async () => {
     const roles = db.query.roles.findMany()
@@ -34,3 +35,4 @@ export const insertRole = async (role: NewRole) => {
         return null;
     }
 }
+

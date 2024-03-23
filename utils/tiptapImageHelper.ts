@@ -1,67 +1,52 @@
-import { Storage } from '@google-cloud/storage'
-import { html } from 'next-auth/providers';
+import { Storage } from '@google-cloud/storage';
 
-// Function to extract image URLs from HTML content
-function extractImageUrls(htmlContent: string): string[] {
-    const regex = /<img.*?src="(.*?)"/g;
-    const urls: string[] = [];
+// Function to extract base64 image data from HTML content
+function extractBase64Images(htmlContent: string): string[] {
+    const regex = /<img.*?src="data:image\/(?:jpeg|png|gif|jpg);base64,([^">]+)"/g;
+    const base64Images: string[] = [];
     let match;
     while ((match = regex.exec(htmlContent)) !== null) {
-        urls.push(match[1]);
+        base64Images.push(match[1]);
     }
-    return urls;
+    return base64Images;
 }
 
-async function uploadImageToGCP(imageUrl: string): Promise<string> {
-    const response = await fetch(imageUrl);
-    if (!response.ok) {
-        throw new Error('Failed to fetch image');
+async function uploadBase64ImageToGCP(base64Data: string, imgName: string): Promise<string> {
+    const buffer = Buffer.from(base64Data, 'base64');
+    const storage = new Storage();
+    const bucketName = process.env.BUCKET_STORAGE_NAME_ACTIVITY_DESCRIPTION || '';
+    const bucketURL = process.env.BUCKET_STORAGE_URL_ACTIVITY_DESCRIPTION || '';
+    
+    try {
+        await storage.bucket(bucketName).file(imgName).save(buffer);
+        return `${bucketURL}/${imgName}`;
+    } catch(error) {
+        throw new Error(`Failed to upload image ${imgName} to GCP due to ${error}.`);
     }
-    const blob = await response.blob();
-    const file = new File([blob], 'image.jpg', { type: blob.type });
-    const buffer = await file.arrayBuffer()
-    // const storage = new Storage();
-    // const bucketName = process.env.BUCKET_NAME;
-    // try {
-    //     const uploadedFile = await storage.bucket(bucketName).upload(buffer, {
-    //         destination: file.name,
-    //         contentType: file.type,
-    //     });
-
-    //     // Get the URL of the uploaded image
-    //     const uploadedImgUrl = uploadedFile.publicUrl();
-
-    //     return uploadedImgUrl;
-    // }
-    // return uploadedImgUrl;
-    return '';
 }
 
-// Function to replace original src attributes with uploaded image URLs
-function replaceSrcAttributes(htmlContent: string, imageUrls: string[], uploadedUrls: string[]): string {
-    for (let i = 0; i < imageUrls.length; i++) {
-        htmlContent = htmlContent.replace(imageUrls[i], uploadedUrls[i]);
+// Function to replace original base64 encoded images with uploaded image paths
+function replaceBase64Images(htmlContent: string, base64Images: string[], uploadedUrls: string[]): string {
+    console.log("uploadedurls:")
+    console.log(uploadedUrls);
+    for (let i = 0; i < base64Images.length; i++) {
+        htmlContent = htmlContent.replace(`data:image;base64,${base64Images[i]}`, uploadedUrls[i]);
     }
     return htmlContent;
 }
 
-// Function to handle submit button click
-export async function processTiptapImageUrls(htmlContent: string): Promise<string> {
-    const imageUrls = extractImageUrls(htmlContent);
+// Function to handle processing of HTML content with base64 images
+export async function processTipTapBase64Images(activityId: number, htmlContent: string): Promise<string> {
+    const base64Images = extractBase64Images(htmlContent);
     const uploadedUrls: string[] = [];
-
-
-    // Upload each image to GCP storage and collect the URLs
-    for (const imageUrl of imageUrls) {
-        const uploadedUrl = await uploadImageToGCP(imageUrl);
+    
+    // Upload each base64 image to GCP storage and collect the URLs
+    for (let i = 0; i < base64Images.length; i++) {
+        const imageName = `activity${activityId}-img${i}.jpeg`;
+        const uploadedUrl = await uploadBase64ImageToGCP(base64Images[i], imageName);
         uploadedUrls.push(uploadedUrl);
     }
-
-    const updatedUrlsHtml = replaceSrcAttributes(htmlContent, imageUrls, uploadedUrls);
-
-    // Replace original src attributes with uploaded image URLs
-    return updatedUrlsHtml;
-
+    
+    const updatedHtmlContent = replaceBase64Images(htmlContent, base64Images, uploadedUrls);
+    return updatedHtmlContent;
 }
-
-
