@@ -20,7 +20,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Tiptap from "@/components/rich-txt-editor/Tiptap";
 import DatePicker from "react-datepicker";
 import 'react-datepicker/dist/react-datepicker.css';
-import { processTiptapImageUrls } from "@/utils/tiptapImageHelper(old)";
+// import { processTiptapImageUrls } from "@/utils/tiptapImageHelper(old)";
 
 
 export const activityCreateForm = z.object({
@@ -45,11 +45,10 @@ const ActivityCreateForm = () => {
     const [descriptionHTML, setDescriptionHTML] = useState<string>('');
     const handleDescriptionEditorChange = (content: any) => {
         setDescriptionHTML(content)
-        console.log(content)
     }
 
     const onSubmit = async (values: z.infer<typeof activityCreateForm>) => {
-        const response = await fetch('/api/activity/create', {
+        const response = await fetch('/api/activities/create', {
                 method: 'POST',
                 headers: {
                         'Content-Type': 'application/json'
@@ -63,7 +62,33 @@ const ActivityCreateForm = () => {
                         description: descriptionHTML
                     })
                 })
-        console.log(response);
+        const data = await response.json()
+        if (response.ok) {
+            toast({
+                title: "Success",
+                description: `${data.message}`,
+                variant: 'primary'
+            })
+            router.push(`/activities/${data.activity.id}`);
+        } else {
+            toast({
+                title: "Error",
+                description: `${data.message}`,
+                variant: 'destructive'
+            })
+        }
+        // if (response.status === 200) {
+        //     console.log('Activity created successfully');
+        //     const redirectedUrl = response.headers.get('Location');
+        //     if (redirectedUrl) {
+        //         window.location.href = redirectedUrl;
+        //     } else {
+        //         console.error('Redirect URL not found in response headers');
+        //     }
+        // } else {
+        //     console.error('Failed to create activity:', response.status);
+        // }
+        // if (response.status == 201) router.push(`/activities/${}`)
         // const descriptionWithUploadedImgLinks = await processTiptapImageUrls(description);
     }
 

@@ -1,7 +1,14 @@
+'use client'
 
-const page = async () => {
+import ActivitiesSelectionPanel from "@/components/activity/ActivitiesSelectionPanel";
 
-    return <h2>Activities</h2>;
+const ActivitiesMenuPage = () => {
+
+
+    return <div>
+            <h2>Activities</h2>
+            <ActivitiesSelectionPanel />
+        </div>;
 } 
 
-export default page;
+export default ActivitiesMenuPage;

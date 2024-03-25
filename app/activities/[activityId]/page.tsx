@@ -1,9 +1,11 @@
 'use client';
 
 import { useParams } from 'next/navigation';
+import ActivityDetailedInfo from '@/components/activity/ActivityDetailedInfo';
 
-export default function SomeClientComponent() {
+
+export default function ActivityInfoPage() {
   const { activityId } = useParams();
 
-  return <div>activity: {activityId}</div>;
+  return <ActivityDetailedInfo activityId={activityId} />;
 }

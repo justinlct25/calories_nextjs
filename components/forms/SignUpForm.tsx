@@ -70,12 +70,14 @@ const SignUpForm = () => {
                 password: values.password
             })
         })
+        const data = await response.json()
+        console.log(data.message)
         if (response.ok) {
             router.push('/sign-in');
         } else {
             toast({
                 title: "Error",
-                description: "Oops! Something went wrong!",
+                description: `${data.message}`,
                 variant: 'destructive'
             })
         }

@@ -7,6 +7,18 @@ export const getAllActivities = async () => {
     return activities;
 }
 
+export const getAllBriefActivities = async () => {
+    const result = await db.selectDistinct({id: activities.id, name: activities.name}).from(activities)
+    return result;
+}
+
+export const getActivityById = async (activityId: number) => {
+    const activity = db.query.activities.findFirst({
+        where: (activities, { eq }) => eq(activities.id, activityId)
+    })
+    return activity;
+}
+
 export const getActivityByName = async (name: string) => {
     const activity = db.query.activities.findFirst({
         where: (activities, { eq }) => eq(activities.name, name)

@@ -7,6 +7,7 @@ import { auth } from "@/lib/auth";
 import { getUserByEmail } from "@/drizzle/queries/auth-users.query";
 import { isAdminRole } from "@/drizzle/queries/users-to-roles.query";
 import { processTipTapBase64Images } from "@/utils/tiptapImageHelper";
+import { redirect } from 'next/navigation';
 
 const activityCreateFormSchema = z.object({
     name: z.string().min(1, 'Activity name is required').max(100),
