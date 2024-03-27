@@ -3,19 +3,10 @@ import { insertActivity } from "@/drizzle/queries/activities.query";
 import { NextResponse } from "next/server";
 import * as z from 'zod';
 import { auth } from "@/lib/auth";
-// import { getSession } from "next-auth/react";
 import { getUserByEmail } from "@/drizzle/queries/auth-users.query";
 import { isAdminRole } from "@/drizzle/queries/users-to-roles.query";
 import { processTipTapBase64Images } from "@/utils/tiptapImageHelper";
-import { redirect } from 'next/navigation';
-import { request } from "http";
-import { readFileSync } from "fs";
-// import multer from 'multer';
-import fs from 'fs';
-import { promisify } from 'util';
-import { NextApiRequest } from "next";
 const { Storage } = require('@google-cloud/storage');
-import multiparty from "multiparty";
 
 
 
@@ -36,15 +27,7 @@ const bucketFolderThumbnail = process.env.BUCKET_STORAGE_FOLDER_ACTIVITY_THUMBNA
 const storage = new Storage();
 const bucket = storage.bucket(bucketName);
 
-export const createWriteStream = (filename: string, contentType?: string) => {
-    const ref = bucket.file(filename);
-    const stream = ref.createWriteStream({
-        gzip: true,
-        contentType: contentType,
-    });
 
-    return stream;
-};
 
 
 export async function POST(req: Request) {
