@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { activities } from "@/drizzle/schemas/activities.schema"
 
 
+
 const ActivityDetailedInfo = ({ activityId }: any) => {
     const router = useRouter();
     const [activityInfo, setActivityInfo] = useState<typeof activities.$inferInsert>();

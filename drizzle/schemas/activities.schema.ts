@@ -24,6 +24,7 @@ export const activities = pgTable("activity", {
     quota: integer("quota"),
     price: decimal("price"),
     description: text("description"),
+    thumbnail: text("thumbnail"),
     // location
     createdAt: timestamp("created_at").defaultNow().notNull(),
 });

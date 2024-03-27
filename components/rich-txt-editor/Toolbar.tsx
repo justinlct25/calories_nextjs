@@ -25,23 +25,11 @@ type Props = {
 
 const Toolbar = ({ editor, content }: Props) => {
 
-    // const uploadImage = async () => {
-    //     const url = window.prompt('URL');
-    //     // const url = await window.showOpenFilePicker()
-    //     if (!url) return;
-    //     editor?.chain().focus().setImage({ src: url }).run()
-    // }
     const imageRef = useRef<HTMLInputElement|null>(null);
     const onImageClick = () => {
         imageRef.current!.click();
       };
 
-    // const handleImageUpload = (file: File | null) => {
-    //     if (!file) return;
-    //     const url = URL.createObjectURL(file);
-    //     console.log(url)
-    //     editor?.chain().focus().setImage({ src: url }).run()
-    // }
     
     const handleImageUpload = (file: File) => {
         if (!file) return;

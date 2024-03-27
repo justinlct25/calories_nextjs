@@ -51,6 +51,9 @@ import { Storage } from '@google-cloud/storage';
 //     return updatedHtmlContent;
 // }
 
+const bucketName = process.env.BUCKET_STORAGE_IMAGES || '';
+const bucketFolder = process.env.BUCKET_STORAGE_FOLDER_ACTIVITY_DESCRIPTION || ''
+
 // Function to extract base64 image data from HTML content
 export async function processTipTapBase64Images(activityId: number, htmlContent: string): Promise<string> {
     const regex = /<img.*?src="(data:image\/(?:jpeg|png|gif|jpg);base64,([^">]+))"/g;
@@ -60,11 +63,10 @@ export async function processTipTapBase64Images(activityId: number, htmlContent:
     let i = 0;
     while ((match = regex.exec(htmlContent)) !== null) {
         const base64Data = match[1].split(",")[1];
-        const imageName = `activity${activityId}-img${i}.jpeg`;
+        const time = Date.now();
+        const imageName = `activity${activityId}-img${i}-${time}.jpeg`;
         const buffer = Buffer.from(base64Data, 'base64');
         const storage = new Storage();
-        const bucketName = process.env.BUCKET_STORAGE_IMAGES || '';
-        const bucketFolder = process.env.BUCKET_STORAGE_FOLDER_ACTIVITY_DESCRIPTION || ''
         // const bucketURL = process.env.BUCKET_STORAGE_URL_ACTIVITY_DESCRIPTION || '';
         
         try {

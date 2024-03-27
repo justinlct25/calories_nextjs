@@ -12,9 +12,7 @@ const ActivityBriefInfo = ({activityInfo} : any) => {
 
     return (
         <div onClick={handleActivityClick} style={{ cursor: 'pointer' }}>
-            {JSON.stringify(activityInfo)}
             <div>{activityInfo?.name}</div>
-            <div>{activityInfo?.description}</div>
         </div>
     );
 };

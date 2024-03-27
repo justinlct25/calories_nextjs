@@ -20,7 +20,15 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Tiptap from "@/components/rich-txt-editor/Tiptap";
 import DatePicker from "react-datepicker";
 import 'react-datepicker/dist/react-datepicker.css';
+import { processTipTapBase64Images } from "@/utils/tiptapImageHelper";
+import { uploadBufferToBucketStorage } from "@/utils/uploadBucketStorage";
+// import { CreateActivityFormAction } from "@/utils/formActions/createActivityActions";
 // import { processTiptapImageUrls } from "@/utils/tiptapImageHelper(old)";
+
+const MAX_FILE_SIZE = 500000;
+const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp"]
+const bucketName = process.env.BUCKET_STORAGE_IMAGES || '';
+const bucketFolder = process.env.BUCKET_STORAGE_FOLDER_ACTIVITY_THUMBNAIL || ''
 
 
 export const activityCreateForm = z.object({
@@ -28,7 +36,20 @@ export const activityCreateForm = z.object({
     startAt: z.string().datetime(),
     endAt: z.string().datetime(),
     quota: z.number().optional(),
-    price: z.number().optional()
+    price: z.number().optional(),
+    // thumbnail: z.custom<File>()
+    thumbnail: z.any()
+    .optional()
+    .refine((file) => file[0]?.size <= MAX_FILE_SIZE, `Max image size is 5MB.`)
+    .refine(
+      (file) => ACCEPTED_IMAGE_TYPES.includes(file[0]?.type),
+      "Only .jpg, .jpeg, .png and .webp formats are supported."
+    )
+    //   z
+    //   .refine((file) => file?.length == 1, 'File is required.')
+    //   .refine((file) => file[0]?.type === 'application/pdf', 'Must be a PDF.')
+    //   .refine((file) => file[0]?.size <= 3000000, `Max file size is 3MB.`),
+    
 })
 
 const ActivityCreateForm = () => {
@@ -40,36 +61,40 @@ const ActivityCreateForm = () => {
             name: 'Activity1',
             startAt: (new Date('2024-03-21T09:00')).toISOString(), // Default start time
             endAt: (new Date('2024-03-21T10:00')).toISOString(),   // Default end time
-        }
+            thumbnail: undefined
+        },
+        mode: 'onChange',
     })
+    const fileRef = form.register('thumbnail', { required: true });
+
     const [descriptionHTML, setDescriptionHTML] = useState<string>('');
     const handleDescriptionEditorChange = (content: any) => {
         setDescriptionHTML(content)
     }
 
     const onSubmit = async (values: z.infer<typeof activityCreateForm>) => {
+        const formData = new FormData();
+        formData.append('name', values.name);
+        formData.append('startAt', values.startAt);
+        formData.append('endAt', values.endAt);
+        if (values.quota) formData.append('quota', String(values.quota));
+        if (values.price) formData.append('price', String(values.price));
+        formData.append('thumbnail', values.thumbnail[0]); 
+        formData.append('description', descriptionHTML);
+
         const response = await fetch('/api/activities/create', {
-                method: 'POST',
-                headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        name: values.name,
-                        startAt: values.startAt,
-                        endAt: values.endAt,
-                        quota: values.quota,
-                        price: values.price,
-                        description: descriptionHTML
-                    })
-                })
+            method: 'POST',
+            body: formData
+        });
         const data = await response.json()
         if (response.ok) {
+            const createdActivityId = data.activity.id
             toast({
                 title: "Success",
                 description: `${data.message}`,
                 variant: 'primary'
             })
-            router.push(`/activities/${data.activity.id}`);
+            router.push(`/activities/${createdActivityId}`);
         } else {
             toast({
                 title: "Error",
@@ -77,25 +102,14 @@ const ActivityCreateForm = () => {
                 variant: 'destructive'
             })
         }
-        // if (response.status === 200) {
-        //     console.log('Activity created successfully');
-        //     const redirectedUrl = response.headers.get('Location');
-        //     if (redirectedUrl) {
-        //         window.location.href = redirectedUrl;
-        //     } else {
-        //         console.error('Redirect URL not found in response headers');
-        //     }
-        // } else {
-        //     console.error('Failed to create activity:', response.status);
-        // }
-        // if (response.status == 201) router.push(`/activities/${}`)
-        // const descriptionWithUploadedImgLinks = await processTiptapImageUrls(description);
     }
 
     return (
         <div>
 
             <Form {...form}>
+                {/* <form action={CreateActivityFormAction} method="POST" encType="multipart/form-data"> */}
+                {/* <form action={CreateActivityFormAction}> */}
                 <form onSubmit={form.handleSubmit(onSubmit)} className="w-full">
                     <div className='space-y-2'>
                         <FormField
@@ -121,11 +135,12 @@ const ActivityCreateForm = () => {
                                         <DatePicker
                                             placeholderText="Select Start Date"
                                             selected={field.value ? new Date(field.value) : null}
-                                            onChange={(date:any) => {
-                                                form.setValue('startAt', date.toISOString());
-                                            }}
+                                            // onChange={(date:any) => {
+                                            //     form.setValue('startAt', date.toISOString());
+                                            // }}
                                             showTimeSelect
                                             dateFormat="yyyy-MM-dd HH:mm"
+                                            {...field}
                                         />
                                     </FormControl>
                                     <FormMessage />
@@ -137,16 +152,17 @@ const ActivityCreateForm = () => {
                             name="endAt"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Start At</FormLabel>
+                                    <FormLabel>End At</FormLabel>
                                     <FormControl>
                                         <DatePicker
-                                            placeholderText="Select Start Date"
+                                            placeholderText="Select End Date"
                                             selected={field.value ? new Date(field.value) : null}
-                                            onChange={(date:any) => {
-                                                form.setValue('endAt', date.toISOString());
-                                            }}
+                                            // onChange={(date:any) => {
+                                            //     form.setValue('endAt', date.toISOString());
+                                            // }}
                                             showTimeSelect
                                             dateFormat="yyyy-MM-dd HH:mm"
+                                            {...field}
                                         />
                                     </FormControl>
                                     <FormMessage />
@@ -174,6 +190,19 @@ const ActivityCreateForm = () => {
                                     <FormLabel>Price</FormLabel>
                                     <FormControl>
                                         <Input type="number" placeholder="" {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="thumbnail"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Thumbnail</FormLabel>
+                                    <FormControl>
+                                        <Input type="file" accept="image/png, image/jpg, image/jpeg" {...fileRef} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>

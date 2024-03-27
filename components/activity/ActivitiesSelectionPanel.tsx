@@ -3,7 +3,7 @@ import ActivityBriefInfo from "@/components/activity/ActivityBriefInfo";
 import { useState, useEffect } from "react";
 
 const ActivitiesSelectionPanel = () => {
-    const [activities, setActivities] = useState([]);
+    const [activities, setActivities] = useState<any[]>([]);
     useEffect(() => {
         fetch(`/api/activities`)
         .then((res) => res.json())
@@ -15,9 +15,8 @@ const ActivitiesSelectionPanel = () => {
 
 
     return (<div>
-            <h2>Activities</h2>
             {activities.map((activity) => {
-                return <ActivityBriefInfo activityInfo={activity} />
+                return <ActivityBriefInfo key={activity?.id} activityInfo={activity} />
             })}
         </div>)
 } 
