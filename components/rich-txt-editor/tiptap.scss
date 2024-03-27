@@ -1,0 +1,16 @@
+.tiptap {
+    >*+* {
+        margin-top: 0.75em;
+    }
+    img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        /* Ensures the image takes up the full width of its container */
+        margin: 0 auto;
+        /* Centers the image horizontally */
+        &.ProseMirror-selectednode {
+            outline: 3px solid #68CEF8;
+        }
+    }
+}

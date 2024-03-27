@@ -8,7 +8,7 @@ export const getAllActivities = async () => {
 }
 
 export const getAllBriefActivities = async () => {
-    const result = await db.selectDistinct({id: activities.id, name: activities.name}).from(activities)
+    const result = await db.selectDistinct({id: activities.id, name: activities.name, thumbnail: activities.thumbnail, startAt: activities.startAt, endAt: activities.endAt}).from(activities)
     return result;
 }
 

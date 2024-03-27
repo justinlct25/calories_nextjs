@@ -3,15 +3,19 @@ import { Bucket, Storage } from '@google-cloud/storage';
 
 const bucketURL = process.env.BUCKET_STORAGE_URL || "";
 
-export async function uploadBufferToBucketStorage(bucketName: string, imageName: string, buffer: Buffer, bucketUrl: string=bucketURL, bucketFolder:string = "") {
+export async function uploadBufferToBucketStorage(bucketName: string, imageName: string, buffer: Buffer, bucketFolder?: string, bucketUrl: string=bucketURL) {
     try {
         const storage = new Storage();
         const bucket = storage.bucket(bucketName)
-        if (bucketFolder !== "") {
-            await bucket.file(bucketFolder + "/" + imageName).save(buffer);
+        if (bucketFolder) {
+            const fileDirectory = bucketFolder + "/" + imageName;
+            await bucket.file(fileDirectory).save(buffer);
+            await bucket.file(fileDirectory).makePublic();
             return `${bucketUrl}/${bucketFolder}/${imageName}`
         } else {
-            await bucket.file(imageName).save(buffer);
+            const fileDirectory = imageName;
+            await bucket.file(fileDirectory).save(buffer);
+            await bucket.file(fileDirectory).makePublic();
             return `${bucketUrl}/${imageName}`
 
         }

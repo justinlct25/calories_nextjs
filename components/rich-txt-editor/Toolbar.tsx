@@ -14,7 +14,11 @@ import {
   Undo,
   Redo,
   Code,
-  Image
+  Image,
+  AlignLeft,
+  AlignCenter,
+  AlignRight,
+  AlignJustify,
 } from "lucide-react";
 
 type Props = {
@@ -145,6 +149,58 @@ const Toolbar = ({ editor, content }: Props) => {
             <button
                 onClick={(e) => {
                     e.preventDefault();
+                    editor.chain().focus().setTextAlign('left').run()
+                }}
+                className={
+                    editor.isActive({textAlign: 'left'})
+                    ? "bg-sky-700 text-white p-2 rounded-lg"
+                    : "text-sky-400"
+                }
+                >
+                <AlignLeft className="w-5 h-5" />
+            </button>
+            <button
+                onClick={(e) => {
+                    e.preventDefault();
+                    editor.chain().focus().setTextAlign('center').run()
+                }}
+                className={
+                    editor.isActive({textAlign: 'center'})
+                    ? "bg-sky-700 text-white p-2 rounded-lg"
+                    : "text-sky-400"
+                }
+                >
+                <AlignCenter className="w-5 h-5" />
+            </button>
+            <button
+                onClick={(e) => {
+                    e.preventDefault();
+                    editor.chain().focus().setTextAlign('right').run()
+                }}
+                className={
+                    editor.isActive({textAlign: 'right'})
+                    ? "bg-sky-700 text-white p-2 rounded-lg"
+                    : "text-sky-400"
+                }
+                >
+                <AlignRight className="w-5 h-5" />
+            </button>
+            <button
+                onClick={(e) => {
+                    e.preventDefault();
+                    editor.chain().focus().setTextAlign('justify').run()
+                }}
+                className={
+                    editor.isActive({textAlign: 'justify'})
+                    ? "bg-sky-700 text-white p-2 rounded-lg"
+                    : "text-sky-400"
+                }
+                >
+                <AlignJustify className="w-5 h-5" />
+            </button>
+            {/* <button
+                onClick={(e) => {
+                    e.preventDefault();
                     editor.chain().focus().toggleBlockquote().run();
                 }}
                 className={
@@ -154,8 +210,8 @@ const Toolbar = ({ editor, content }: Props) => {
                 }
                 >
                 <Quote className="w-5 h-5" />
-            </button>
-            <button
+            </button> */}
+            {/* <button
                 onClick={(e) => {
                     e.preventDefault();
                     editor.chain().focus().setCode().run();
@@ -167,7 +223,7 @@ const Toolbar = ({ editor, content }: Props) => {
                 }
                 >
                 <Code className="w-5 h-5" />
-            </button>
+            </button> */}
             <input 
                 type='file' 
                 id='file' 

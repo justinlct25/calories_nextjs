@@ -5,7 +5,8 @@ import * as z from 'zod';
 import { auth } from "@/lib/auth";
 import { getUserByEmail } from "@/drizzle/queries/auth-users.query";
 import { isAdminRole } from "@/drizzle/queries/users-to-roles.query";
-import { processTipTapBase64Images } from "@/utils/tiptapImageHelper";
+import { processTipTapBase64Images } from "@/utils/uploadBucket/tiptapImageHelper";
+import { uploadBufferToBucketStorage } from "@/utils/uploadBucket/uploadBucketStorage";
 const { Storage } = require('@google-cloud/storage');
 
 
@@ -61,9 +62,10 @@ export async function POST(req: Request) {
                 let activityUpdateObj = {}
                 const thumbnailFile = await formData.get('thumbnail') as File;
                 if (thumbnailFile) {
-                    const buffer = await thumbnailFile.arrayBuffer();
+                    const buffer = Buffer.from(await thumbnailFile.arrayBuffer());
                     const fileName = `activity${newActivity.id}-${Date.now()}-${thumbnailFile.name}`
-                    await bucket.file(bucketFolderThumbnail + "/" + fileName).save(Buffer.from(buffer));
+                    await uploadBufferToBucketStorage(bucketName, fileName, buffer, bucketFolderThumbnail)
+                    // await bucket.file(bucketFolderThumbnail + "/" + fileName).save(Buffer.from(buffer));
                     activityUpdateObj = {...activityUpdateObj, thumbnail: fileName}
                 }
                 const description = String(formData.get('description'));
@@ -73,7 +75,7 @@ export async function POST(req: Request) {
                 }
                 await updateActivity(newActivity.id, activityUpdateObj);
                 return NextResponse.json(
-                    {activity: newActivity, message: "Activity created successfully"}, 
+                    {activityId: newActivity.id, message: "Activity created successfully"}, 
                     {status: 201}
                 )
             } else {

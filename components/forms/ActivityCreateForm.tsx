@@ -20,8 +20,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Tiptap from "@/components/rich-txt-editor/Tiptap";
 import DatePicker from "react-datepicker";
 import 'react-datepicker/dist/react-datepicker.css';
-import { processTipTapBase64Images } from "@/utils/tiptapImageHelper";
-import { uploadBufferToBucketStorage } from "@/utils/uploadBucketStorage";
+import { processTipTapBase64Images } from "@/utils/uploadBucket/tiptapImageHelper";
+import { uploadBufferToBucketStorage } from "@/utils/uploadBucket/uploadBucketStorage";
 // import { CreateActivityFormAction } from "@/utils/formActions/createActivityActions";
 // import { processTiptapImageUrls } from "@/utils/tiptapImageHelper(old)";
 
@@ -88,7 +88,7 @@ const ActivityCreateForm = () => {
         });
         const data = await response.json()
         if (response.ok) {
-            const createdActivityId = data.activity.id
+            const createdActivityId = data.activityId
             toast({
                 title: "Success",
                 description: `${data.message}`,
