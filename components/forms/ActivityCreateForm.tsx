@@ -20,15 +20,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Tiptap from "@/components/rich-txt-editor/Tiptap";
 import DatePicker from "react-datepicker";
 import 'react-datepicker/dist/react-datepicker.css';
-import { processTipTapBase64Images } from "@/utils/uploadBucket/tiptapImageHelper";
-import { uploadBufferToBucketStorage } from "@/utils/uploadBucket/uploadBucketStorage";
-// import { CreateActivityFormAction } from "@/utils/formActions/createActivityActions";
-// import { processTiptapImageUrls } from "@/utils/tiptapImageHelper(old)";
 
 const MAX_FILE_SIZE = 500000;
 const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp"]
-const bucketName = process.env.BUCKET_STORAGE_IMAGES || '';
-const bucketFolder = process.env.BUCKET_STORAGE_FOLDER_ACTIVITY_THUMBNAIL || ''
 
 
 export const activityCreateForm = z.object({
@@ -108,8 +102,6 @@ const ActivityCreateForm = () => {
         <div>
 
             <Form {...form}>
-                {/* <form action={CreateActivityFormAction} method="POST" encType="multipart/form-data"> */}
-                {/* <form action={CreateActivityFormAction}> */}
                 <form onSubmit={form.handleSubmit(onSubmit)} className="w-full">
                     <div className='space-y-2'>
                         <FormField
