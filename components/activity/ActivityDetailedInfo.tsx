@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from "next/navigation";
 import { activities } from "@/drizzle/schemas/activities.schema"
 import { loadActivityThumbnailUrl, loadActivityDescriptionHTMLImgUrls } from '@/utils/loadBucket/loadBucketUrls';
+import GoBack from '../GoBack';
 
 const ActivityDetailedInfo = ({ activityId }: any) => {
     const router = useRouter();
@@ -29,7 +30,7 @@ const ActivityDetailedInfo = ({ activityId }: any) => {
     return (
         <div className="w-full">
             {/* {JSON.stringify(activityInfo)} */}
-            {/* <img src={thumbnailUrl} alt="" /> */}
+            <GoBack isNavbarPad={true} />
             <div
                 style={{
                     backgroundImage: `url(${thumbnailUrl})`,
@@ -54,7 +55,7 @@ const ActivityDetailedInfo = ({ activityId }: any) => {
             </div>
             <div className=" w-full aspect-[2] absolute top-0">
                 <div className="w-full aspect-[4.5]"></div>
-                <div className="bg-black w-4/6 aspect-[4.5] z-[-10] absolute left-1/2 transform -translate-x-1/2 flex flex-col justify-center items-center">
+                <div className="bg-black w-9/12 aspect-[4.5] z-[-10] absolute left-1/2 transform -translate-x-1/2 flex flex-col justify-center items-center rounded-md">
                     <div>{String(activityInfo?.startAt)} </div>
                     <div>{String(activityInfo?.endAt)} </div>
                 </div>

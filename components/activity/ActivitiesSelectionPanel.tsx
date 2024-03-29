@@ -14,11 +14,13 @@ const ActivitiesSelectionPanel = () => {
     }, [])
 
 
-    return (<div>
+    return (
+        <div className="flex flex-wrap">
             {activities.map((activity) => {
-                return <ActivityBriefInfo key={activity?.id} activityInfo={activity} />
+                if (activity.thumbnail) return <ActivityBriefInfo key={activity?.id} activityInfo={activity} />
             })}
-        </div>)
+        </div>
+        )
 } 
 
 export default ActivitiesSelectionPanel;

@@ -46,7 +46,8 @@ const Tiptap = ({ onChange, content }: any) => {
       attributes: {
         class:
           // "flex flex-col px-4 py-3 justify-start border-b border-r border-l border-gray-700 text-gray-400 items-start w-full gap-3 font-medium text-[16px] pt-4 rounded-bl-md rounded-br-md outline-none",
-          "flex-col px-4 py-3 justify-start border-b border-r border-l border-gray-700 text-gray-400 items-start w-full gap-3 font-medium text-[16px] pt-4 rounded-bl-md rounded-br-md outline-none",
+          // "flex-col px-4 py-3 justify-start border-b border-r border-l border-gray-700 text-gray-400 items-start w-full gap-3 font-medium text-[16px] pt-4 rounded-bl-md rounded-br-md outline-none h-64",
+          "flex-col px-4 py-3 justify-start border-b border-r border-l border-gray-700 text-gray-400 items-start w-full gap-3 font-medium text-[16px] pt-4 rounded-bl-md rounded-br-md outline-none h-64",
       },
     },
     onUpdate: ({ editor }) => {
@@ -57,8 +58,8 @@ const Tiptap = ({ onChange, content }: any) => {
   return (
     <div className="w-full px-4">
       <Toolbar editor={editor} content={content}/>
-      <div className="cute">
-        <EditorContent style={{ whiteSpace: "pre-line" }} editor={editor} />
+      <div className="h-64">
+        <EditorContent className="h-full" style={{ whiteSpace: "pre-line" }} editor={editor} />
       </div>
     </div>
   );

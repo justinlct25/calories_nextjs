@@ -111,82 +111,82 @@ const ActivityCreateForm = () => {
                                 <FormItem>
                                     <FormLabel>Activity Name</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="johndoe" {...field} />
+                                        <Input placeholder="johndoe" className="text-black" {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
                             )}
                         />
-                        <FormField
-                            control={form.control}
-                            name="startAt"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Start At</FormLabel>
-                                    <FormControl>
-                                        <DatePicker
-                                            placeholderText="Select Start Date"
-                                            selected={field.value ? new Date(field.value) : null}
-                                            // onChange={(date:any) => {
-                                            //     form.setValue('startAt', date.toISOString());
-                                            // }}
-                                            showTimeSelect
-                                            dateFormat="yyyy-MM-dd HH:mm"
-                                            {...field}
-                                        />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="endAt"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>End At</FormLabel>
-                                    <FormControl>
-                                        <DatePicker
-                                            placeholderText="Select End Date"
-                                            selected={field.value ? new Date(field.value) : null}
-                                            // onChange={(date:any) => {
-                                            //     form.setValue('endAt', date.toISOString());
-                                            // }}
-                                            showTimeSelect
-                                            dateFormat="yyyy-MM-dd HH:mm"
-                                            {...field}
-                                        />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="quota"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Quota</FormLabel>
-                                    <FormControl>
-                                        <Input type="number" placeholder="" {...field} />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="price"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Price</FormLabel>
-                                    <FormControl>
-                                        <Input type="number" placeholder="" {...field} />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
+                        <div className="flex items-center justify-between">
+                            <div>
+                                <FormField
+                                    control={form.control}
+                                    name="startAt"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Start At</FormLabel>
+                                            <FormControl>
+                                                <DatePicker
+                                                    placeholderText="Select Start Date"
+                                                    className="text-black"
+                                                    selected={field.value ? new Date(field.value) : null}
+                                                    showTimeSelect
+                                                    dateFormat="yyyy-MM-dd HH:mm"
+                                                    {...field}
+                                                />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                                <FormField
+                                    control={form.control}
+                                    name="endAt"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>End At</FormLabel>
+                                            <FormControl>
+                                                <DatePicker
+                                                    placeholderText="Select End Date"
+                                                    className="text-black"
+                                                    selected={field.value ? new Date(field.value) : null}
+                                                    showTimeSelect
+                                                    dateFormat="yyyy-MM-dd HH:mm"
+                                                    {...field}
+                                                />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                            </div>
+                            <FormField
+                                control={form.control}
+                                name="quota"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Quota</FormLabel>
+                                        <FormControl>
+                                            <Input type="number" className="text-black" placeholder="" {...field} />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="price"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Price</FormLabel>
+                                        <FormControl>
+                                            <Input type="number" className="text-black" placeholder="" {...field} />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                        </div>
                         <FormField
                             control={form.control}
                             name="thumbnail"
@@ -194,7 +194,7 @@ const ActivityCreateForm = () => {
                                 <FormItem>
                                     <FormLabel>Thumbnail</FormLabel>
                                     <FormControl>
-                                        <Input type="file" accept="image/png, image/jpg, image/jpeg" {...fileRef} />
+                                        <Input type="file" className="text-black" accept="image/png, image/jpg, image/jpeg" {...fileRef} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -204,13 +204,13 @@ const ActivityCreateForm = () => {
                     <div>
                         <FormLabel>Description</FormLabel>
                     </div>
+                    <Tiptap
+                        content={descriptionHTML}
+                        onChange={(newContent: string) => {handleDescriptionEditorChange(newContent)}}
+                    />
                     <Button className='w-full mt-6' type="submit">Create</Button>
                 </form>
             </Form>
-            <Tiptap
-                content={descriptionHTML}
-                onChange={(newContent: string) => {handleDescriptionEditorChange(newContent)}}
-            />
         </div>
     )
 }

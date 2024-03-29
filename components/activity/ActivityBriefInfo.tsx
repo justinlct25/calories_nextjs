@@ -26,16 +26,16 @@ const ActivityBriefInfo = ({activityInfo} : any) => {
     }, [])
 
     return (
-        <div>
+        <div className="m-4 ">
             {thumbnailUrl && (
                 <div className="rounded-lg">
                     <div
-                        className="bg-cover bg-center cursor-pointer h-60 w-72 rounded-lg"
+                        className="bg-cover bg-center cursor-pointer h-60 w-72 rounded-lg bg-blend-darken bg-black/15 hover:bg-black/0"
                         style={{ backgroundImage: `url('${thumbnailUrl}')` }}
                         onClick={handleActivityClick}
                     >
                     </div>
-                    <div className="backdrop-blur-sm bg-white/30">{activityInfo?.name}</div>
+                    {/* <div className="backdrop-blur-sm bg-white/30">{activityInfo?.name}</div> */}
                 </div>
             )}
         </div>
