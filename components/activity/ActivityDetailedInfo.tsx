@@ -63,8 +63,8 @@ const ActivityDetailedInfo = ({ activityId }: any) => {
                 <div className="text-4xl">{activityInfo?.name}</div>
             </div>
             <div className=" w-full aspect-[2] absolute top-0">
-                <div className="w-full aspect-[4.5]"></div>
-                <div className="bg-black w-9/12 aspect-[4.5] z-[-10] absolute left-1/2 transform -translate-x-1/2 flex flex-row justify-center items-center rounded-md">
+                <div className="w-full aspect-[4]"></div> {/* padding from top */}
+                <div className="bg-black w-9/12 aspect-[5.5] z-[-10] absolute left-1/2 transform -translate-x-1/2 flex flex-row justify-around items-center rounded-md">
                     <ActivityDates startAt={activityInfo?.startAt} endAt={activityInfo?.endAt} />
                     <ActivityTimes startAt={activityInfo?.startAt} endAt={activityInfo?.endAt} />
                 </div>
@@ -72,7 +72,6 @@ const ActivityDetailedInfo = ({ activityId }: any) => {
                 <div className="w-full flex flex-col justify-center items-center">
                     <div>Description</div>
                     <div dangerouslySetInnerHTML={descriptionHTML} />
-
                 </div>
             </div>
             <div>

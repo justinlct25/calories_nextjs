@@ -17,30 +17,39 @@ const ActivityDates: React.FC<ActivityDatesProps> = ({ startAt, endAt }) => {
     }
 
     const startDateTime = new Date(startAt);
-    const startDate = startDateTime.toLocaleDateString('en-US', {
+    const startDateEng = startDateTime.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+    });
+    const startDateChi = startDateTime.toLocaleDateString('zh-CN', {
         year: 'numeric',
         month: 'long',
         day: 'numeric'
     });
     const endDateTime = new Date(endAt);
-    const endDate = endDateTime.toLocaleDateString('en-US', {
+    const endDateEng = endDateTime.toLocaleDateString('en-US', {
         year: 'numeric',
         month: 'long',
         day: 'numeric'
     });
 
-    const isSameDate = startDate===endDate
+    const isSameDate = startDateEng===endDateEng
 
     return (
         <div className="flex flex-col justify-center items-center">
-            <h1 className="text-3xl">Date</h1>
+            <h1 className="text-3xl">日期 Date</h1>
             {isSameDate ? (
-                <div className="mt-4">{startDate}</div>
+                <div className="mt-4">
+                    <div>{startDateChi}</div>
+                    <div>{startDateEng}</div>
+                </div>
+                  
             ) : (
                 <>
-                    <div className="mt-3">{startDate}</div>
-                    <div>to</div>
-                    <div>{endDate}</div>
+                    <div className="mt-3">{startDateEng} to {endDateEng}</div>
+                    {/* <div>to</div> */}
+                    {/* <div>{endDate}</div> */}
                 </>
             )}
         </div>
