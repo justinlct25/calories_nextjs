@@ -3,7 +3,6 @@
 import React from 'react';
 import { useRouter } from 'next/navigation';
 import { ChevronLeft } from 'lucide-react'
-import TopPadding from './TopPadding';
 
 interface GoBackProps {
     isNavbarPad?: boolean;

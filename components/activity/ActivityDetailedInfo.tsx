@@ -5,12 +5,16 @@ import { useRouter } from "next/navigation";
 import { activities } from "@/drizzle/schemas/activities.schema"
 import { loadActivityThumbnailUrl, loadActivityDescriptionHTMLImgUrls } from '@/utils/loadBucket/loadBucketUrls';
 import GoBack from '../GoBack';
+import ActivityDates from './ActivityDates';
+import ActivityTimes from './ActivityTimes';
+
 
 const ActivityDetailedInfo = ({ activityId }: any) => {
     const router = useRouter();
     const [activityInfo, setActivityInfo] = useState<typeof activities.$inferInsert>();
     const [thumbnailUrl, setThumbnailUrl] = useState<string>("")
     const [descriptionHTML, setDescriptionHTML] = useState({ __html: "" })
+    // const [dateTime, setDateTime] = useState({});
     useEffect(() => {
         fetch(`/api/activities/${activityId}`)
         .then((res) => res.json())
@@ -18,6 +22,11 @@ const ActivityDetailedInfo = ({ activityId }: any) => {
             // setLoading(false)
             if (data.activity) {
                 setActivityInfo(data.activity);
+                // setDateTime({
+                //     start: {
+                        // date: (new Date(data.activity.startAt))
+                //     }
+                // })
                 setThumbnailUrl(await loadActivityThumbnailUrl(data.activity.thumbnail));
                 const HTMLwithBucketImgUrls: string = await loadActivityDescriptionHTMLImgUrls(data.activity.description);
                 setDescriptionHTML({__html: HTMLwithBucketImgUrls})
@@ -55,9 +64,9 @@ const ActivityDetailedInfo = ({ activityId }: any) => {
             </div>
             <div className=" w-full aspect-[2] absolute top-0">
                 <div className="w-full aspect-[4.5]"></div>
-                <div className="bg-black w-9/12 aspect-[4.5] z-[-10] absolute left-1/2 transform -translate-x-1/2 flex flex-col justify-center items-center rounded-md">
-                    <div>{String(activityInfo?.startAt)} </div>
-                    <div>{String(activityInfo?.endAt)} </div>
+                <div className="bg-black w-9/12 aspect-[4.5] z-[-10] absolute left-1/2 transform -translate-x-1/2 flex flex-row justify-center items-center rounded-md">
+                    <ActivityDates startAt={activityInfo?.startAt} endAt={activityInfo?.endAt} />
+                    <ActivityTimes startAt={activityInfo?.startAt} endAt={activityInfo?.endAt} />
                 </div>
                 <div className="w-full aspect-[5]"></div>
                 <div className="w-full flex flex-col justify-center items-center">
