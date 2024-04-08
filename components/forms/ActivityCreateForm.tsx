@@ -31,7 +31,9 @@ export const activityCreateForm = z.object({
     endAt: z.string().datetime(),
     quota: z.number().optional(),
     price: z.number().optional(),
-    // thumbnail: z.custom<File>()
+    online: z.boolean().optional(),
+    location: z.string().optional(),
+    address: z.string().optional(),
     thumbnail: z.any()
     .optional()
     .refine((file) => file[0]?.size <= MAX_FILE_SIZE, `Max image size is 5MB.`)

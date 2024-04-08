@@ -18,6 +18,9 @@ const activityCreateFormSchema = z.object({
     endAt: z.string().datetime(),
     quota: z.number().optional(),
     price: z.string().optional(),
+    online: z.boolean().optional(),
+    location: z.string().optional(),
+    address: z.string().optional(),
     description: z.string().optional(),
 })
 

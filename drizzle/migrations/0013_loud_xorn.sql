@@ -1,0 +1,1 @@
+ALTER TABLE "activity" RENAME COLUMN "physical" TO "online";

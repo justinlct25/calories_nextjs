@@ -7,7 +7,8 @@ import {
     uniqueIndex,
     integer,
     decimal,
-    primaryKey
+    primaryKey,
+    boolean
 } from "drizzle-orm/pg-core"
 import { relations } from 'drizzle-orm'
 import { admins } from "./admins.schema";
@@ -25,8 +26,10 @@ export const activities = pgTable("activity", {
     price: decimal("price"),
     description: text("description"),
     thumbnail: text("thumbnail"),
+    online: boolean("online"),
     location: text("location"),
     address: text("address"),
+    calories: integer("calories"),
     createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
