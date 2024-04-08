@@ -22,11 +22,6 @@ const ActivityDetailedInfo = ({ activityId }: any) => {
             // setLoading(false)
             if (data.activity) {
                 setActivityInfo(data.activity);
-                // setDateTime({
-                //     start: {
-                        // date: (new Date(data.activity.startAt))
-                //     }
-                // })
                 setThumbnailUrl(await loadActivityThumbnailUrl(data.activity.thumbnail));
                 const HTMLwithBucketImgUrls: string = await loadActivityDescriptionHTMLImgUrls(data.activity.description);
                 setDescriptionHTML({__html: HTMLwithBucketImgUrls})
@@ -70,8 +65,8 @@ const ActivityDetailedInfo = ({ activityId }: any) => {
                 </div>
                 <div className="w-full aspect-[5]"></div>
                 <div className="w-full flex flex-col justify-center items-center">
-                    <div>Description</div>
-                    <div dangerouslySetInnerHTML={descriptionHTML} />
+                    <div className="text-4xl">活動詳情 Event Details</div>
+                    <div className="mt-4" dangerouslySetInnerHTML={descriptionHTML} />
                 </div>
             </div>
             <div>

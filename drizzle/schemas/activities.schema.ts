@@ -25,7 +25,8 @@ export const activities = pgTable("activity", {
     price: decimal("price"),
     description: text("description"),
     thumbnail: text("thumbnail"),
-    // location
+    location: text("location"),
+    address: text("address"),
     createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 

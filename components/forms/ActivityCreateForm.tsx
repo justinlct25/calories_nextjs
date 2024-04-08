@@ -204,11 +204,11 @@ const ActivityCreateForm = () => {
                     <div>
                         <FormLabel>Description</FormLabel>
                     </div>
+                    <Button className='w-full mt-6' type="submit">Create</Button>
                     <Tiptap
                         content={descriptionHTML}
                         onChange={(newContent: string) => {handleDescriptionEditorChange(newContent)}}
                     />
-                    <Button className='w-full mt-6' type="submit">Create</Button>
                 </form>
             </Form>
         </div>
