@@ -56,11 +56,10 @@ export async function POST(req: Request) {
                     startAt: new Date(String(formData.get("startAt"))),
                     endAt: new Date(String(formData.get("endAt"))), 
                 }
-                console.log(formData)
-                const quota = formData.get("quota");
-                if (quota) activityDetails = { ...activityDetails, quota: Number(quota) }
-                const price = formData.get("price");
-                if (price) activityDetails = { ...activityDetails, price: String(price) }
+                if (formData.get("quota")) activityDetails = { ...activityDetails, quota: Number(formData.get("quota")) }
+                if (formData.get("price")) activityDetails = { ...activityDetails, price: String(formData.get("price")) }
+                if (formData.get("location")) activityDetails = { ...activityDetails, location: String(formData.get("location")) }
+                if (formData.get("address")) activityDetails = { ...activityDetails, address: String(formData.get("address")) }
                 const newActivity = await insertActivity(activityDetails)
                 let activityUpdateObj = {}
                 const thumbnailFile = await formData.get('thumbnail') as File;
@@ -68,7 +67,6 @@ export async function POST(req: Request) {
                     const buffer = Buffer.from(await thumbnailFile.arrayBuffer());
                     const fileName = `activity${newActivity.id}-${Date.now()}-${thumbnailFile.name}`
                     await uploadBufferToBucketStorage(bucketName, fileName, buffer, bucketFolderThumbnail)
-                    // await bucket.file(bucketFolderThumbnail + "/" + fileName).save(Buffer.from(buffer));
                     activityUpdateObj = {...activityUpdateObj, thumbnail: fileName}
                 }
                 const description = String(formData.get('description'));

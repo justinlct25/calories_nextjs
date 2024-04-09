@@ -9,7 +9,6 @@ const ActivitiesSelectionPanel = () => {
         .then((res) => res.json())
         .then((data) => {
             setActivities(data.activities);
-            console.log(data.activities)
         })
     }, [])
 

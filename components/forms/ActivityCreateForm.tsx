@@ -75,6 +75,8 @@ const ActivityCreateForm = () => {
         formData.append('endAt', values.endAt);
         if (values.quota) formData.append('quota', String(values.quota));
         if (values.price) formData.append('price', String(values.price));
+        if (values.location) formData.append('location', values.location);
+        if (values.address) formData.append('address', values.address);
         formData.append('thumbnail', values.thumbnail[0]); 
         formData.append('description', descriptionHTML);
 
@@ -111,9 +113,9 @@ const ActivityCreateForm = () => {
                             name="name"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Activity Name</FormLabel>
+                                    <FormLabel>Name</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="johndoe" className="text-black" {...field} />
+                                        <Input placeholder="Activity Name" className="text-black" {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -191,6 +193,32 @@ const ActivityCreateForm = () => {
                         </div>
                         <FormField
                             control={form.control}
+                            name="location"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Location</FormLabel>
+                                    <FormControl>
+                                        <Input placeholder="Location Name" className="text-black" {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="address"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Full Address</FormLabel>
+                                    <FormControl>
+                                        <Input placeholder="Full Address" className="text-black" {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
                             name="thumbnail"
                             render={({ field }) => (
                                 <FormItem>
@@ -205,12 +233,12 @@ const ActivityCreateForm = () => {
                     </div>
                     <div>
                         <FormLabel>Description</FormLabel>
+                        <Tiptap
+                            content={descriptionHTML}
+                            onChange={(newContent: string) => {handleDescriptionEditorChange(newContent)}}
+                        />
                     </div>
                     <Button className='w-full mt-6' type="submit">Create</Button>
-                    <Tiptap
-                        content={descriptionHTML}
-                        onChange={(newContent: string) => {handleDescriptionEditorChange(newContent)}}
-                    />
                 </form>
             </Form>
         </div>

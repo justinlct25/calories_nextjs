@@ -14,7 +14,10 @@ export const getAllBriefActivities = async () => {
 
 export const getActivityById = async (activityId: number) => {
     const activity = db.query.activities.findFirst({
-        where: (activities, { eq }) => eq(activities.id, activityId)
+        where: (activities, { eq }) => eq(activities.id, activityId),
+        // with: {
+        //     participants: true
+        // }
     })
     return activity;
 }
