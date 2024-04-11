@@ -27,8 +27,6 @@ const ActivityParticipationBar: React.FC<ActivityParticipationBarProps> = ({ thu
     return (
         <div
             // className='fixed bottom-0 w-full h-20 bg-blend-darken bg-black bg-opacity-60 flex justify-center items-center'
-            // className='fixed bottom-0 w-full h-20'
-            // className='fixed bottom-0 w-full h-20 bg-blend-darken bg-black bg-opacity-60 flex justify-center items-center'
             // className='fixed bottom-0 w-full h-20 bg-blend-darken bg-yellow-500 bg-opacity-70 flex justify-center items-center'
             className='fixed bottom-0 w-full h-20 bg-blend-darken bg-white bg-opacity-70 flex justify-center items-center'
             // className='fixed bottom-0 w-full h-20 bg-yellow-900 bg-opacity-60 flex'
