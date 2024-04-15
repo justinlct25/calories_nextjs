@@ -8,8 +8,6 @@ import { useSession } from "next-auth/react"
 import { useState, useEffect } from "react";
 
 
-
-
 const ActivitiesMenuPage = () => {
     const { data: session, status } = useSession()
     const [isAdmin, setIsAdmin] = useState<boolean>(false);
