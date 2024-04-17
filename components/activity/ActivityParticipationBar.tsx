@@ -14,14 +14,6 @@ const ActivityParticipationBar: React.FC<ActivityParticipationBarProps> = ({ thu
     const router = useRouter();
     const [isParticipate, setActivityInfo] = useState<boolean>(false);
     console.log(thumbnailUrl)
-//     useEffect(() => {
-//         fetch(`/api/activities/${activityId}`)
-//         .then((res) => res.json())
-//         .then(async (data) => {
-//             // setLoading(false)
-            
-//         })
-//   }, [])
     
 
     return (
