@@ -13,7 +13,6 @@ const ActivityParticipationBar: React.FC<ActivityParticipationBarProps> = ({ thu
     const { data: session, status } = useSession()
     const router = useRouter();
     const [isParticipate, setActivityInfo] = useState<boolean>(false);
-    console.log(thumbnailUrl)
     
 
     return (
