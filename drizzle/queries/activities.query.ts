@@ -13,12 +13,14 @@ export const getAllBriefActivities = async () => {
 }
 
 export const getActivityById = async (activityId: number) => {
-    const activity = db.query.activities.findFirst({
+
+    const activity = await db.query.activities.findFirst({
         where: (activities, { eq }) => eq(activities.id, activityId),
         // with: {
         //     participants: true
         // }
     })
+    console.log("activity" + JSON.stringify(activity));
     return activity;
 }
 

@@ -13,7 +13,7 @@ import { relations } from 'drizzle-orm'
 
 
 
-export const genderOptions = pgTable("genderOption", {
+export const genderOptions = pgTable("gender_option", {
     id: serial("id").primaryKey(),
     name: text("name").notNull(),
 })

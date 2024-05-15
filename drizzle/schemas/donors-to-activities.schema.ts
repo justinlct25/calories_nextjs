@@ -17,9 +17,11 @@ import { activities } from "./activities.schema"
 export const donorsToActivities = pgTable('donors_to_activities', {
     donorId: integer('donor_id').notNull().references(() => donors.id),
     activityId: integer('activity_id').notNull().references(() => activities.id),
-}, (t) => ({
-    pk: primaryKey(t.donorId, t.activityId)
-}))
+    createdAt: timestamp('created_at').defaultNow().notNull()
+});
+// }, (t) => ({
+//     pk: primaryKey(t.donorId, t.activityId)
+// }))
 
 export const donorsToActivitiesRelations = relations(donorsToActivities, ({ one }) => ({
     role: one(donors, {

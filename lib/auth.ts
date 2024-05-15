@@ -43,10 +43,13 @@ export const {
                     const passwordMatch = await compare(password, existingUser.password);
                     if (!passwordMatch) return null;
                 }
+                // return {name: existingUser.name};
                 return {
                     id: `${existingUser.id}`,
-                    name: existingUser.name,
                     email: existingUser.email,
+                    name: existingUser.name,
+                    image: existingUser.image,
+
                     // admin: existingUser.admin,
                     // donor: existingUser.donor
                 };
