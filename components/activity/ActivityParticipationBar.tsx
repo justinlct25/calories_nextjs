@@ -34,6 +34,9 @@ const ActivityParticipationBar: React.FC<ActivityParticipationBarProps> = ({ act
             })
             .then((res) => res.json())
             .then((data) => setParticipation(data.participation));
+        } else {
+            // console.log("wtf")
+            router.push(`/sign-in?activityId=${activityId}`);
         }
     };
 
@@ -67,6 +70,7 @@ const ActivityParticipationBar: React.FC<ActivityParticipationBarProps> = ({ act
             }}
         >
             {(participation !== null && participation !== undefined) ?  <button onClick={handleQuit}>Quit</button> : <button onClick={handleJoin}>Join</button>}
+            {/* {(isDonor && (participation !== null && participation !== undefined)) ?  <button onClick={handleQuit}>Quit</button> : isDonor ? <button onClick={handleJoin}>Join</button> : null} */}
         </div>
     );
 };

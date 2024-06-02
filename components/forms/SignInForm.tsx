@@ -28,12 +28,18 @@ const FormSchema = z.object({
         .min(8, 'Password must have more than 8 characters'),
 })
 
-const SignInForm = () => {
+interface SignInFormProps {
+    activityId: number | null;
+}
+
+const SignInForm: React.FC<SignInFormProps> = ({ activityId }) => {
     const router = useRouter();
     const { toast } = useToast();
     const form = useForm<z.infer<typeof FormSchema>>({
         resolver: zodResolver(FormSchema),
     });
+    console.log(activityId)
+
 
     const onSubmit = async (values: z.infer<typeof FormSchema>) => {
         const signInData = await signIn('credentials', {
@@ -50,7 +56,11 @@ const SignInForm = () => {
             })
         } else {
             router.refresh();
-            router.push('/activities');
+            if (activityId) {
+                router.push(`/activities/${activityId}`);
+            } else {
+                router.push('/activities');
+            }
             router.refresh();
 
         }
