@@ -14,6 +14,7 @@ import ActivityParticipationBar from '@/components/activity/ActivityParticipatio
 
 
 export default function ActivityInfoPage() {
+  // const { data: session, status } = useSession()
   const { data: session, status } = useSession()
   const { activityId } = useParams();
   const router = useRouter();
@@ -23,26 +24,29 @@ export default function ActivityInfoPage() {
   const [descriptionHTML, setDescriptionHTML] = useState({ __html: "" })
 
   useEffect(() => {
-    fetch(`/api/donors/${session?.user.id}`)
-    .then((res) => res.json())
-    .then(async (data) => {
-        if (data.donor) {
-            setDonorInfo(data.donor);
-        }
-    })
-    fetch(`/api/activities/${activityId}`)
-    .then((res) => res.json())
-    .then(async (data) => {
-        // setLoading(false)
-        if (data.activity) {
-            setActivityInfo(data.activity);
-            setThumbnailUrl(await loadActivityThumbnailUrl(data.activity.thumbnail));
-            const HTMLwithBucketImgUrls: string = await loadActivityDescriptionHTMLImgUrls(data.activity.description);
-            setDescriptionHTML({__html: HTMLwithBucketImgUrls})
-        }
-        else router.push("/activities")
-    })
-}, [])
+    if (session) {
+      console.log("userId: " + session?.user.id)
+      fetch(`/api/donors/${session?.user.id}`)
+      .then((res) => res.json())
+      .then(async (data) => {
+          if (data.donor) {
+              setDonorInfo(data.donor);
+          }
+      })
+      fetch(`/api/activities/${activityId}`)
+      .then((res) => res.json())
+      .then(async (data) => {
+          // setLoading(false)
+          if (data.activity) {
+              setActivityInfo(data.activity);
+              setThumbnailUrl(await loadActivityThumbnailUrl(data.activity.thumbnail));
+              const HTMLwithBucketImgUrls: string = await loadActivityDescriptionHTMLImgUrls(data.activity.description);
+              setDescriptionHTML({__html: HTMLwithBucketImgUrls})
+          }
+          else router.push("/activities")
+      })
+    }
+}, [session])
 
   return (
     <div className='w-full'>

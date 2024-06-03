@@ -2,14 +2,36 @@ import { db } from "@/lib/db"
 import { donorsToActivities } from "../schemas/donors-to-activities.schema"
 import { and, eq } from "drizzle-orm"
 
-export const findParticipant = async (donorId: number, activityId: number) => {
-    const participant = await db.query.donorsToActivities.findFirst({
-        where: (donorsToActivities, { and, eq }) => and(
-            eq(donorsToActivities.donorId, donorId),
-            eq(donorsToActivities.activityId, activityId)
-        )
+export const findAllParticipants = async (activityId: number) => {
+    const participants = await db.query.donorsToActivities.findMany({
+        where: (donorsToActivities, { eq }) => eq(donorsToActivities.activityId, activityId)
     })
-    return participant;
+    return participants;
+}
+
+export const findNumberOfParticipants = async (activityId: number) => {
+    const participants = await db.query.donorsToActivities.findMany({
+        where: (donorsToActivities, { eq }) => eq(donorsToActivities.activityId, activityId)
+    })
+    if (!participants) {
+        return 0;
+    }
+    return participants.length;
+}
+
+export const findParticipant = async (donorId: number, activityId: number) => {
+    console.log("donorId: " + donorId + " activityId: " + activityId)
+    if (donorId && activityId) {
+        const participant = await db.query.donorsToActivities.findFirst({
+            where: (donorsToActivities, { and, eq }) => and(
+                eq(donorsToActivities.donorId, donorId),
+                eq(donorsToActivities.activityId, activityId)
+            )
+        })
+        return participant;
+    } else {
+        return null;
+    }
 }
 
 export const participate = async (donorId: number, activityId: number) => {

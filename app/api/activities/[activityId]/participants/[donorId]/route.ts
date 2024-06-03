@@ -1,4 +1,4 @@
-import { findParticipant, participate, quit } from "@/drizzle/queries/donors-to-activities.query";
+import { findNumberOfParticipants, findParticipant, participate, quit } from "@/drizzle/queries/donors-to-activities.query";
 import { NextResponse } from "next/server";
 
 
@@ -6,11 +6,14 @@ export async function GET(req: Request, {params}: any) {
     try {
         const activityId = params.activityId;
         const donorId = params.donorId;
-        console.log(activityId, donorId)
         const participation = await findParticipant(donorId, activityId);
-        console.log(`Participation: ${participation}`);
+        // console.log("participation" + participation);
+        const numOfParticipants = await findNumberOfParticipants(activityId);
         return NextResponse.json(
-            {participation: participation},
+            {
+                participation: participation,
+                numOfParticipants: numOfParticipants
+            },
             {status: 200}
         )
     } catch (e) {

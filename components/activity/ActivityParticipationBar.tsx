@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useSession } from 'next-auth/react';
 import { donorsToActivities } from '@/drizzle/schemas/donors-to-activities.schema';
 import { participate } from '@/drizzle/queries/donors-to-activities.query';
+import { User } from 'lucide-react';
 
 interface ActivityParticipationBarProps {
     activityId: number;
@@ -15,14 +16,16 @@ interface ActivityParticipationBarProps {
 const ActivityParticipationBar: React.FC<ActivityParticipationBarProps> = ({ activityId, donorId }) => {
     const { data: session, status } = useSession()
     const router = useRouter();
+    const [numOfParticipants, setNumOfParticipants] = useState<number>(0);
     const [participation, setParticipation] = useState<typeof donorsToActivities.$inferInsert | null>();
     useEffect(() => {
         if (session) {
             fetch(`/api/activities/${activityId}/participants/${donorId}`)
             .then((res) => res.json())
             .then((data) => {
+                console.log(data)
                 setParticipation(data.participation)
-                console.log(participation);
+                setNumOfParticipants(data.numOfParticipants)
             });
         }
     }, [session])
@@ -69,8 +72,11 @@ const ActivityParticipationBar: React.FC<ActivityParticipationBarProps> = ({ act
                 clipPath: 'polygon(100% 100%, 100% 0, 85% 0, 75% 45%, 0 45%, 0% 100%)'
             }}
         >
+            <div>
+                <User />
+                {numOfParticipants}
+            </div>
             {(participation !== null && participation !== undefined) ?  <button onClick={handleQuit}>Quit</button> : <button onClick={handleJoin}>Join</button>}
-            {/* {(isDonor && (participation !== null && participation !== undefined)) ?  <button onClick={handleQuit}>Quit</button> : isDonor ? <button onClick={handleJoin}>Join</button> : null} */}
         </div>
     );
 };
