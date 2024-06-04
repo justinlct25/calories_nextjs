@@ -92,7 +92,7 @@ const ActivityParticipationBar: React.FC<ActivityParticipationBarProps> = ({ act
                 {
                     (participation !== null && participation !== undefined) ?
                         <Button variant='destructive' onClick={handleQuit}>Quit</Button> : 
-                        <Button variant='destructive' onClick={handleJoin}>Join</Button>
+                        <Button variant='secondary' onClick={handleJoin}>Join</Button>
                 }
             </div>
         </div>
