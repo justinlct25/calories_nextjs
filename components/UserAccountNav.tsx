@@ -9,7 +9,7 @@ const UserAccountNav = () => {
             redirect: true,
             callbackUrl: `${window.location.origin}/sign-in`
         })} variant='destructive'>
-            SignOut
+            Sign Out
         </Button>
     )
 };

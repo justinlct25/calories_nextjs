@@ -25,7 +25,6 @@ export default function ActivityInfoPage() {
 
   useEffect(() => {
     if (session) {
-      console.log("userId: " + session?.user.id)
       fetch(`/api/donors/${session?.user.id}`)
       .then((res) => res.json())
       .then(async (data) => {

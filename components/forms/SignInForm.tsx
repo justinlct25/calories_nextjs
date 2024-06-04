@@ -38,7 +38,6 @@ const SignInForm: React.FC<SignInFormProps> = ({ activityId }) => {
     const form = useForm<z.infer<typeof FormSchema>>({
         resolver: zodResolver(FormSchema),
     });
-    console.log(activityId)
 
 
     const onSubmit = async (values: z.infer<typeof FormSchema>) => {
@@ -47,7 +46,6 @@ const SignInForm: React.FC<SignInFormProps> = ({ activityId }) => {
             password: values.password,
             redirect: false
         });
-        console.log(signInData)
         if (signInData?.error) {
             toast({
                 title: "Error",
