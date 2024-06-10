@@ -10,7 +10,8 @@ export const editUserRolesRelation = async (userId: number, role: string) => {
     // const roleId = 
 }
 
-export const isAdminRole = async (userId: string) => {
+export const isAdminRole = async (userId: string | undefined) => {
+    if (!userId) return false;
     const isAdmin = await db.transaction(async (tx) => {
         const userRoles = await db.query.usersToRoles.findMany({
             where: (usersToRoles, { eq }) => eq(usersToRoles.userId, userId)

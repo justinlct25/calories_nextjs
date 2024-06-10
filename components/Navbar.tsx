@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { Button, buttonVariants } from './ui/button';
-import { HandMetal } from 'lucide-react'
+import { HandMetal, CircleUserRound } from 'lucide-react'
 import { auth } from '@/lib/auth';
 import { signOut } from 'next-auth/react'
 import UserAccountNav from './UserAccountNav';
@@ -27,10 +27,14 @@ const Navbar = async () => {
                     About Us
                 </Link>
                 {session?.user ? (
-                    <UserAccountNav />
+                    <>
+                        <Link href={`/users/${session?.user.id}`}>
+                            <CircleUserRound />
+                        </Link>
+                        <UserAccountNav />
+                    </>
                 ) : (
                     <Link className={buttonVariants()} href='/sign-in'>Sign In</Link>
-                
                 )}
             </div>
         </div>

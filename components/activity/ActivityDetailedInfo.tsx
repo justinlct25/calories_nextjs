@@ -16,14 +16,13 @@ interface ActivityDetailedInfoProps {
 
 
 const ActivityDetailedInfo: React.FC<ActivityDetailedInfoProps> = ({ activityInfo, thumbnailUrl, descriptionHTML }) => {
-    
 
     return (
         <div className="w-full">
             <GoBack isNavbarPad={true} />
             <div
                 style={{
-                    backgroundImage: `url(${thumbnailUrl})`,
+                    backgroundImage: `url("${thumbnailUrl}")`,
                     backgroundRepeat: 'no-repeat',
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
@@ -41,7 +40,7 @@ const ActivityDetailedInfo: React.FC<ActivityDetailedInfoProps> = ({ activityInf
                     <ActivityTimes startAt={activityInfo?.startAt} endAt={activityInfo?.endAt} />
                 </div>
                 <div className="w-full aspect-[5]"></div>
-                <div className="w-full flex flex-col justify-center items-center">
+                <div className="w-full flex flex-col justify-center items-center max-w-screen-xl mx-auto">
                     <div className="text-4xl">活動詳情 Event Details</div>
                     <div className="mt-4" dangerouslySetInnerHTML={descriptionHTML} />
                 </div>

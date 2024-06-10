@@ -14,7 +14,6 @@ import ActivityParticipationBar from '@/components/activity/ActivityParticipatio
 
 
 export default function ActivityInfoPage() {
-  // const { data: session, status } = useSession()
   const { data: session, status } = useSession()
   const { activityId } = useParams();
   const router = useRouter();

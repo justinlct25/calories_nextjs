@@ -7,7 +7,7 @@ import IsSignedIn from "@/components/util/isSignedIn";
 
 
 
-export default function ActivityCreationPage() {
+export default function ActivityEditPage() {
     
 
 
