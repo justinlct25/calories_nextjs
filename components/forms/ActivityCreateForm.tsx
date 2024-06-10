@@ -20,6 +20,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Tiptap from "@/components/rich-txt-editor/Tiptap";
 import DatePicker from "react-datepicker";
 import 'react-datepicker/dist/react-datepicker.css';
+import { format } from 'date-fns';
+
 
 const MAX_FILE_SIZE = 500000;
 const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp"]
@@ -79,27 +81,30 @@ const ActivityCreateForm = () => {
         if (values.address) formData.append('address', values.address);
         formData.append('thumbnail', values.thumbnail[0]); 
         formData.append('description', descriptionHTML);
+        console.log("formData(startAt): ", JSON.stringify(formData.get('startAt')))
+        console.log("formData(quota): ", JSON.stringify(formData.get('quota')))
+        // console.log("formData(quota): ", JSON.stringify(formData.get('quota')))
 
-        const response = await fetch('/api/activities/create', {
-            method: 'POST',
-            body: formData
-        });
-        const data = await response.json()
-        if (response.ok) {
-            const createdActivityId = data.activityId
-            toast({
-                title: "Success",
-                description: `${data.message}`,
-                variant: 'primary'
-            })
-            router.push(`/activities/${createdActivityId}`);
-        } else {
-            toast({
-                title: "Error",
-                description: `${data.message}`,
-                variant: 'destructive'
-            })
-        }
+        // const response = await fetch('/api/activities/create', {
+        //     method: 'POST',
+        //     body: formData
+        // });
+        // const data = await response.json()
+        // if (response.ok) {
+        //     const createdActivityId = data.activityId
+        //     toast({
+        //         title: "Success",
+        //         description: `${data.message}`,
+        //         variant: 'primary'
+        //     })
+        //     router.push(`/activities/${createdActivityId}`);
+        // } else {
+        //     toast({
+        //         title: "Error",
+        //         description: `${data.message}`,
+        //         variant: 'destructive'
+        //     })
+        // }
     }
 
     return (
@@ -135,8 +140,10 @@ const ActivityCreateForm = () => {
                                                     className="text-black"
                                                     selected={field.value ? new Date(field.value) : null}
                                                     showTimeSelect
-                                                    dateFormat="yyyy-MM-dd HH:mm"
-                                                    {...field}
+                                                    dateFormat="yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+                                                    onChange={(date: Date) => field.onChange(date.toISOString())}
+                                                    // dateFormat="yyyy-MM-dd HH:mm"
+                                                    // {...field}
                                                 />
                                             </FormControl>
                                             <FormMessage />
@@ -155,8 +162,10 @@ const ActivityCreateForm = () => {
                                                     className="text-black"
                                                     selected={field.value ? new Date(field.value) : null}
                                                     showTimeSelect
-                                                    dateFormat="yyyy-MM-dd HH:mm"
-                                                    {...field}
+                                                    dateFormat="yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+                                                    onChange={(date: Date) => field.onChange(date.toISOString())}
+                                                    // dateFormat="yyyy-MM-dd HH:mm"
+                                                    // {...field}
                                                 />
                                             </FormControl>
                                             <FormMessage />
@@ -171,7 +180,13 @@ const ActivityCreateForm = () => {
                                     <FormItem>
                                         <FormLabel>Quota</FormLabel>
                                         <FormControl>
-                                            <Input type="number" className="text-black" placeholder="" {...field} />
+                                            <Input 
+                                                type="number"
+                                                className="text-black"
+                                                placeholder=""
+                                                {...field}
+                                                onChange={e => field.onChange(parseInt(e.target.value))}
+                                            />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -184,7 +199,13 @@ const ActivityCreateForm = () => {
                                     <FormItem>
                                         <FormLabel>Price</FormLabel>
                                         <FormControl>
-                                            <Input type="number" className="text-black" placeholder="" {...field} />
+                                            <Input 
+                                                type="number"
+                                                className="text-black"
+                                                placeholder=""
+                                                {...field}
+                                                onChange={e => field.onChange(parseInt(e.target.value))}
+                                            />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
