@@ -20,7 +20,6 @@ export const getActivityById = async (activityId: number) => {
         //     participants: true
         // }
     })
-    console.log("activity" + JSON.stringify(activity));
     return activity;
 }
 
@@ -33,8 +32,6 @@ export const getActivityByName = async (name: string) => {
 
 type NewActivity = typeof activities.$inferInsert
 export const insertActivity = async (activity: NewActivity) => {
-    console.log("activity insert:")
-    console.log(activity)
     try {
         return await db.insert(activities).values({
             ...activity,
@@ -45,8 +42,6 @@ export const insertActivity = async (activity: NewActivity) => {
 }
 
 export const updateActivity = async (activityId: number, updateObj: any) => {
-    console.log(activityId)
-    console.log(updateObj)
     try {
         await db.update(activities).set(updateObj).where(eq(activities.id, activityId));
     } catch(error) {

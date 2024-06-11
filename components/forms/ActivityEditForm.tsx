@@ -20,6 +20,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Tiptap from "@/components/rich-txt-editor/Tiptap";
 import DatePicker from "react-datepicker";
 import 'react-datepicker/dist/react-datepicker.css';
+import { format } from 'date-fns';
+
 
 const MAX_FILE_SIZE = 500000;
 const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp"]
@@ -29,18 +31,19 @@ export const activityCreateForm = z.object({
     name: z.string().min(1, 'Activity name is required').max(100),
     startAt: z.string().datetime(),
     endAt: z.string().datetime(),
-    quota: z.number().optional(),
-    price: z.number().optional(),
+    // quota: z.number().optional().transform((value) => value || undefined),
+    quota: z.number().min(1).optional(),
+    price: z.number().min(1).optional(),
     online: z.boolean().optional(),
     location: z.string().optional(),
     address: z.string().optional(),
     thumbnail: z.any()
-    .optional()
-    .refine((file) => file[0]?.size <= MAX_FILE_SIZE, `Max image size is 5MB.`)
-    .refine(
-      (file) => ACCEPTED_IMAGE_TYPES.includes(file[0]?.type),
-      "Only .jpg, .jpeg, .png and .webp formats are supported."
-    )
+        .optional()
+        .refine((file) => file[0]?.size <= MAX_FILE_SIZE, `Max image size is 5MB.`)
+        .refine(
+        (file) => ACCEPTED_IMAGE_TYPES.includes(file[0]?.type),
+        "Only .jpg, .jpeg, .png and .webp formats are supported."
+        )
     //   z
     //   .refine((file) => file?.length == 1, 'File is required.')
     //   .refine((file) => file[0]?.type === 'application/pdf', 'Must be a PDF.')
@@ -50,23 +53,16 @@ export const activityCreateForm = z.object({
 
 interface ActivityEditFormProps {
     activity: z.infer<typeof activityCreateForm>;
+    description: string;
 }
 
-const ActivityEditForm = ({ activity }: ActivityEditFormProps) => {
-    const router = useRouter();
-    const { toast } = useToast();
+const ActivityEditForm: React.FC<ActivityEditFormProps> = ({ activity, description }) => {
     const form = useForm<z.infer<typeof activityCreateForm>>({
         resolver: zodResolver(activityCreateForm),
-        defaultValues: {
-            name: 'Activity1',
-            startAt: (new Date('2024-03-21T09:00')).toISOString(), // Default start time
-            endAt: (new Date('2024-03-21T10:00')).toISOString(),   // Default end time
-            thumbnail: undefined
-        },
+        defaultValues: activity,
         mode: 'onChange',
     })
     const fileRef = form.register('thumbnail', { required: true });
-
     const [descriptionHTML, setDescriptionHTML] = useState<string>('');
     const handleDescriptionEditorChange = (content: any) => {
         setDescriptionHTML(content)
@@ -83,27 +79,29 @@ const ActivityEditForm = ({ activity }: ActivityEditFormProps) => {
         if (values.address) formData.append('address', values.address);
         formData.append('thumbnail', values.thumbnail[0]); 
         formData.append('description', descriptionHTML);
+        console.log("formData(startAt): ", JSON.stringify(formData.get('startAt')))
+        console.log("formData(quota): ", JSON.stringify(formData.get('quota')))
 
-        const response = await fetch('/api/activities/create', {
-            method: 'POST',
-            body: formData
-        });
-        const data = await response.json()
-        if (response.ok) {
-            const createdActivityId = data.activityId
-            toast({
-                title: "Success",
-                description: `${data.message}`,
-                variant: 'primary'
-            })
-            router.push(`/activities/${createdActivityId}`);
-        } else {
-            toast({
-                title: "Error",
-                description: `${data.message}`,
-                variant: 'destructive'
-            })
-        }
+        // const response = await fetch('/api/activities/create', {
+        //     method: 'POST',
+        //     body: formData
+        // });
+        // const data = await response.json()
+        // if (response.ok) {
+        //     const createdActivityId = data.activityId
+        //     toast({
+        //         title: "Success",
+        //         description: `${data.message}`,
+        //         variant: 'primary'
+        //     })
+        //     router.push(`/activities/${createdActivityId}`);
+        // } else {
+        //     toast({
+        //         title: "Error",
+        //         description: `${data.message}`,
+        //         variant: 'destructive'
+        //     })
+        // }
     }
 
     return (
@@ -139,8 +137,10 @@ const ActivityEditForm = ({ activity }: ActivityEditFormProps) => {
                                                     className="text-black"
                                                     selected={field.value ? new Date(field.value) : null}
                                                     showTimeSelect
-                                                    dateFormat="yyyy-MM-dd HH:mm"
-                                                    {...field}
+                                                    dateFormat="yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+                                                    onChange={(date: Date) => field.onChange(date.toISOString())}
+                                                    // dateFormat="yyyy-MM-dd HH:mm"
+                                                    // {...field}
                                                 />
                                             </FormControl>
                                             <FormMessage />
@@ -159,8 +159,10 @@ const ActivityEditForm = ({ activity }: ActivityEditFormProps) => {
                                                     className="text-black"
                                                     selected={field.value ? new Date(field.value) : null}
                                                     showTimeSelect
-                                                    dateFormat="yyyy-MM-dd HH:mm"
-                                                    {...field}
+                                                    dateFormat="yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+                                                    onChange={(date: Date) => field.onChange(date.toISOString())}
+                                                    // dateFormat="yyyy-MM-dd HH:mm"
+                                                    // {...field}
                                                 />
                                             </FormControl>
                                             <FormMessage />
@@ -175,7 +177,14 @@ const ActivityEditForm = ({ activity }: ActivityEditFormProps) => {
                                     <FormItem>
                                         <FormLabel>Quota</FormLabel>
                                         <FormControl>
-                                            <Input type="number" className="text-black" placeholder="" {...field} />
+                                            <Input 
+                                                type="number"
+                                                className="text-black"
+                                                placeholder=""
+                                                {...field}
+                                                // onChange={e => field.onChange(parseInt(e.target.value))}
+                                                onChange={e => field.onChange(e.target.value === '' ? undefined : parseInt(e.target.value))}
+                                            />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -188,7 +197,13 @@ const ActivityEditForm = ({ activity }: ActivityEditFormProps) => {
                                     <FormItem>
                                         <FormLabel>Price</FormLabel>
                                         <FormControl>
-                                            <Input type="number" className="text-black" placeholder="" {...field} />
+                                            <Input 
+                                                type="number"
+                                                className="text-black"
+                                                placeholder=""
+                                                {...field}
+                                                onChange={e => field.onChange(e.target.value === '' ? undefined : parseInt(e.target.value))}
+                                            />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
