@@ -31,8 +31,9 @@ export const activityCreateForm = z.object({
     name: z.string().min(1, 'Activity name is required').max(100),
     startAt: z.string().datetime(),
     endAt: z.string().datetime(),
-    quota: z.number().optional(),
-    price: z.number().optional(),
+    // quota: z.number().optional().transform((value) => value || undefined),
+    quota: z.number().min(1).optional(),
+    price: z.number().min(1).optional(),
     online: z.boolean().optional(),
     location: z.string().optional(),
     address: z.string().optional(),
@@ -51,20 +52,18 @@ export const activityCreateForm = z.object({
 })
 
 const ActivityCreateForm = () => {
-    const router = useRouter();
-    const { toast } = useToast();
     const form = useForm<z.infer<typeof activityCreateForm>>({
         resolver: zodResolver(activityCreateForm),
         defaultValues: {
             name: 'Activity1',
             startAt: (new Date('2024-03-21T09:00')).toISOString(), // Default start time
             endAt: (new Date('2024-03-21T10:00')).toISOString(),   // Default end time
+            // quota: undefined,
             thumbnail: undefined
         },
         mode: 'onChange',
     })
     const fileRef = form.register('thumbnail', { required: true });
-
     const [descriptionHTML, setDescriptionHTML] = useState<string>('');
     const handleDescriptionEditorChange = (content: any) => {
         setDescriptionHTML(content)
@@ -185,7 +184,8 @@ const ActivityCreateForm = () => {
                                                 className="text-black"
                                                 placeholder=""
                                                 {...field}
-                                                onChange={e => field.onChange(parseInt(e.target.value))}
+                                                // onChange={e => field.onChange(parseInt(e.target.value))}
+                                                onChange={e => field.onChange(e.target.value === '' ? undefined : parseInt(e.target.value))}
                                             />
                                         </FormControl>
                                         <FormMessage />
@@ -204,7 +204,7 @@ const ActivityCreateForm = () => {
                                                 className="text-black"
                                                 placeholder=""
                                                 {...field}
-                                                onChange={e => field.onChange(parseInt(e.target.value))}
+                                                onChange={e => field.onChange(e.target.value === '' ? undefined : parseInt(e.target.value))}
                                             />
                                         </FormControl>
                                         <FormMessage />
