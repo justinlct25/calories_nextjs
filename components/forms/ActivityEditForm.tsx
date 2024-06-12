@@ -64,12 +64,15 @@ const ActivityEditForm: React.FC<ActivityEditFormProps> = ({ activity, descripti
     })
     const fileRef = form.register('thumbnail', { required: true });
     const [descriptionHTML, setDescriptionHTML] = useState<string>('');
+    // setDescriptionHTML(description);
 
     useEffect(() => {
+        console.log("description: ", description)
         setDescriptionHTML(description);
-    }, [description])
+    }, [])
 
     const handleDescriptionEditorChange = (content: any) => {
+        console.log("changing content: ", content)
         setDescriptionHTML(content)
     }
 
@@ -257,10 +260,12 @@ const ActivityEditForm: React.FC<ActivityEditFormProps> = ({ activity, descripti
                     </div>
                     <div>
                         <FormLabel>Description</FormLabel>
-                        <Tiptap
+                        {(descriptionHTML!=='') && <Tiptap
                             content={descriptionHTML}
+                            // content={"aisejfoaisjefklasdjf"}
                             onChange={(newContent: string) => {handleDescriptionEditorChange(newContent)}}
                         />
+            }
                     </div>
                     <Button className='w-full mt-6' type="submit">Create</Button>
                 </form>
