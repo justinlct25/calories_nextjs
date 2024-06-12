@@ -1,8 +1,7 @@
 'use client';
 
 
-import { useParams } from 'next/navigation';
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from 'next/navigation';
 import { activities } from "@/drizzle/schemas/activities.schema"
 import { donors } from "@/drizzle/schemas/donors.schema"
 import { loadActivityThumbnailUrl, loadActivityDescriptionHTMLImgUrls } from '@/utils/loadBucket/loadBucketUrls';
@@ -17,6 +16,7 @@ export default function ActivityInfoPage() {
   const { data: session, status } = useSession()
   const { activityId } = useParams();
   const router = useRouter();
+  const [isAdmin, setIsAdmin] = useState<boolean>(false);
   const [donorInfo, setDonorInfo] = useState<typeof donors.$inferInsert>();
   const [activityInfo, setActivityInfo] = useState<typeof activities.$inferInsert>();
   const [thumbnailUrl, setThumbnailUrl] = useState<string>("")
@@ -31,19 +31,22 @@ export default function ActivityInfoPage() {
               setDonorInfo(data.donor);
           }
       })
-      fetch(`/api/activities/${activityId}`)
+      fetch(`/api/admin/${session?.user.id}`)
       .then((res) => res.json())
-      .then(async (data) => {
-          // setLoading(false)
-          if (data.activity) {
-              setActivityInfo(data.activity);
-              setThumbnailUrl(await loadActivityThumbnailUrl(data.activity.thumbnail));
-              const HTMLwithBucketImgUrls: string = await loadActivityDescriptionHTMLImgUrls(data.activity.description);
-              setDescriptionHTML({__html: HTMLwithBucketImgUrls})
-          }
-          else router.push("/activities")
-      })
+      .then((data) => setIsAdmin(data.isAdmin));
     }
+    fetch(`/api/activities/${activityId}`)
+    .then((res) => res.json())
+    .then(async (data) => {
+        // setLoading(false)
+        if (data.activity) {
+            setActivityInfo(data.activity);
+            setThumbnailUrl(await loadActivityThumbnailUrl(data.activity.thumbnail));
+            const HTMLwithBucketImgUrls: string = await loadActivityDescriptionHTMLImgUrls(data.activity.description);
+            setDescriptionHTML({__html: HTMLwithBucketImgUrls})
+        }
+        else router.push("/activities")
+    })
 }, [session])
 
   return (

@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { donors } from "@/drizzle/schemas/donors.schema";
-import GoBack from "@/components/GoBack";
+import GoBack from "@/components/util/GoBack";
 
 export default function UserInfoPage() {
     const { data: session, status } = useSession();

@@ -2,7 +2,7 @@
 
 import ActivityCreateForm from "@/components/forms/ActivityCreateForm";
 import WrapperWithBack from "@/components/WrapperWithBack";
-import GoBack from "@/components/GoBack";
+import GoBack from "@/components/util/GoBack";
 import IsSignedIn from "@/components/util/IsSignedIn"; 
 
 

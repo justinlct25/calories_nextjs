@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button"
 import {
@@ -27,7 +27,7 @@ const MAX_FILE_SIZE = 500000;
 const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp"]
 
 
-export const activityCreateForm = z.object({
+export const activityEditForm = z.object({
     name: z.string().min(1, 'Activity name is required').max(100),
     startAt: z.string().datetime(),
     endAt: z.string().datetime(),
@@ -41,8 +41,8 @@ export const activityCreateForm = z.object({
         .optional()
         .refine((file) => file[0]?.size <= MAX_FILE_SIZE, `Max image size is 5MB.`)
         .refine(
-        (file) => ACCEPTED_IMAGE_TYPES.includes(file[0]?.type),
-        "Only .jpg, .jpeg, .png and .webp formats are supported."
+            (file) => ACCEPTED_IMAGE_TYPES.includes(file[0]?.type),
+            "Only .jpg, .jpeg, .png and .webp formats are supported."
         )
     //   z
     //   .refine((file) => file?.length == 1, 'File is required.')
@@ -52,23 +52,28 @@ export const activityCreateForm = z.object({
 })
 
 interface ActivityEditFormProps {
-    activity: z.infer<typeof activityCreateForm>;
+    activity: z.infer<typeof activityEditForm>;
     description: string;
 }
 
 const ActivityEditForm: React.FC<ActivityEditFormProps> = ({ activity, description }) => {
-    const form = useForm<z.infer<typeof activityCreateForm>>({
-        resolver: zodResolver(activityCreateForm),
+    const form = useForm<z.infer<typeof activityEditForm>>({
+        resolver: zodResolver(activityEditForm),
         defaultValues: activity,
         mode: 'onChange',
     })
     const fileRef = form.register('thumbnail', { required: true });
     const [descriptionHTML, setDescriptionHTML] = useState<string>('');
+
+    useEffect(() => {
+        setDescriptionHTML(description);
+    }, [description])
+
     const handleDescriptionEditorChange = (content: any) => {
         setDescriptionHTML(content)
     }
 
-    const onSubmit = async (values: z.infer<typeof activityCreateForm>) => {
+    const onSubmit = async (values: z.infer<typeof activityEditForm>) => {
         const formData = new FormData();
         formData.append('name', values.name);
         formData.append('startAt', values.startAt);

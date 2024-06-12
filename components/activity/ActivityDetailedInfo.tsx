@@ -4,9 +4,11 @@ import { useState, useEffect } from 'react';
 import { useRouter } from "next/navigation";
 import { activities } from "@/drizzle/schemas/activities.schema"
 import { loadActivityThumbnailUrl, loadActivityDescriptionHTMLImgUrls } from '@/utils/loadBucket/loadBucketUrls';
-import GoBack from '../GoBack';
+import GoBack from '../util/GoBack';
 import ActivityDates from './ActivityDates';
 import ActivityTimes from './ActivityTimes';
+import { Pencil } from 'lucide-react';
+import EditBtn from '../util/EditBtn';
 
 interface ActivityDetailedInfoProps {
     activityInfo: typeof activities.$inferInsert;
@@ -20,6 +22,7 @@ const ActivityDetailedInfo: React.FC<ActivityDetailedInfoProps> = ({ activityInf
     return (
         <div className="w-full">
             <GoBack isNavbarPad={true} />
+            <EditBtn isNavbarPad={true} editUrl={`/activities/edit/${activityInfo?.id}`} />
             <div
                 style={{
                     backgroundImage: `url("${thumbnailUrl}")`,

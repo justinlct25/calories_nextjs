@@ -67,6 +67,7 @@ const ActivityCreateForm = () => {
     const [descriptionHTML, setDescriptionHTML] = useState<string>('');
     const handleDescriptionEditorChange = (content: any) => {
         setDescriptionHTML(content)
+        console.log(content)
     }
 
     const onSubmit = async (values: z.infer<typeof activityCreateForm>) => {
