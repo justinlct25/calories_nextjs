@@ -22,7 +22,7 @@ const ActivityDetailedInfo: React.FC<ActivityDetailedInfoProps> = ({ activityInf
     return (
         <div className="w-full">
             <GoBack isNavbarPad={true} />
-            <EditBtn isNavbarPad={true} editUrl={`/activities/edit/${activityInfo?.id}`} />
+            <EditBtn isNavbarPad={true} editUrl={`/activities/${activityInfo?.id}/edit`} />
             <div
                 style={{
                     backgroundImage: `url("${thumbnailUrl}")`,

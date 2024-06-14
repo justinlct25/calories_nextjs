@@ -15,7 +15,7 @@ export async function processTipTapBase64Images(activityId: number, htmlContent:
     while ((match = regex.exec(htmlContent)) !== null) {
         const base64Data = match[1].split(",")[1];
         const time = Date.now();
-        const imageName = `activity${activityId}-img${i}-${time}.jpeg`;
+        const imageName = `activity${activityId}-${time}-img${i}.jpeg`;
         const buffer = Buffer.from(base64Data, 'base64');
         
         try {

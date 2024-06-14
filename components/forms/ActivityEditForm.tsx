@@ -15,7 +15,7 @@ import {
 import { Input } from "@/components/ui/input"
 import * as z from "zod"
 import { useRouter } from 'next/navigation'
-import { useToast } from '../ui/use-toast'
+import { toast, useToast } from '../ui/use-toast'
 import { zodResolver } from "@hookform/resolvers/zod";
 import Tiptap from "@/components/rich-txt-editor/Tiptap";
 import DatePicker from "react-datepicker";
@@ -52,11 +52,14 @@ export const activityEditForm = z.object({
 })
 
 interface ActivityEditFormProps {
+    activityId: number;
     activity: z.infer<typeof activityEditForm>;
+    thumbnailUrl: string;
     description: string;
 }
 
-const ActivityEditForm: React.FC<ActivityEditFormProps> = ({ activity, description }) => {
+const ActivityEditForm: React.FC<ActivityEditFormProps> = ({ activityId, activity, thumbnailUrl, description }) => {
+    const router = useRouter();
     const form = useForm<z.infer<typeof activityEditForm>>({
         resolver: zodResolver(activityEditForm),
         defaultValues: activity,
@@ -64,15 +67,12 @@ const ActivityEditForm: React.FC<ActivityEditFormProps> = ({ activity, descripti
     })
     const fileRef = form.register('thumbnail', { required: true });
     const [descriptionHTML, setDescriptionHTML] = useState<string>('');
-    // setDescriptionHTML(description);
 
     useEffect(() => {
-        console.log("description: ", description)
         setDescriptionHTML(description);
-    }, [])
+    }, [description])
 
     const handleDescriptionEditorChange = (content: any) => {
-        console.log("changing content: ", content)
         setDescriptionHTML(content)
     }
 
@@ -90,26 +90,26 @@ const ActivityEditForm: React.FC<ActivityEditFormProps> = ({ activity, descripti
         console.log("formData(startAt): ", JSON.stringify(formData.get('startAt')))
         console.log("formData(quota): ", JSON.stringify(formData.get('quota')))
 
-        // const response = await fetch('/api/activities/create', {
-        //     method: 'POST',
-        //     body: formData
-        // });
-        // const data = await response.json()
-        // if (response.ok) {
-        //     const createdActivityId = data.activityId
-        //     toast({
-        //         title: "Success",
-        //         description: `${data.message}`,
-        //         variant: 'primary'
-        //     })
-        //     router.push(`/activities/${createdActivityId}`);
-        // } else {
-        //     toast({
-        //         title: "Error",
-        //         description: `${data.message}`,
-        //         variant: 'destructive'
-        //     })
-        // }
+        const response = await fetch(`/api/activities/${activityId}/edit}`, {
+            method: 'UPDATE',
+            body: formData
+        });
+        const data = await response.json()
+        if (response.ok) {
+            const updatedActivityId = data.activityId
+            toast({
+                title: "Success",
+                description: `${data.message}`,
+                variant: 'primary'
+            })
+            router.push(`/activities/${updatedActivityId}`);
+        } else {
+            toast({
+                title: "Error",
+                description: `${data.message}`,
+                variant: 'destructive'
+            })
+        }
     }
 
     return (
@@ -250,6 +250,7 @@ const ActivityEditForm: React.FC<ActivityEditFormProps> = ({ activity, descripti
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel>Thumbnail</FormLabel>
+                                    {thumbnailUrl && <img src={thumbnailUrl} alt="Thumbnail" className="mt-4" />}
                                     <FormControl>
                                         <Input type="file" className="text-black" accept="image/png, image/jpg, image/jpeg" {...fileRef} />
                                     </FormControl>
@@ -262,7 +263,6 @@ const ActivityEditForm: React.FC<ActivityEditFormProps> = ({ activity, descripti
                         <FormLabel>Description</FormLabel>
                         {(descriptionHTML!=='') && <Tiptap
                             content={descriptionHTML}
-                            // content={"aisejfoaisjefklasdjf"}
                             onChange={(newContent: string) => {handleDescriptionEditorChange(newContent)}}
                         />
             }
