@@ -13,7 +13,7 @@ const bucketName = process.env.BUCKET_STORAGE_IMAGES || '';
 const bucketFolderThumbnail = process.env.BUCKET_STORAGE_FOLDER_ACTIVITY_THUMBNAIL || ''
 
 
-export async function UPDATE(req: Request, {params}: any) {
+export async function POST(req: Request, {params}: any) {
     try {
         try {
             const session = await auth();

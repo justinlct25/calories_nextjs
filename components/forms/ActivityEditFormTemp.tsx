@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button"
 import {
@@ -20,7 +20,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Tiptap from "@/components/rich-txt-editor/Tiptap";
 import DatePicker from "react-datepicker";
 import 'react-datepicker/dist/react-datepicker.css';
-import { format } from 'date-fns';
 
 
 const MAX_FILE_SIZE = 500000;
@@ -45,6 +44,7 @@ export const activityEditForm = z.object({
     //   .refine((file) => file?.length == 1, 'File is required.')
     //   .refine((file) => file[0]?.type === 'application/pdf', 'Must be a PDF.')
     //   .refine((file) => file[0]?.size <= 3000000, `Max file size is 3MB.`),
+    
 })
 
 interface ActivityEditFormProps {
@@ -54,52 +54,59 @@ interface ActivityEditFormProps {
     description: string;
 }
 
-const ActivityEditForm: React.FC<ActivityEditFormProps> = ({ activityId, activity, thumbnailUrl, description}) => {
+const ActivityEditForm: React.FC<ActivityEditFormProps> = ({ activityId, activity, thumbnailUrl, description }) => {
     const router = useRouter();
     const form = useForm<z.infer<typeof activityEditForm>>({
         resolver: zodResolver(activityEditForm),
         defaultValues: {
-            name: 'Activity1',
-            startAt: (new Date('2024-03-21T09:00')).toISOString(), // Default start time
-            endAt: (new Date('2024-03-21T10:00')).toISOString(),   // Default end time
-            // quota: undefined,
-            thumbnail: undefined
+            ...activity,
+            location: activity.location ?? undefined,
+            address: activity.address ?? undefined,
+            quota: activity.quota ?? undefined,
+            price: activity.price ?? undefined,
         },
         mode: 'onChange',
     })
     const fileRef = form.register('thumbnail', { required: true });
     const [descriptionHTML, setDescriptionHTML] = useState<string>('');
+
+    useEffect(() => {
+        setDescriptionHTML(description);
+    }, [description])
+
     const handleDescriptionEditorChange = (content: any) => {
         setDescriptionHTML(content)
     }
 
     const onSubmit = async (values: z.infer<typeof activityEditForm>) => {
-        const formData = new FormData();
-        formData.append('name', values.name);
-        formData.append('startAt', values.startAt);
-        formData.append('endAt', values.endAt);
-        if (values.quota) formData.append('quota', String(values.quota));
-        if (values.price) formData.append('price', String(values.price));
-        if (values.location) formData.append('location', values.location);
-        if (values.address) formData.append('address', values.address);
-        formData.append('thumbnail', values.thumbnail[0]); 
-        formData.append('description', descriptionHTML);
-        console.log("onsubmit")
+        console.log("wtf")
+        // const formData = new FormData();
+        // formData.append('name', values.name);
+        // formData.append('startAt', values.startAt);
+        // formData.append('endAt', values.endAt);
+        // if (values.quota) formData.append('quota', String(values.quota));
+        // if (values.price) formData.append('price', String(values.price));
+        // if (values.location) formData.append('location', values.location);
+        // if (values.address) formData.append('address', values.address);
+        // formData.append('thumbnail', values.thumbnail[0]); 
+        // formData.append('description', descriptionHTML);
+        // console.log("formData(startAt): ", JSON.stringify(formData.get('startAt')))
         // console.log("formData(quota): ", JSON.stringify(formData.get('quota')))
 
-        // const response = await fetch('/api/activities/create', {
+        // console.log("going to fetch edit activity")
+        // const response = await fetch(`/api/activities/${activityId}/edit}`, {
         //     method: 'POST',
         //     body: formData
         // });
         // const data = await response.json()
         // if (response.ok) {
-        //     const createdActivityId = data.activityId
+        //     const updatedActivityId = data.activityId
         //     toast({
         //         title: "Success",
         //         description: `${data.message}`,
         //         variant: 'primary'
         //     })
-        //     router.push(`/activities/${createdActivityId}`);
+        //     router.push(`/activities/${updatedActivityId}`);
         // } else {
         //     toast({
         //         title: "Error",
@@ -247,6 +254,7 @@ const ActivityEditForm: React.FC<ActivityEditFormProps> = ({ activityId, activit
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel>Thumbnail</FormLabel>
+                                    {thumbnailUrl && <img src={thumbnailUrl} alt="Thumbnail" className="mt-4" />}
                                     <FormControl>
                                         <Input type="file" className="text-black" accept="image/png, image/jpg, image/jpeg" {...fileRef} />
                                     </FormControl>
@@ -257,6 +265,12 @@ const ActivityEditForm: React.FC<ActivityEditFormProps> = ({ activityId, activit
                     </div>
                     <div>
                         <FormLabel>Description</FormLabel>
+                        {/* <div>Description</div> */}
+                        {/* {(descriptionHTML!=='') && <Tiptap
+                            content={descriptionHTML}
+                            onChange={(newContent: string) => {handleDescriptionEditorChange(newContent)}}
+                        />
+                        } */}
                         <Tiptap
                             content={descriptionHTML}
                             onChange={(newContent: string) => {handleDescriptionEditorChange(newContent)}}
