@@ -34,21 +34,19 @@ export default function ActivityEditPage() {
                 if (data.activity.endAt) {
                     data.activity.endAt = (new Date(data.activity.endAt)).toISOString();
                 }
+                const HTMLwithBucketImgUrls: string = await loadActivityDescriptionHTMLImgUrls(data.activity.description);
+                console.log("HTMLwithBucketImgUrls: ", HTMLwithBucketImgUrls) 
+                if (HTMLwithBucketImgUrls !== "") {
+                    setDescriptionHTML(HTMLwithBucketImgUrls)
+                } else {
+                    setDescriptionHTML(" ");
+                }
                 setActivityInfo(data.activity);
                 setThumbnailUrl(await loadActivityThumbnailUrl(data.activity.thumbnail));
-                // console.log("data description: ", data.activity.description)
-                const HTMLwithBucketImgUrls: string = await loadActivityDescriptionHTMLImgUrls(data.activity.description);
-                setDescriptionHTML(HTMLwithBucketImgUrls)
-                // setDescriptionHTML(data.activity.description)
-                // setDescriptionHTML(data.activity.description)
             }
             else router.push("/activities")
         })
     }, [])
-
-    // useEffect(() => {
-    //     console.log(descriptionHTML);
-    // }, [descriptionHTML]);
 
 
     return (

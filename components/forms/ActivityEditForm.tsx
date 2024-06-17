@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button"
 import {
@@ -59,16 +59,25 @@ const ActivityEditForm: React.FC<ActivityEditFormProps> = ({ activityId, activit
     const form = useForm<z.infer<typeof activityEditForm>>({
         resolver: zodResolver(activityEditForm),
         defaultValues: {
-            name: 'Activity1',
-            startAt: (new Date('2024-03-21T09:00')).toISOString(), // Default start time
-            endAt: (new Date('2024-03-21T10:00')).toISOString(),   // Default end time
-            // quota: undefined,
-            thumbnail: undefined
+            // ...activity,
+            name: activity.name ?? undefined,
+            startAt: activity.startAt ?? undefined,
+            endAt: activity.endAt ?? undefined,
+            quota: activity.quota ?? undefined,
+            price: activity.price ?? undefined,
+            location: activity.location ?? undefined,
+            address: activity.address ?? undefined,
         },
         mode: 'onChange',
     })
     const fileRef = form.register('thumbnail', { required: true });
     const [descriptionHTML, setDescriptionHTML] = useState<string>('');
+
+    useEffect(() => {
+        setDescriptionHTML(description);
+        console.log("description: "+descriptionHTML)
+    }, [description])
+
     const handleDescriptionEditorChange = (content: any) => {
         setDescriptionHTML(content)
     }
@@ -84,29 +93,31 @@ const ActivityEditForm: React.FC<ActivityEditFormProps> = ({ activityId, activit
         if (values.address) formData.append('address', values.address);
         formData.append('thumbnail', values.thumbnail[0]); 
         formData.append('description', descriptionHTML);
-        console.log("onsubmit")
-        // console.log("formData(quota): ", JSON.stringify(formData.get('quota')))
+        console.log("formData(startAt): ", JSON.stringify(formData.get('startAt')))
+        console.log("formData(description): ", JSON.stringify(formData.get('description')))
 
-        // const response = await fetch('/api/activities/create', {
-        //     method: 'POST',
-        //     body: formData
-        // });
-        // const data = await response.json()
-        // if (response.ok) {
-        //     const createdActivityId = data.activityId
-        //     toast({
-        //         title: "Success",
-        //         description: `${data.message}`,
-        //         variant: 'primary'
-        //     })
-        //     router.push(`/activities/${createdActivityId}`);
-        // } else {
-        //     toast({
-        //         title: "Error",
-        //         description: `${data.message}`,
-        //         variant: 'destructive'
-        //     })
-        // }
+        console.log("going to fetch edit activity")
+        console.log("id:" + activityId)
+        const response = await fetch(`/api/activities/${activityId}/edit`, {
+            method: 'POST',
+            body: formData
+        });
+        const data = await response.json()
+        if (response.ok) {
+            const updatedActivityId = data.activityId
+            toast({
+                title: "Success",
+                description: `${data.message}`,
+                variant: 'primary'
+            })
+            router.push(`/activities/${updatedActivityId}`);
+        } else {
+            toast({
+                title: "Error",
+                description: `${data.message}`,
+                variant: 'destructive'
+            })
+        }
     }
 
     return (
@@ -247,6 +258,7 @@ const ActivityEditForm: React.FC<ActivityEditFormProps> = ({ activityId, activit
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel>Thumbnail</FormLabel>
+                                    {thumbnailUrl && <img src={thumbnailUrl} alt="Thumbnail" className="mt-4" />}
                                     <FormControl>
                                         <Input type="file" className="text-black" accept="image/png, image/jpg, image/jpeg" {...fileRef} />
                                     </FormControl>
@@ -257,10 +269,16 @@ const ActivityEditForm: React.FC<ActivityEditFormProps> = ({ activityId, activit
                     </div>
                     <div>
                         <FormLabel>Description</FormLabel>
-                        <Tiptap
+                        {/* <div>Description</div> */}
+                        {(descriptionHTML!=='') && <Tiptap
                             content={descriptionHTML}
                             onChange={(newContent: string) => {handleDescriptionEditorChange(newContent)}}
                         />
+                        }
+                        {/* <Tiptap
+                            content={descriptionHTML}
+                            onChange={(newContent: string) => {handleDescriptionEditorChange(newContent)}}
+                        /> */}
                     </div>
                     <Button className='w-full mt-6' type="submit">Edit</Button>
                 </form>

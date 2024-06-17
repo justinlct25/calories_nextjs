@@ -18,6 +18,7 @@ export async function POST(req: Request, {params}: any) {
         try {
             const session = await auth();
             const activityId = params.activityId;
+            console.log("activityId: ", activityId)
             const targetActivity = await getActivityById(activityId);
             if (!targetActivity) {
                 console.log("Activity not found")
@@ -30,13 +31,9 @@ export async function POST(req: Request, {params}: any) {
             if (await isAdminRole(session?.user.id)) {
                 const formData = await req.formData();
                 const activityName = String(formData.get('name'));
-                if (activityName && await getActivityByName(activityName)) {
-                    console.log("Activity with this name already exists");
-                    return NextResponse.json({message: "Activity with this name already exists"}, {status: 409})
-                }
-                const existingUser = await getUserByEmail(session?.user.email)
+                // const existingUser = await getUserByEmail(session?.user.email)
                 let activityDetails: any = {
-                    creatorId: existingUser?.admin!.id,
+                    // creatorId: existingUser?.admin!.id,
                     name: activityName,
                     startAt: new Date(String(formData.get("startAt"))),
                     endAt: new Date(String(formData.get("endAt"))), 
@@ -47,7 +44,7 @@ export async function POST(req: Request, {params}: any) {
                 if (formData.get("address")) activityDetails = { ...activityDetails, address: String(formData.get("address")) }
                 let activityUpdateObj = {}
                 const thumbnailFile = await formData.get('thumbnail') as File;
-                if (thumbnailFile) {
+                if (thumbnailFile instanceof File) {
                     const buffer = Buffer.from(await thumbnailFile.arrayBuffer());
                     const fileName = `activity${activityId}-${Date.now()}-${thumbnailFile.name}`
                     if (fileName !== targetActivity.thumbnail) {
@@ -60,9 +57,10 @@ export async function POST(req: Request, {params}: any) {
                     const descriptionWithUploadedImgLinks = await processTipTapBase64Images(targetActivity.id, description);
                     activityUpdateObj = {...activityUpdateObj, description: descriptionWithUploadedImgLinks}
                 }
+                console.log("update activity: " + JSON.stringify(activityUpdateObj))
                 await updateActivity(targetActivity.id, activityUpdateObj);
                 return NextResponse.json(
-                    {activityId: targetActivity.id, message: "Activity created successfully"}, 
+                    {activityId: targetActivity.id, message: "Activity edited successfully"}, 
                     {status: 201}
                 )
             } else {
@@ -72,7 +70,7 @@ export async function POST(req: Request, {params}: any) {
                 )
             }
         } catch (error) {
-            console.error(`Error parsing user schema: `, error);
+            console.error(`Error: `, error);
             return NextResponse.json(
                 { message: "Invalid input data"},
                 { status: 400 }
