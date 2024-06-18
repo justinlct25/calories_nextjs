@@ -9,6 +9,7 @@ import ActivityDates from './ActivityDates';
 import ActivityTimes from './ActivityTimes';
 import { Pencil } from 'lucide-react';
 import EditBtn from '../util/EditBtn';
+import ActivityLocation from './ActivityLocation';
 
 interface ActivityDetailedInfoProps {
     activityInfo: typeof activities.$inferInsert;
@@ -40,7 +41,7 @@ const ActivityDetailedInfo: React.FC<ActivityDetailedInfoProps> = ({ activityInf
                 <div className="w-full aspect-[4]"></div> {/* padding from top */}
                 <div className="bg-black w-9/12 aspect-[5.5] z-[-10] absolute left-1/2 transform -translate-x-1/2 flex flex-row justify-around items-center rounded-md">
                     <ActivityDates startAt={activityInfo?.startAt} endAt={activityInfo?.endAt} />
-                    
+                    <ActivityLocation location={activityInfo?.location} address={activityInfo?.address} />
                     <ActivityTimes startAt={activityInfo?.startAt} endAt={activityInfo?.endAt} />
                 </div>
                 <div className="w-full aspect-[5]"></div>

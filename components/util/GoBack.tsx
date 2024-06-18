@@ -12,7 +12,10 @@ const GoBack: React.FC<GoBackProps> = ({ isNavbarPad }) => {
     const router = useRouter();
 
     const handleGoBack = () => {
-        router.back();
+        const pathArray = window.location.href.split("/");
+        pathArray.pop();
+        const newPath = pathArray.join('/');
+        router.push(newPath);
     };
 
     return (
