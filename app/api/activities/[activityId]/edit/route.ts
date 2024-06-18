@@ -32,17 +32,17 @@ export async function POST(req: Request, {params}: any) {
                 const formData = await req.formData();
                 const activityName = String(formData.get('name'));
                 // const existingUser = await getUserByEmail(session?.user.email)
-                let activityDetails: any = {
+                let activityUpdateObj: any = {
                     // creatorId: existingUser?.admin!.id,
                     name: activityName,
                     startAt: new Date(String(formData.get("startAt"))),
                     endAt: new Date(String(formData.get("endAt"))), 
                 }
-                if (formData.get("quota")) activityDetails = { ...activityDetails, quota: Number(formData.get("quota")) }
-                if (formData.get("price")) activityDetails = { ...activityDetails, price: String(formData.get("price")) }
-                if (formData.get("location")) activityDetails = { ...activityDetails, location: String(formData.get("location")) }
-                if (formData.get("address")) activityDetails = { ...activityDetails, address: String(formData.get("address")) }
-                let activityUpdateObj = {}
+                if (formData.get("quota")) activityUpdateObj = { ...activityUpdateObj, quota: Number(formData.get("quota")) }
+                if (formData.get("price")) activityUpdateObj = { ...activityUpdateObj, price: String(formData.get("price")) }
+                if (formData.get("location")) activityUpdateObj = { ...activityUpdateObj, location: String(formData.get("location")) }
+                if (formData.get("address")) activityUpdateObj = { ...activityUpdateObj, address: String(formData.get("address")) }
+                // let activityUpdateObj = {}
                 const thumbnailFile = await formData.get('thumbnail') as File;
                 if (thumbnailFile instanceof File) {
                     const buffer = Buffer.from(await thumbnailFile.arrayBuffer());
