@@ -24,11 +24,11 @@ export const donorsToActivities = pgTable('donors_to_activities', {
 // }))
 
 export const donorsToActivitiesRelations = relations(donorsToActivities, ({ one }) => ({
-    role: one(donors, {
+    donor: one(donors, {
         fields: [donorsToActivities.donorId],
         references: [donors.id]
     }),
-    donor: one(activities, {
+    activity: one(activities, {
         fields: [donorsToActivities.activityId],
         references: [activities.id]
     })
