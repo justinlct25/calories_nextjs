@@ -16,7 +16,7 @@ export default function UserInfoPage() {
             .then((data) => {
                 if (data.donor) {
                     console.log(JSON.stringify(data))
-                    setDonorInfo(data.donor.activities[0]);
+                    setDonorInfo(data.donor);
                 }
             });
         }
