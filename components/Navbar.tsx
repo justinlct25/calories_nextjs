@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { useState, useEffect } from "react";
 import { Button, buttonVariants } from './ui/button';
 import { HandMetal, CircleUserRound } from 'lucide-react'
 import { auth } from '@/lib/auth';
@@ -8,6 +9,8 @@ import UserAccountNav from './UserAccountNav';
 
 const Navbar = async () => {
     const session = await auth();
+    const [userInfo, setUserInfo] = useState<any>();
+
 
     return (
         // <div className=' bg-zinc-100 py-2 border-b border-s-zinc-200 fixed w-full top-0'>
@@ -28,7 +31,7 @@ const Navbar = async () => {
                 </Link>
                 {session?.user ? (
                     <>
-                        <Link href={`/users/${session?.user.id}`}>
+                        <Link href={`/donors/${session?.user.id}`}>
                             <CircleUserRound />
                         </Link>
                         <UserAccountNav />
