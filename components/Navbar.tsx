@@ -1,15 +1,31 @@
+"use client";
+
+
 import Link from 'next/link';
 import { useState, useEffect } from "react";
+import { useSession } from 'next-auth/react';
 import { Button, buttonVariants } from './ui/button';
 import { HandMetal, CircleUserRound } from 'lucide-react'
-import { auth } from '@/lib/auth';
 import { signOut } from 'next-auth/react'
-import UserAccountNav from './UserAccountNav';
+import SignOutBtn from './SignOutBtn';
 
 
-const Navbar = async () => {
-    const session = await auth();
+const Navbar = () => {
+    // const session = await auth();
+    const { data: session, status } = useSession()
     const [userInfo, setUserInfo] = useState<any>();
+
+    useEffect(() => {
+        if (session) {
+            fetch(`/api/user/${session?.user.id}`)
+                .then((res) => res.json())
+                .then((data) => {
+                    if (data.user) {
+                        setUserInfo(data.user);
+                    }
+                });
+        }
+    }, [session]);
 
 
     return (
@@ -29,12 +45,12 @@ const Navbar = async () => {
                 <Link href='/'>
                     About Us
                 </Link>
-                {session?.user ? (
+                {userInfo ? (
                     <>
-                        <Link href={`/donors/${session?.user.id}`}>
+                        <Link href={`/donors/${userInfo.donor.id}`}>
                             <CircleUserRound />
                         </Link>
-                        <UserAccountNav />
+                        <SignOutBtn />
                     </>
                 ) : (
                     <Link className={buttonVariants()} href='/sign-in'>Sign In</Link>

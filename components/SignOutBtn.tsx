@@ -3,7 +3,7 @@
 import { signOut } from 'next-auth/react';
 import { Button } from './ui/button'
 
-const UserAccountNav = () => {
+const SignOutBtn = () => {
     return (
         <Button onClick={() => signOut({
             redirect: true,
@@ -14,4 +14,4 @@ const UserAccountNav = () => {
     )
 };
 
-export default UserAccountNav
+export default SignOutBtn

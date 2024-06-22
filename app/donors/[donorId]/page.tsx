@@ -5,6 +5,7 @@ import { useSession } from "next-auth/react";
 import { useParams, useRouter } from 'next/navigation';
 import { donors } from "@/drizzle/schemas/donors.schema";
 import GoBack from "@/components/util/GoBack";
+import DonorDetailedInfo from "@/components/donor/DonorDetailedInfo";
 
 export default function DonorInfoPage() {
     const { data: session, status } = useSession();
@@ -13,14 +14,13 @@ export default function DonorInfoPage() {
     
     useEffect(() => {
         if (session) {
-        fetch(`/api/donors/${session?.user.id}`)
-            .then((res) => res.json())
-            .then((data) => {
-                if (data.donor) {
-                    console.log(JSON.stringify(data))
-                    setDonorInfo(data.donor);
-                }
-            });
+            fetch(`/api/donors/${donorId}`)
+                .then((res) => res.json())
+                .then((data) => {
+                    if (data.donor) {
+                        setDonorInfo(data.donor);
+                    }
+                });
         }
     }, [session]);
     
@@ -29,8 +29,9 @@ export default function DonorInfoPage() {
             <GoBack isNavbarPad={true} />
             <div>
                 <div className="w-full aspect-[4]"></div> {/* padding from top */}
-                <h1 className="text-4xl">Donor Info</h1>
-                <pre>{JSON.stringify(donorInfo, null, 2)}</pre>
+                {/* <h1 className="text-4xl">Donor Info</h1>
+                <pre>{JSON.stringify(donorInfo, null, 2)}</pre> */}
+                <DonorDetailedInfo donorInfo={donorInfo} />
                 <h2 className="text-4xl">Activities Participated</h2>
                 {donorInfo?.activities && donorInfo.activities.map((activity: any, index: number) => (
                     <div key={index}>

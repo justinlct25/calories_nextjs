@@ -1,20 +1,20 @@
-import { users } from "@/drizzle/schemas/users.schema";
+
+import { donors } from "@/drizzle/schemas/donors.schema";
 import GoBack from "../util/GoBack";
 import EditBtn from '../util/EditBtn';
 
 
 interface DonorDetailedInfoProps {
-    userInfo: typeof users.$inferInsert;
+    donorInfo: typeof donors.$inferInsert;
 }
 
-const DonorDetailedInfo: React.FC<DonorDetailedInfoProps> = ({ userInfo }) => {
+const DonorDetailedInfo: React.FC<DonorDetailedInfoProps> = ({ donorInfo }) => {
     return (
         <div>
             <GoBack isNavbarPad={true} />
             <div>
-                <div className="w-full aspect-[4]"></div> {/* padding from top */}
                 <h1 className="text-4xl">Donor Info</h1>
-                <pre>{JSON.stringify(userInfo, null, 2)}</pre>
+                <pre>{JSON.stringify(donorInfo, null, 2)}</pre>
             </div>
         </div>
     );
