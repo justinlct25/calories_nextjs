@@ -3,6 +3,8 @@
 
 const bucketApiUrl = process.env.BUCKET_API_URL || "";
 const bucketName = process.env.BUCKET_STORAGE_IMAGES;
+const bucketFolderDonorIcon = process.env.BUCKET_STORAGE_FOLDER_DONOR_ICON;
+const bucketFolderDonorBgImg = process.env.BUCKET_STORAGE_FOLDER_DONOR_BG_IMG;
 const bucketFolderActivityThumbnail = process.env.BUCKET_STORAGE_FOLDER_ACTIVITY_THUMBNAIL;
 const bucketFolderActivityDescription = process.env.BUCKET_STORAGE_FOLDER_ACTIVITY_DESCRIPTION
 
@@ -20,4 +22,12 @@ export const loadActivityDescriptionHTMLImgUrls = async (contentHTML: string) =>
         contentHTML = contentHTML.replace(imageUrl, replacedImageUrl);
     }
     return contentHTML;
+}
+
+export const loadDonorIconUrl = async (iconFileName: string) => {
+    return bucketApiUrl + "/" + bucketName + "/" + bucketFolderDonorIcon + "/" + iconFileName;
+}
+
+export const loadDonorBgImgUrl = async (bgImgFileName: string) => {
+    return bucketApiUrl + "/" + bucketName + "/" + bucketFolderDonorBgImg + "/" + bgImgFileName;
 }

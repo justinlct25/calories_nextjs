@@ -6,16 +6,21 @@ import { ChevronLeft } from 'lucide-react'
 
 interface GoBackProps {
     isNavbarPad?: boolean;
+    backDirectory?: string;
 }
 
-const GoBack: React.FC<GoBackProps> = ({ isNavbarPad }) => {
+const GoBack: React.FC<GoBackProps> = ({ isNavbarPad, backDirectory }) => {
     const router = useRouter();
 
     const handleGoBack = () => {
-        const pathArray = window.location.href.split("/");
-        pathArray.pop();
-        const newPath = pathArray.join('/');
-        router.push(newPath);
+        if (backDirectory=="parent") {
+            const pathArray = window.location.href.split("/");
+            pathArray.pop();
+            const newPath = pathArray.join('/');
+            router.push(newPath);
+        } else if (backDirectory === "home") {
+            router.push("/activities");
+        }
     };
 
     return (

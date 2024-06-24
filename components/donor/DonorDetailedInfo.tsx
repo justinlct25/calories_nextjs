@@ -11,9 +11,10 @@ interface DonorDetailedInfoProps {
 }
 
 const DonorDetailedInfo: React.FC<DonorDetailedInfoProps> = ({ donorInfo, iconUrl, bgImgUrl }) => {
+
     return (
         <div className="w-full">
-            <GoBack isNavbarPad={true} />
+            <GoBack isNavbarPad={true} backDirectory="home" />
             <EditBtn isNavbarPad={true} editUrl={`/activities`} />
             <div
                 style={{
@@ -33,9 +34,13 @@ const DonorDetailedInfo: React.FC<DonorDetailedInfoProps> = ({ donorInfo, iconUr
             <div className="w-full aspect-[2] absolute top-0">
                 <div className="w-full aspect-[6]"></div> {/* padding from top */}  
                 <div className="w-1/5 aspect-[1] bg-white bg-opacity-20 z-[10] absolute left-1/2  -translate-x-1/2 rounded-full flex items-center justify-center">
-                <div className="w-9/12 aspect-[1] bg-yellow-500 rounded-full flex items-center justify-center">
-                    <i className="fas fa-icon"></i>
-                </div>
+                    <div className="w-9/12 aspect-[1] bg-yellow-500 rounded-full flex items-center justify-center">
+                    {/* <div className="inline-block relative w-9/12 aspect-[1] overflow-hidden rounded-full"> */}
+                        {/* <i className="fas fa-icon"></i> */}
+                        <img src={iconUrl} alt="icon" className="object-contain w-full h-full" />
+                        {/* <img src={iconUrl} alt="icon" className="w-auto h-full " /> */}
+                        {/* <img src={iconUrl} alt="icon" className="object-cover object-center w-full h-full" /> */}
+                    </div>
                     {/* <i className="fas fa-icon"></i> */}
                 </div>
             </div>
@@ -44,12 +49,12 @@ const DonorDetailedInfo: React.FC<DonorDetailedInfoProps> = ({ donorInfo, iconUr
                 <div className="bg-black w-9/12 aspect-[5.5] z-[-10] absolute left-1/2 transform -translate-x-1/2 flex flex-row justify-between items-center rounded-md">
                     <div className="flex flex-col justify-center items-center text-center w-1/4 pl-20">
                         <div className="text-2xl">Donated<br />Calories</div>
-                        <div className="text-2xl">{donorInfo?.calories}</div>
+                        <div className="text-4xl">{donorInfo?.calories}</div>
                     </div>
                     {/* <div className="flex-grow"></div> */}
                     <div className="flex flex-col justify-center items-center text-center w-1/4 pr-20">
                         <div className="text-2xl">Participated<br />Events</div>
-                        <div className="text-2xl">{donorInfo?.activities.length}</div>
+                        <div className="text-4xl">{donorInfo?.activities.length}</div>
                     </div>
                 </div>
                 <div className="w-full aspect-[5]"></div>

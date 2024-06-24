@@ -52,7 +52,7 @@ export default function ActivityEditPage() {
     return (
         <WrapperWithBack>
             <IsSignedIn adminCheck={true} />
-            <GoBack isNavbarPad={false} />  
+            <GoBack isNavbarPad={false} backDirectory="parent"/>  
             <h2>Edit Activity</h2>
             {activityInfo && <ActivityEditForm activityId={Number(activityId)} activity={activityInfo} thumbnailUrl={thumbnailUrl} description={descriptionHTML} />}
         </WrapperWithBack>

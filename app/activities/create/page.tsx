@@ -14,7 +14,7 @@ export default function ActivityCreationPage() {
     return (
         <WrapperWithBack>
             <IsSignedIn adminCheck={true} />
-            <GoBack isNavbarPad={false} />  
+            <GoBack isNavbarPad={false} backDirectory="parent" />  
             <h2>Create Activity</h2>
             <ActivityCreateForm />
         </WrapperWithBack>

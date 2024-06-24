@@ -22,7 +22,7 @@ const ActivityDetailedInfo: React.FC<ActivityDetailedInfoProps> = ({ activityInf
 
     return (
         <div className="w-full">
-            <GoBack isNavbarPad={true} />
+            <GoBack isNavbarPad={true} backDirectory='parent' />
             <EditBtn isNavbarPad={true} editUrl={`/activities/${activityInfo?.id}/edit`} />
             <div
                 style={{
