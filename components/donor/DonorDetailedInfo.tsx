@@ -1,7 +1,11 @@
 
 import { donors } from "@/drizzle/schemas/donors.schema";
+import { useState, useEffect, use } from "react";
 import GoBack from "../util/GoBack";
 import EditBtn from '../util/EditBtn';
+import { QrCode } from "lucide-react";
+// import QRCode from "react-qr-code"
+import DonorQRCode from "./DonorQRCode";
 
 
 interface DonorDetailedInfoProps {
@@ -11,10 +15,26 @@ interface DonorDetailedInfoProps {
 }
 
 const DonorDetailedInfo: React.FC<DonorDetailedInfoProps> = ({ donorInfo, iconUrl, bgImgUrl }) => {
+    const [isQRCodeOpen, setIsQRCodeOpen] = useState(false);
+    const [qrCodeValue, setQRCodeValue] = useState("");
+
+    const handleQRCodeClose = () => {
+        setIsQRCodeOpen(false);
+    };
+
+    useEffect(() => {
+        if (donorInfo) {
+            setQRCodeValue(donorInfo.id);
+            // setIsQRCodeOpen(true);
+        }
+    })
 
     return (
         <div className="w-full">
             <GoBack isNavbarPad={true} backDirectory="home" />
+            <button className={`absolute right-20 top-0 transform -translate-y-1/2 ml-5 mr-10 z-10 mt-32`} onClick={()=>{setIsQRCodeOpen(true)}}>
+                <QrCode size={32} />
+            </button>
             <EditBtn isNavbarPad={true} editUrl={`/activities`} />
             <div
                 style={{
@@ -54,12 +74,14 @@ const DonorDetailedInfo: React.FC<DonorDetailedInfoProps> = ({ donorInfo, iconUr
                     {/* <div className="flex-grow"></div> */}
                     <div className="flex flex-col justify-center items-center text-center w-1/4 pr-20">
                         <div className="text-2xl">Participated<br />Events</div>
-                        <div className="text-4xl">{donorInfo?.activities.length}</div>
+                        <div className="text-4xl">{donorInfo?.activities?.length}</div>
                     </div>
                 </div>
                 <div className="w-full aspect-[5]"></div>
                 <div className="w-full flex flex-col justify-center items-center max-w-screen-xl mx-auto">
                     {/* <pre>{JSON.stringify(donorInfo, null, 2)}</pre> */}
+                    {/* <DonorQRCode value={donorInfo?.id} /> */}
+                    <DonorQRCode open={isQRCodeOpen} value={qrCodeValue} onClose={handleQRCodeClose} />
                     <h2 className="text-4xl">Activities Participated</h2>
                     {donorInfo?.activities && donorInfo.activities.map((activity: any, index: number) => (
                         <div key={index}>
