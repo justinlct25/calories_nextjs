@@ -71,6 +71,8 @@ const ActivityCreateForm = () => {
     }
 
     const onSubmit = async (values: z.infer<typeof activityCreateForm>) => {
+        const userConfirmed = window.confirm("Are you sure you want to submit the form?");
+        if (!userConfirmed) return;
         const formData = new FormData();
         formData.append('name', values.name);
         formData.append('startAt', values.startAt);

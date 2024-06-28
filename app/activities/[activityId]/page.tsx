@@ -24,13 +24,13 @@ export default function ActivityInfoPage() {
 
   useEffect(() => {
     if (session) {
-      fetch(`/api/donors/${session?.user.id}`)
-      .then((res) => res.json())
-      .then(async (data) => {
-          if (data.donor) {
-              setDonorInfo(data.donor);
-          }
-      })
+      // fetch(`/api/donors/${session?.user.id}`)
+      // .then((res) => res.json())
+      // .then(async (data) => {
+      //     if (data.donor) {
+      //         setDonorInfo(data.donor);
+      //     }
+      // })
       fetch(`/api/admin/${session?.user.id}`)
       .then((res) => res.json())
       .then((data) => setIsAdmin(data.isAdmin));

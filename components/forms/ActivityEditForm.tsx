@@ -83,6 +83,9 @@ const ActivityEditForm: React.FC<ActivityEditFormProps> = ({ activityId, activit
     }
 
     const onSubmit = async (values: z.infer<typeof activityEditForm>) => {
+        // event.preventDefault();
+        const userConfirmed = window.confirm("Are you sure you want to submit the form?");
+        if (!userConfirmed) return;
         const formData = new FormData();
         formData.append('name', values.name);
         formData.append('startAt', values.startAt);
@@ -266,8 +269,8 @@ const ActivityEditForm: React.FC<ActivityEditFormProps> = ({ activityId, activit
                                 </FormItem>
                             )}
                         />
-                    </div>
-                    <div>
+                    {/* </div> */}
+                    {/* <div> */}
                         <FormLabel>Description</FormLabel>
                         {/* <div>Description</div> */}
                         {(descriptionHTML!=='') && <Tiptap
@@ -281,6 +284,7 @@ const ActivityEditForm: React.FC<ActivityEditFormProps> = ({ activityId, activit
                         /> */}
                     </div>
                     <Button className='w-full mt-6' type="submit">Edit</Button>
+                    
                 </form>
             </Form>
         </div>

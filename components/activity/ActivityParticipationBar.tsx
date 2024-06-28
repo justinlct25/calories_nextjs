@@ -37,7 +37,7 @@ const ActivityParticipationBar: React.FC<ActivityParticipationBarProps> = ({ act
     }, [session])
 
     const handleJoin = async () => {
-        if (donorId) {
+        if (session) {
             fetch(`/api/activities/${activityId}/participants/${donorId}`, {
                 method: 'POST',
             })
@@ -52,7 +52,7 @@ const ActivityParticipationBar: React.FC<ActivityParticipationBarProps> = ({ act
     };
 
     const handleQuit = async () => {
-        if (donorId) {
+        if (session) {
             fetch(`/api/activities/${activityId}/participants/${donorId}`, {
                 method: 'DELETE',
             })
