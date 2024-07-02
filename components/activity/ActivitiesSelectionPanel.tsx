@@ -1,5 +1,5 @@
 
-import ActivityBriefInfo from "@/components/activity/ActivityBriefInfo";
+import ActivityThumbnailBtn from "@/components/activity/ActivityThumbnailBtn";
 import { useState, useEffect } from "react";
 
 const ActivitiesSelectionPanel = () => {
@@ -16,7 +16,7 @@ const ActivitiesSelectionPanel = () => {
     return (
         <div className="flex flex-wrap">
             {activities.map((activity) => {
-                if (activity.thumbnail) return <ActivityBriefInfo key={activity?.id} activityInfo={activity} />
+                if (activity.thumbnail) return <ActivityThumbnailBtn key={activity?.id} activityInfo={activity} />
             })}
         </div>
         )

@@ -7,7 +7,7 @@ import { useState, useEffect } from "react";
 
 
 
-const ActivityBriefInfo = ({activityInfo} : any) => {
+const ActivityThumbnailBtn = ({activityInfo} : any) => {
     const router = useRouter();
     const [thumbnailUrl, setThumbnailUrl] = useState<string>('');
 
@@ -42,4 +42,4 @@ const ActivityBriefInfo = ({activityInfo} : any) => {
     );
 };
 
-export default ActivityBriefInfo;
+export default ActivityThumbnailBtn;

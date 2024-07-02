@@ -6,6 +6,7 @@ import EditBtn from '../util/EditBtn';
 import { QrCode } from "lucide-react";
 // import QRCode from "react-qr-code"
 import DonorQRCode from "./DonorQRCode";
+import ActivityParticipated from "../activity/ActivityParticipated";
 
 
 interface DonorDetailedInfoProps {
@@ -84,14 +85,7 @@ const DonorDetailedInfo: React.FC<DonorDetailedInfoProps> = ({ donorInfo, iconUr
                     <DonorQRCode open={isQRCodeOpen} value={qrCodeValue} onClose={handleQRCodeClose} />
                     <h2 className="text-4xl">Activities Participated</h2>
                     {donorInfo?.activities && donorInfo.activities.map((activity: any, index: number) => (
-                        <div key={index}>
-                            <h3>{activity.activity.name}</h3>
-                            <p>Start At: {activity.activity.startAt}</p>
-                            <p>End At: {activity.activity.endAt}</p>
-                            <p>Location: {activity.activity.location}</p>
-                            <p>Address: {activity.activity.address}</p>
-                            <hr />
-                        </div>
+                        <ActivityParticipated name={activity.activity.name} startAt={activity.activity.startAt} endAt={activity.activity.endAt} location={activity.activity.location} address={activity.activity.address} />
                     ))}
                 </div>
             </div>
