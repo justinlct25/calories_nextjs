@@ -79,13 +79,13 @@ const DonorDetailedInfo: React.FC<DonorDetailedInfoProps> = ({ donorInfo, iconUr
                     </div>
                 </div>
                 <div className="w-full aspect-[5]"></div>
-                <div className="w-full flex flex-col justify-center items-center max-w-screen-xl mx-auto">
+                <div className="w-full flex flex-col justify-center items-center mx-auto p-10">
                     {/* <pre>{JSON.stringify(donorInfo, null, 2)}</pre> */}
                     {/* <DonorQRCode value={donorInfo?.id} /> */}
                     <DonorQRCode open={isQRCodeOpen} value={qrCodeValue} onClose={handleQRCodeClose} />
                     <h2 className="text-4xl">Activities Participated</h2>
                     {donorInfo?.activities && donorInfo.activities.map((activity: any, index: number) => (
-                        <ActivityParticipated name={activity.activity.name} startAt={activity.activity.startAt} endAt={activity.activity.endAt} location={activity.activity.location} address={activity.activity.address} />
+                        <ActivityParticipated name={activity.activity.name} startAt={activity.activity.startAt} endAt={activity.activity.endAt} location={activity.activity.location} address={activity.activity.address} background={activity.activity.thumbnail} />
                     ))}
                 </div>
             </div>
