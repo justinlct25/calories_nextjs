@@ -1,0 +1,16 @@
+.navbar {
+    background-color: rgba($color: #fff, $alpha: 0.2);
+}
+
+.loader {
+    width: 12px;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    animation: l5 1s infinite linear alternate;
+  }
+  @keyframes l5 {
+      0%  {box-shadow: 20px 0 #ddd, -20px 0 rgba(255, 255, 255, 0.133);background: #ddd }
+      33% {box-shadow: 20px 0 #ddd, -20px 0 rgba(255, 255, 255, 0.133);background: rgba(255, 255, 255, 0.133)}
+      66% {box-shadow: 20px 0 rgba(255, 255, 255, 0.133),-20px 0 #ddd; background: rgba(255, 255, 255, 0.133)}
+      100%{box-shadow: 20px 0 rgba(255, 255, 255, 0.133),-20px 0 #ddd; background: #ddd }
+}
