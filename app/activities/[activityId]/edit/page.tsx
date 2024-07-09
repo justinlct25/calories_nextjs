@@ -7,7 +7,6 @@ import GoBack from "@/components/util/GoBack";
 import IsSignedIn from "@/components/util/IsSignedIn"; 
 import ActivityEditForm, { activityEditForm } from "@/components/forms/ActivityEditForm";
 import { loadActivityThumbnailUrl, loadActivityDescriptionHTMLImgUrls, loadActivityBackgroundUrl } from '@/utils/loadBucket/loadBucketUrls';
-import { activities } from "@/drizzle/schemas/activities.schema"
 import * as z from "zod"
 
 

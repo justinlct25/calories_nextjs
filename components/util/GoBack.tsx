@@ -26,7 +26,7 @@ const GoBack: React.FC<GoBackProps> = ({ isNavbarPad, backDirectory }) => {
     return (
         // <div>
             // {/* {isTopPadding && <div className='w-full'><TopPadding /></div>} */}
-            <button className={`absolute left-0 top-0 transform -translate-y-1/2 ml-10 z-10 ${isNavbarPad? "mt-32":""}`} onClick={handleGoBack}>
+            <button className={`absolute left-0 top-0 transform -translate-y-1/2 ml-10 z-10 ${isNavbarPad? "mt-24":""}`} onClick={handleGoBack}>
                 <ChevronLeft className="w-10 h-10" />
             </button>
         // </div>

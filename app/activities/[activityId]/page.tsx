@@ -4,7 +4,7 @@
 import { useParams, useRouter } from 'next/navigation';
 import { activities } from "@/drizzle/schemas/activities.schema"
 import { donors } from "@/drizzle/schemas/donors.schema"
-import { loadActivityThumbnailUrl, loadActivityDescriptionHTMLImgUrls } from '@/utils/loadBucket/loadBucketUrls';
+import { loadActivityThumbnailUrl, loadActivityDescriptionHTMLImgUrls, loadActivityBackgroundUrl } from '@/utils/loadBucket/loadBucketUrls';
 import ActivityDetailedInfo from '@/components/activity/ActivityDetailedInfo';
 import { useState, useEffect } from 'react';
 import { useSession } from "next-auth/react"
@@ -20,17 +20,11 @@ export default function ActivityInfoPage() {
   const [donorInfo, setDonorInfo] = useState<typeof donors.$inferInsert>();
   const [activityInfo, setActivityInfo] = useState<typeof activities.$inferInsert>();
   const [thumbnailUrl, setThumbnailUrl] = useState<string>("")
+  const [backgroundUrl, setBackgroundUrl] = useState<string>("")
   const [descriptionHTML, setDescriptionHTML] = useState({ __html: "" })
 
   useEffect(() => {
     if (session) {
-      // fetch(`/api/donors/${session?.user.id}`)
-      // .then((res) => res.json())
-      // .then(async (data) => {
-      //     if (data.donor) {
-      //         setDonorInfo(data.donor);
-      //     }
-      // })
       fetch(`/api/admin/${session?.user.id}`)
       .then((res) => res.json())
       .then((data) => setIsAdmin(data.isAdmin));
@@ -42,6 +36,7 @@ export default function ActivityInfoPage() {
         if (data.activity) {
             setActivityInfo(data.activity);
             setThumbnailUrl(await loadActivityThumbnailUrl(data.activity.thumbnail));
+            setBackgroundUrl(await loadActivityBackgroundUrl(data.activity.background));
             const HTMLwithBucketImgUrls: string = await loadActivityDescriptionHTMLImgUrls(data.activity.description);
             setDescriptionHTML({__html: HTMLwithBucketImgUrls})
         }
@@ -51,7 +46,7 @@ export default function ActivityInfoPage() {
 
   return (
     <div className='w-full'>
-      {activityInfo && <ActivityDetailedInfo activityInfo={activityInfo} thumbnailUrl={thumbnailUrl} descriptionHTML={descriptionHTML} />}
+      {activityInfo && <ActivityDetailedInfo activityInfo={activityInfo} thumbnailUrl={thumbnailUrl} backgroundUrl={backgroundUrl} descriptionHTML={descriptionHTML} />}
       {(activityInfo) && <ActivityParticipationBar activityId={Number(activityId)} donorId={Number(donorInfo?.id)} />}
     </div>
       
