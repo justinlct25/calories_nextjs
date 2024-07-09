@@ -48,7 +48,7 @@ const ActivityDetailedInfo: React.FC<ActivityDetailedInfoProps> = ({ activityInf
                 </div>
                 <div className="w-full aspect-[5]"></div>
                 <div className="w-full flex flex-col justify-center items-center max-w-screen-xl mx-auto">
-                    <div className="text-4xl">活動詳情 Event Details</div>
+                    <div className="text-4xl">活動詳情 Event Detailss</div>
                     <div className="mt-4" dangerouslySetInnerHTML={descriptionHTML} />
                 </div>
             </div>
