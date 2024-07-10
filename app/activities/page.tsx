@@ -20,14 +20,18 @@ const ActivitiesMenuPage = () => {
     }, [session])
 
 
-    return <div>
+    return (
+        <div className='w-full'>
             <TopPadding />
+            
             <div className='container flex items-center justify-between'>
                 <h2>Exercise Activities</h2>
                 {isAdmin && <Link href='/activities/create'><PlusCircle /></Link>}
             </div>    
+            
             <ActivitiesSelectionPanel />
-        </div>;
+        </div>
+    );
 } 
 
 export default ActivitiesMenuPage;
