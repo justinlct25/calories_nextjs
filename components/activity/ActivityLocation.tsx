@@ -19,7 +19,7 @@ const ActivityLocation: React.FC<ActivityLocationProps> = ({ location, address }
 
     return (
         <div className="flex flex-col justify-center items-center">
-            <h1 className="text-3xl">地點 Location</h1>
+            <h1 className="text-xl">地點 Location</h1>
             <div className="mt-4">{location}</div>
             <div>{address}</div>
         </div>

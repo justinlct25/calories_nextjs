@@ -38,7 +38,7 @@ const ActivityDates: React.FC<ActivityDatesProps> = ({ startAt, endAt }) => {
 
     return (
         <div className="flex flex-col justify-center items-center">
-            <h1 className="text-3xl">日期 Date</h1>
+            <h1 className="text-xl">日期 Date</h1>
             {isSameDate ? (
                 <div className="mt-4">
                     <div>{startDateChi}</div>

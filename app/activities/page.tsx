@@ -25,7 +25,7 @@ const ActivitiesMenuPage = () => {
             <TopPadding />
             
             <div className='container flex items-center justify-between'>
-                <h2>Exercise Activities</h2>
+                <h2 className='text-3xl font-bold px-20'>Exercises</h2>
                 {isAdmin && <Link href='/activities/create'><PlusCircle /></Link>}
             </div>    
             

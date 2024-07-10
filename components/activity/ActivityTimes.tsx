@@ -43,7 +43,7 @@ const ActivityDates: React.FC<ActivityDatesProps> = ({ startAt, endAt }) => {
 
     return (
         <div className="flex flex-col justify-center items-center">
-            <h1 className="text-3xl">時間 Times</h1>
+            <h1 className="text-xl">時間 Times</h1>
             {isSameTime ? (
                 <div className="mt-4">{startTimeEng}</div>
             ) : (

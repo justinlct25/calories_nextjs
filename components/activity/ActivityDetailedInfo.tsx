@@ -17,12 +17,13 @@ interface ActivityDetailedInfoProps {
     descriptionHTML: { __html: string };
 }
 
-
+// TODO: fix cross device style
 const ActivityDetailedInfo: React.FC<ActivityDetailedInfoProps> = ({ activityInfo, thumbnailUrl, descriptionHTML }) => {
 
     return (
         <div className="w-full">
             <GoBack isNavbarPad={true} backDirectory='parent' />
+            {/* TODO: hide icon ig not admin */}
             <EditBtn isNavbarPad={true} editUrl={`/activities/${activityInfo?.id}/edit`} />
             <div
                 style={{
@@ -35,18 +36,18 @@ const ActivityDetailedInfo: React.FC<ActivityDetailedInfoProps> = ({ activityInf
                 }}
                 className="w-full aspect-[3] bg-blend-darken bg-black bg-opacity-60 flex justify-center items-center"
             >
-                <div className="text-4xl">{activityInfo?.name}</div>
+                <div className="text-4xl px-20 py-12">{activityInfo?.name}</div>
             </div>
             <div className=" w-full aspect-[2] absolute top-0">
                 <div className="w-full aspect-[4]"></div> {/* padding from top */}
-                <div className="bg-black w-9/12 aspect-[5.5] z-[-10] absolute left-1/2 transform -translate-x-1/2 flex flex-row justify-around items-center rounded-md">
+                <div className="bg-black w-9/12 aspect-[5.5] z-[-10] absolute left-1/2 transform -translate-x-1/2 flex flex-row justify-around items-center rounded-md px-8 py-8">
                     <ActivityDates startAt={activityInfo?.startAt} endAt={activityInfo?.endAt} />
                     <ActivityLocation location={activityInfo?.location} address={activityInfo?.address} />
                     <ActivityTimes startAt={activityInfo?.startAt} endAt={activityInfo?.endAt} />
                 </div>
                 <div className="w-full aspect-[5]"></div>
                 <div className="w-full flex flex-col justify-center items-center max-w-screen-xl mx-auto">
-                    <div className="text-4xl">活動詳情 Event Details</div>
+                    <div className="text-3xl">活動詳情 Event Details</div>
                     <div className="mt-4" dangerouslySetInnerHTML={descriptionHTML} />
                 </div>
             </div>
