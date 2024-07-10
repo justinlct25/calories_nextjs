@@ -40,6 +40,10 @@ export const activityEditForm = z.object({
     thumbnail: z.any()
     .optional()
     .refine((file) => file.length == 1  ? file[0].size <= MAX_FILE_SIZE : true, `Max image size is 5MB.`)
+    .refine((file) => file.length == 1  ? ACCEPTED_IMAGE_TYPES.includes(file[0].type) : true, "Only .jpg, .jpeg, .png and .webp formats are supported."),
+    background: z.any()
+    .optional()
+    .refine((file) => file.length == 1  ? file[0].size <= MAX_FILE_SIZE : true, `Max image size is 5MB.`)
     .refine((file) => file.length == 1  ? ACCEPTED_IMAGE_TYPES.includes(file[0].type) : true, "Only .jpg, .jpeg, .png and .webp formats are supported.")
     //   z
     //   .refine((file) => file?.length == 1, 'File is required.')
@@ -51,10 +55,11 @@ interface ActivityEditFormProps {
     activityId: number;
     activity: z.infer<typeof activityEditForm>;
     thumbnailUrl: string;
+    backgroundUrl: string
     description: string;
 }
 
-const ActivityEditForm: React.FC<ActivityEditFormProps> = ({ activityId, activity, thumbnailUrl, description}) => {
+const ActivityEditForm: React.FC<ActivityEditFormProps> = ({ activityId, activity, thumbnailUrl, backgroundUrl, description}) => {
     const router = useRouter();
     const form = useForm<z.infer<typeof activityEditForm>>({
         resolver: zodResolver(activityEditForm),
@@ -75,7 +80,7 @@ const ActivityEditForm: React.FC<ActivityEditFormProps> = ({ activityId, activit
 
     useEffect(() => {
         setDescriptionHTML(description);
-        console.log("description: "+descriptionHTML)
+        // console.log("description: "+descriptionHTML)
     }, [description])
 
     const handleDescriptionEditorChange = (content: any) => {
@@ -96,11 +101,6 @@ const ActivityEditForm: React.FC<ActivityEditFormProps> = ({ activityId, activit
         if (values.address) formData.append('address', values.address);
         formData.append('thumbnail', values.thumbnail[0]); 
         formData.append('description', descriptionHTML);
-        console.log("formData(startAt): ", JSON.stringify(formData.get('startAt')))
-        console.log("formData(description): ", JSON.stringify(formData.get('description')))
-
-        console.log("going to fetch edit activity")
-        console.log("id:" + activityId)
         const response = await fetch(`/api/activities/${activityId}/edit`, {
             method: 'POST',
             body: formData
@@ -261,7 +261,21 @@ const ActivityEditForm: React.FC<ActivityEditFormProps> = ({ activityId, activit
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel>Thumbnail</FormLabel>
-                                    {thumbnailUrl && <img src={thumbnailUrl} alt="Thumbnail" className="mt-4" />}
+                                    {thumbnailUrl && <img src={thumbnailUrl} alt="Thumbnail" className="mt-4 w-32 h-32" />}                                    
+                                    <FormControl>
+                                        <Input type="file" className="text-black" accept="image/png, image/jpg, image/jpeg" {...fileRef} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="background"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Background</FormLabel>
+                                    {backgroundUrl && <img src={backgroundUrl} alt="Thumbnail" className="mt-4 w-32 h-32" />}                                    
                                     <FormControl>
                                         <Input type="file" className="text-black" accept="image/png, image/jpg, image/jpeg" {...fileRef} />
                                     </FormControl>

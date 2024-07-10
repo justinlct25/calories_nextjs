@@ -37,7 +37,6 @@ export async function POST(req: Request, {params}: any) {
         const activityId = params.activityId;
         // const donorId = params.donorId;
         const session = await auth();
-        console.log("postttt")
         if (!session?.user.id) { return NextResponse.json({message: "Invalid session"}, {status: 409}) }
         const donorInfo = (await getUser(session?.user.id))
         if (!donorInfo) { return NextResponse.json({message: "Donor not found"}, {status: 404}) }

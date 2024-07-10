@@ -14,11 +14,12 @@ import ActivityLocation from './ActivityLocation';
 interface ActivityDetailedInfoProps {
     activityInfo: typeof activities.$inferInsert;
     thumbnailUrl: string;
+    backgroundUrl: string;
     descriptionHTML: { __html: string };
 }
 
-// TODO: fix cross device style
-const ActivityDetailedInfo: React.FC<ActivityDetailedInfoProps> = ({ activityInfo, thumbnailUrl, descriptionHTML }) => {
+
+const ActivityDetailedInfo: React.FC<ActivityDetailedInfoProps> = ({ activityInfo, thumbnailUrl, backgroundUrl, descriptionHTML }) => {
 
     return (
         <div className="w-full">
@@ -27,16 +28,17 @@ const ActivityDetailedInfo: React.FC<ActivityDetailedInfoProps> = ({ activityInf
             <EditBtn isNavbarPad={true} editUrl={`/activities/${activityInfo?.id}/edit`} />
             <div
                 style={{
-                    backgroundImage: `url("${thumbnailUrl}")`,
+                    backgroundImage: `url("${backgroundUrl}")`,
                     backgroundRepeat: 'no-repeat',
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
                     clipPath: 'polygon(100% 0, 100% 100%, 90% 100%, 80% 75%, 20% 75%, 10% 100%, 0 100%, 0% 0%)',
                     filter: 'url(#flt_tag)',
                 }}
-                className="w-full aspect-[3] bg-blend-darken bg-black bg-opacity-60 flex justify-center items-center"
+                className="w-full aspect-[3] bg-blend-darken bg-black bg-opacity-60 flex justify-center items-center pb-10 pl-10 pr-10"
             >
-                <div className="text-4xl px-20 py-12">{activityInfo?.name}</div>
+                {thumbnailUrl && <img src={thumbnailUrl} alt="Thumbnail" className="mr-6 w-1/6 aspect-[1] rounded-xl" />}
+                <div className="text-4xl">{activityInfo?.name}</div>
             </div>
             <div className=" w-full aspect-[2] absolute top-0">
                 <div className="w-full aspect-[4]"></div> {/* padding from top */}
