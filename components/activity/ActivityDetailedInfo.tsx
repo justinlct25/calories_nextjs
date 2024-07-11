@@ -10,6 +10,7 @@ import ActivityTimes from './ActivityTimes';
 import { Pencil } from 'lucide-react';
 import EditBtn from '../util/EditBtn';
 import ActivityLocation from './ActivityLocation';
+import { useSession } from 'next-auth/react';
 
 interface ActivityDetailedInfoProps {
     activityInfo: typeof activities.$inferInsert;
@@ -20,12 +21,21 @@ interface ActivityDetailedInfoProps {
 
 
 const ActivityDetailedInfo: React.FC<ActivityDetailedInfoProps> = ({ activityInfo, thumbnailUrl, backgroundUrl, descriptionHTML }) => {
+    {/* TODO: is admin identity saved anywhere? Need better way to check */}
+    const { data: session, status } = useSession()
+    const [isAdmin, setIsAdmin] = useState<boolean>(false);
+    useEffect(() => {
+        if (session) {
+            fetch(`/api/admin/${session?.user.id}`)
+            .then((res) => res.json())
+            .then((data) => setIsAdmin(data.isAdmin));
+        }
+    }, [session])
 
     return (
         <div className="w-full">
             <GoBack isNavbarPad={true} backDirectory='parent' />
-            {/* TODO: hide icon ig not admin */}
-            <EditBtn isNavbarPad={true} editUrl={`/activities/${activityInfo?.id}/edit`} />
+            {isAdmin && <EditBtn isNavbarPad={true} editUrl={`/activities/${activityInfo?.id}/edit`} />}
             <div
                 style={{
                     backgroundImage: `url("${backgroundUrl}")`,
