@@ -35,6 +35,7 @@ export default function ActivityInfoPage() {
         // setLoading(false)
         if (data.activity) {
             setActivityInfo(data.activity);
+            console.log(JSON.stringify(data.activity, null, 2));
             setThumbnailUrl(await loadActivityThumbnailUrl(data.activity.thumbnail));
             setBackgroundUrl(await loadActivityBackgroundUrl(data.activity.background));
             const HTMLwithBucketImgUrls: string = await loadActivityDescriptionHTMLImgUrls(data.activity.description);

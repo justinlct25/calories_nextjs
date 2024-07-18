@@ -11,6 +11,7 @@ import { uploadBufferToBucketStorage } from "@/utils/uploadBucket/uploadBucketSt
 
 const bucketName = process.env.BUCKET_STORAGE_IMAGES || '';
 const bucketFolderThumbnail = process.env.BUCKET_STORAGE_FOLDER_ACTIVITY_THUMBNAIL || ''
+const bucketFolderBackground = process.env.BUCKET_STORAGE_FOLDER_ACTIVITY_BACKGROUND || ''
 
 
 export async function POST(req: Request, {params}: any) {
@@ -50,6 +51,15 @@ export async function POST(req: Request, {params}: any) {
                     if (fileName !== targetActivity.thumbnail) {
                         await uploadBufferToBucketStorage(bucketName, fileName, buffer, bucketFolderThumbnail)
                         activityUpdateObj = {...activityUpdateObj, thumbnail: fileName}
+                    }
+                }
+                const backgroundFile = await formData.get('background') as File;
+                if (backgroundFile instanceof File) {
+                    const buffer = Buffer.from(await backgroundFile.arrayBuffer());
+                    const fileName = `activity${activityId}-${Date.now()}-${backgroundFile.name}`
+                    if (fileName !== targetActivity.background) {
+                        await uploadBufferToBucketStorage(bucketName, fileName, buffer, bucketFolderBackground)
+                        activityUpdateObj = {...activityUpdateObj, background: fileName}
                     }
                 }
                 const description = String(formData.get('description'));

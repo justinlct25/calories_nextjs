@@ -25,6 +25,7 @@ const activityCreateFormSchema = z.object({
 
 const bucketName = process.env.BUCKET_STORAGE_IMAGES || '';
 const bucketFolderThumbnail = process.env.BUCKET_STORAGE_FOLDER_ACTIVITY_THUMBNAIL || ''
+const bucketFolderBackground = process.env.BUCKET_STORAGE_FOLDER_ACTIVITY_BACKGROUND || ''
 
 
 export async function POST(req: Request) {
@@ -56,12 +57,20 @@ export async function POST(req: Request) {
                 const newActivity = await insertActivity(activityDetails)
                 let activityUpdateObj = {}
                 const thumbnailFile = await formData.get('thumbnail') as File;
-                if (thumbnailFile) {
+                if (thumbnailFile instanceof File) {
                     const buffer = Buffer.from(await thumbnailFile.arrayBuffer());
                     const fileName = `activity${newActivity.id}-${Date.now()}-${thumbnailFile.name}`
                     await uploadBufferToBucketStorage(bucketName, fileName, buffer, bucketFolderThumbnail)
                     activityUpdateObj = {...activityUpdateObj, thumbnail: fileName}
                 }
+                const backgroundFile = await formData.get('background') as File;
+                if (backgroundFile instanceof File) {
+                    const buffer = Buffer.from(await backgroundFile.arrayBuffer());
+                    const fileName = `activity${newActivity.id}-${Date.now()}-${backgroundFile.name}`
+                    await uploadBufferToBucketStorage(bucketName, fileName, buffer, bucketFolderBackground)
+                    activityUpdateObj = {...activityUpdateObj, background: fileName}
+                }
+
                 const description = String(formData.get('description'));
                 if (description) {  
                     const descriptionWithUploadedImgLinks = await processTipTapBase64Images(newActivity.id, description);

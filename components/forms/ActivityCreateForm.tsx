@@ -39,11 +39,12 @@ export const activityCreateForm = z.object({
     address: z.string().optional(),
     thumbnail: z.any()
     .optional()
-    .refine((file) => file[0]?.size <= MAX_FILE_SIZE, `Max image size is 5MB.`)
-    .refine(
-      (file) => ACCEPTED_IMAGE_TYPES.includes(file[0]?.type),
-      "Only .jpg, .jpeg, .png and .webp formats are supported."
-    )
+    .refine((file) => (file.length == 1) ? (file[0]?.size <= MAX_FILE_SIZE ? true : false) : true, `Max image size is 5MB.`)
+    .refine((file) => (file.length == 1) ? (ACCEPTED_IMAGE_TYPES.includes(file[0]?.type) ? true : false) : true, "Only .jpg, .jpeg, .png and .webp formats are supported."),
+    background: z.any()
+    .optional()
+    .refine((file) => (file.length == 1) ? (file[0]?.size <= MAX_FILE_SIZE ? true : false) : true, `Max image size is 5MB.`)
+    .refine((file) => (file.length == 1) ? (ACCEPTED_IMAGE_TYPES.includes(file[0]?.type) ? true : false) : true, "Only .jpg, .jpeg, .png and .webp formats are supported."),
     //   z
     //   .refine((file) => file?.length == 1, 'File is required.')
     //   .refine((file) => file[0]?.type === 'application/pdf', 'Must be a PDF.')
@@ -64,7 +65,8 @@ const ActivityCreateForm = () => {
         },
         mode: 'onChange',
     })
-    const fileRef = form.register('thumbnail', { required: true });
+    const thumbnailFileRef = form.register('thumbnail', { required: true });
+    const backgroundFileRef = form.register('background', { required: true });
     const [descriptionHTML, setDescriptionHTML] = useState<string>('');
     const handleDescriptionEditorChange = (content: any) => {
         setDescriptionHTML(content)
@@ -82,6 +84,7 @@ const ActivityCreateForm = () => {
         if (values.location) formData.append('location', values.location);
         if (values.address) formData.append('address', values.address);
         formData.append('thumbnail', values.thumbnail[0]); 
+        formData.append('background', values.background[0]);
         formData.append('description', descriptionHTML);
         // console.log("formData(quota): ", JSON.stringify(formData.get('quota')))
 
@@ -246,7 +249,20 @@ const ActivityCreateForm = () => {
                                 <FormItem>
                                     <FormLabel>Thumbnail</FormLabel>
                                     <FormControl>
-                                        <Input type="file" className="text-black" accept="image/png, image/jpg, image/jpeg" {...fileRef} />
+                                        <Input type="file" className="text-black" accept="image/png, image/jpg, image/jpeg" {...thumbnailFileRef} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="background"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Background</FormLabel>
+                                    <FormControl>
+                                        <Input type="file" className="text-black" accept="image/png, image/jpg, image/jpeg" {...backgroundFileRef} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>

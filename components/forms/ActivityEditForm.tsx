@@ -39,12 +39,12 @@ export const activityEditForm = z.object({
     address: z.string().optional(),
     thumbnail: z.any()
     .optional()
-    .refine((file) => file.length == 1  ? file[0].size <= MAX_FILE_SIZE : true, `Max image size is 5MB.`)
-    .refine((file) => file.length == 1  ? ACCEPTED_IMAGE_TYPES.includes(file[0].type) : true, "Only .jpg, .jpeg, .png and .webp formats are supported."),
+    .refine((file) => (file.length == 1) ? (file[0]?.size <= MAX_FILE_SIZE ? true : false) : true, `Max image size is 5MB.`)
+    .refine((file) => (file.length == 1) ? (ACCEPTED_IMAGE_TYPES.includes(file[0]?.type) ? true : false) : true, "Only .jpg, .jpeg, .png and .webp formats are supported."),
     background: z.any()
     .optional()
-    .refine((file) => file.length == 1  ? file[0].size <= MAX_FILE_SIZE : true, `Max image size is 5MB.`)
-    .refine((file) => file.length == 1  ? ACCEPTED_IMAGE_TYPES.includes(file[0].type) : true, "Only .jpg, .jpeg, .png and .webp formats are supported.")
+    .refine((file) => (file.length == 1) ? (file[0]?.size <= MAX_FILE_SIZE ? true : false) : true, `Max image size is 5MB.`)
+    .refine((file) => (file.length == 1) ? (ACCEPTED_IMAGE_TYPES.includes(file[0]?.type) ? true : false) : true, "Only .jpg, .jpeg, .png and .webp formats are supported.")
     //   z
     //   .refine((file) => file?.length == 1, 'File is required.')
     //   .refine((file) => file[0]?.type === 'application/pdf', 'Must be a PDF.')
@@ -64,18 +64,18 @@ const ActivityEditForm: React.FC<ActivityEditFormProps> = ({ activityId, activit
     const form = useForm<z.infer<typeof activityEditForm>>({
         resolver: zodResolver(activityEditForm),
         defaultValues: {
-            // ...activity,
             name: activity.name ?? undefined,
             startAt: activity.startAt ?? undefined,
             endAt: activity.endAt ?? undefined,
-            quota: typeof activity.quota === 'string' ? parseInt(activity.quota) : activity.quota,
-            price: typeof activity.price === 'string' ? parseInt(activity.price) : activity.price,
+            quota: activity.quota ? (typeof activity.quota === 'string' ? parseInt(activity.quota) : activity.quota) : undefined,
+            price: activity.price ? (typeof activity.price === 'string' ? parseInt(activity.price) : activity.price) : undefined,
             location: activity.location ?? undefined,
             address: activity.address ?? undefined,
         },
         mode: 'onChange',
     })
-    const fileRef = form.register('thumbnail', { required: true });
+    const thumbnailFileRef = form.register('thumbnail', { required: true });
+    const backgroundFileRef = form.register('background', { required: true });
     const [descriptionHTML, setDescriptionHTML] = useState<string>('');
 
     useEffect(() => {
@@ -99,7 +99,8 @@ const ActivityEditForm: React.FC<ActivityEditFormProps> = ({ activityId, activit
         if (values.price) formData.append('price', String(values.price));
         if (values.location) formData.append('location', values.location);
         if (values.address) formData.append('address', values.address);
-        formData.append('thumbnail', values.thumbnail[0]); 
+        formData.append('thumbnail', values.thumbnail[0]);
+        formData.append('background', values.background[0]);
         formData.append('description', descriptionHTML);
         const response = await fetch(`/api/activities/${activityId}/edit`, {
             method: 'POST',
@@ -263,7 +264,7 @@ const ActivityEditForm: React.FC<ActivityEditFormProps> = ({ activityId, activit
                                     <FormLabel>Thumbnail</FormLabel>
                                     {thumbnailUrl && <img src={thumbnailUrl} alt="Thumbnail" className="mt-4 w-32 h-32" />}                                    
                                     <FormControl>
-                                        <Input type="file" className="text-black" accept="image/png, image/jpg, image/jpeg" {...fileRef} />
+                                        <Input type="file" className="text-black" accept="image/png, image/jpg, image/jpeg" {...thumbnailFileRef} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -277,7 +278,7 @@ const ActivityEditForm: React.FC<ActivityEditFormProps> = ({ activityId, activit
                                     <FormLabel>Background</FormLabel>
                                     {backgroundUrl && <img src={backgroundUrl} alt="Thumbnail" className="mt-4 w-32 h-32" />}                                    
                                     <FormControl>
-                                        <Input type="file" className="text-black" accept="image/png, image/jpg, image/jpeg" {...fileRef} />
+                                        <Input type="file" className="text-black" accept="image/png, image/jpg, image/jpeg" {...backgroundFileRef} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
