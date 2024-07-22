@@ -85,7 +85,7 @@ const DonorDetailedInfo: React.FC<DonorDetailedInfoProps> = ({ donorInfo, iconUr
                     <DonorQRCode open={isQRCodeOpen} value={qrCodeValue} onClose={handleQRCodeClose} />
                     <h2 className="text-4xl">Activities Participated</h2>
                     {donorInfo?.activities && donorInfo.activities.map((activity: any, index: number) => (
-                        <ActivityParticipated name={activity.activity.name} startAt={activity.activity.startAt} endAt={activity.activity.endAt} location={activity.activity.location} address={activity.activity.address} background={activity.activity.thumbnail} />
+                        <ActivityParticipated activityId={activity.activity.id} name={activity.activity.name} startAt={activity.activity.startAt} endAt={activity.activity.endAt} location={activity.activity.location} address={activity.activity.address} background={activity.activity.thumbnail} />
                     ))}
                 </div>
             </div>
