@@ -77,11 +77,41 @@ const ActivityEditForm: React.FC<ActivityEditFormProps> = ({ activityId, activit
     const thumbnailFileRef = form.register('thumbnail', { required: true });
     const backgroundFileRef = form.register('background', { required: true });
     const [descriptionHTML, setDescriptionHTML] = useState<string>('');
+    const [thumbnailPreview, setThumbnailPreview] = useState<string | null>(null);
+    const [backgroundPreview, setBackgroundPreview] = useState<string | null>(null);
 
     useEffect(() => {
         setDescriptionHTML(description);
+        setThumbnailPreview(thumbnailUrl);
+        setBackgroundPreview(backgroundUrl);
         // console.log("description: "+descriptionHTML)
-    }, [description])
+    }, [description, thumbnailUrl, backgroundUrl])
+
+    const handleThumbnailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setThumbnailPreview(reader.result as string);
+            };
+            reader.readAsDataURL(file);
+        } else {
+            setThumbnailPreview(null);
+        }
+    };
+
+    const handleBackgroundChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setBackgroundPreview(reader.result as string);
+            };
+            reader.readAsDataURL(file);
+        } else {
+            setBackgroundPreview(null);
+        }
+    };
 
     const handleDescriptionEditorChange = (content: any) => {
         setDescriptionHTML(content)
@@ -262,9 +292,11 @@ const ActivityEditForm: React.FC<ActivityEditFormProps> = ({ activityId, activit
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel>Thumbnail</FormLabel>
-                                    {thumbnailUrl && <img src={thumbnailUrl} alt="Thumbnail" className="mt-4 w-32 h-32" />}                                    
+                                    <div className="w-64 h-64 border-2 border-gray-300">
+                                        {thumbnailPreview ? <img src={thumbnailPreview} alt="Thumbnail Preview" className="w-full h-full object-cover" /> : null}
+                                    </div>
                                     <FormControl>
-                                        <Input type="file" className="text-black" accept="image/png, image/jpg, image/jpeg" {...thumbnailFileRef} />
+                                        <Input type="file" className="text-black" accept="image/png, image/jpg, image/jpeg" {...thumbnailFileRef} onChange={handleThumbnailChange} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -276,9 +308,11 @@ const ActivityEditForm: React.FC<ActivityEditFormProps> = ({ activityId, activit
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel>Background</FormLabel>
-                                    {backgroundUrl && <img src={backgroundUrl} alt="Thumbnail" className="mt-4 w-32 h-32" />}                                    
+                                    <div className="h-64 border-2 border-gray-300">
+                                        {backgroundPreview ? <img src={backgroundPreview} alt="Background Preview" className="w-full h-full object-cover" /> : null}
+                                    </div>
                                     <FormControl>
-                                        <Input type="file" className="text-black" accept="image/png, image/jpg, image/jpeg" {...backgroundFileRef} />
+                                        <Input type="file" className="text-black" accept="image/png, image/jpg, image/jpeg" {...backgroundFileRef} onChange={handleBackgroundChange} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
