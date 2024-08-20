@@ -13,11 +13,10 @@ import ActivityParticipationBar from '@/components/activity/ActivityParticipatio
 
 
 export default function ActivityInfoPage() {
-  const { data: session, status } = useSession()
+  const { data: session, status } = useSession();
   const { activityId } = useParams();
   const router = useRouter();
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
-  const [donorInfo, setDonorInfo] = useState<typeof donors.$inferInsert>();
   const [activityInfo, setActivityInfo] = useState<typeof activities.$inferInsert>();
   const [thumbnailUrl, setThumbnailUrl] = useState<string>("")
   const [backgroundUrl, setBackgroundUrl] = useState<string>("")
@@ -48,7 +47,7 @@ export default function ActivityInfoPage() {
   return (
     <div className='w-full'>
       {activityInfo && <ActivityDetailedInfo activityInfo={activityInfo} thumbnailUrl={thumbnailUrl} backgroundUrl={backgroundUrl} descriptionHTML={descriptionHTML} />}
-      {(activityInfo) && <ActivityParticipationBar activityId={Number(activityId)} donorId={Number(donorInfo?.id)} />}
+      {(activityInfo) && <ActivityParticipationBar activityId={Number(activityId)} />}
     </div>
       
   );
