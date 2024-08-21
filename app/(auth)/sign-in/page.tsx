@@ -2,7 +2,6 @@
 
 import TopPadding from "@/components/TopPadding";
 import SignInForm from "@/components/forms/SignInForm";
-import { useParams } from "next/navigation";
 import { useSearchParams } from "next/navigation";
 
 export default function Page() {

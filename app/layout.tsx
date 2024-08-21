@@ -3,8 +3,10 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import "../styles/main.scss"
 import Navbar from "@/components/Navbar";
-import Provider from "@/components/Provider";
+// import Provider from "@/components/Provider";
 import { Toaster } from "@/components/ui/toaster";
+import { SessionProvider } from "next-auth/react"
+import { GlobalContextProvider } from "@/contexts/globalContext";
 
 
 const inter = Inter({ subsets: ["latin"] });
@@ -22,14 +24,18 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.className} bg-[#252628] text-white`}>
-        <Provider>
-          {/* <main className='h-screen flex flex-col justify-center items-center'> */}
-          <main className='flex flex-col justify-center items-center w-full'>
-            <Navbar />
-            {children}
-          </main>
-          <Toaster />
-        </Provider>
+        {/* <Provider> */}
+        <SessionProvider>
+          <GlobalContextProvider>
+            {/* <main className='h-screen flex flex-col justify-center items-center'> */}
+            <main className='flex flex-col justify-center items-center w-full'>
+              <Navbar />
+              {children}
+            </main>
+            <Toaster />
+          </GlobalContextProvider>
+        </SessionProvider>
+        {/* </Provider> */}
       </body>
     </html>
   );

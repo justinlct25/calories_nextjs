@@ -19,6 +19,9 @@ import GoogleSignInBtn from "../GoogleSignInBtn";
 import { signIn } from 'next-auth/react';
 import { useRouter } from "next/navigation";
 import { useToast } from "../ui/use-toast";
+import { createContext, useContext, useState } from 'react';
+
+
 
 const FormSchema = z.object({
     email: z.string().min(1, 'Email is required').email('Invalid email'),
@@ -53,6 +56,7 @@ const SignInForm: React.FC<SignInFormProps> = ({ activityId }) => {
                 variant: 'destructive'
             })
         } else {
+            console.log(JSON.stringify(signInData, null, 2));
             router.refresh();
             if (activityId) {
                 router.push(`/activities/${activityId}`);
