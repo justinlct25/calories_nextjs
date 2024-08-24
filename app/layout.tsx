@@ -6,7 +6,8 @@ import Navbar from "@/components/Navbar";
 // import Provider from "@/components/Provider";
 import { Toaster } from "@/components/ui/toaster";
 import { SessionProvider } from "next-auth/react"
-import { GlobalContextProvider } from "@/contexts/globalContext";
+import { CounterStoreProvider } from "./stores/counter-store-provider";
+import { UserStoreProvider } from "./stores/user-store-provider";
 
 
 const inter = Inter({ subsets: ["latin"] });
@@ -26,14 +27,13 @@ export default function RootLayout({
       <body className={`${inter.className} bg-[#252628] text-white`}>
         {/* <Provider> */}
         <SessionProvider>
-          <GlobalContextProvider>
-            {/* <main className='h-screen flex flex-col justify-center items-center'> */}
+          <UserStoreProvider>
             <main className='flex flex-col justify-center items-center w-full'>
               <Navbar />
               {children}
             </main>
             <Toaster />
-          </GlobalContextProvider>
+          </UserStoreProvider>
         </SessionProvider>
         {/* </Provider> */}
       </body>

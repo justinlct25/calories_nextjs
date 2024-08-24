@@ -6,6 +6,7 @@ import { useParams, useRouter } from 'next/navigation';
 import DonorInfoPag from "@/components/donor/DonorInfoPage";
 import { loadDonorBgImgUrl, loadDonorIconUrl } from "@/utils/loadBucket/loadBucketUrls";
 
+
 export default function DonorInfoPage() {
     const { data: session, status } = useSession();
     const { donorId } = useParams();

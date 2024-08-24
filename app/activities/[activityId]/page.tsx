@@ -9,7 +9,7 @@ import ActivityDetailedInfo from '@/components/activity/ActivityDetailedInfo';
 import { useState, useEffect } from 'react';
 import { useSession } from "next-auth/react"
 import ActivityParticipationBar from '@/components/activity/ActivityParticipationBar';
-
+// import { useGlobalContext } from '@/contexts';
 
 
 export default function ActivityInfoPage() {
@@ -22,7 +22,10 @@ export default function ActivityInfoPage() {
   const [backgroundUrl, setBackgroundUrl] = useState<string>("")
   const [descriptionHTML, setDescriptionHTML] = useState({ __html: "" })
 
+
   useEffect(() => {
+    // const { user } = useGlobalContext();
+    // console.log(user);
     if (session) {
       fetch(`/api/admin/${session?.user.id}`)
       .then((res) => res.json())

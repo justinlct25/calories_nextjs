@@ -19,7 +19,7 @@ import GoogleSignInBtn from "../GoogleSignInBtn";
 import { signIn } from 'next-auth/react';
 import { useRouter } from "next/navigation";
 import { useToast } from "../ui/use-toast";
-import { createContext, useContext, useState } from 'react';
+import { useSession } from "next-auth/react";
 
 
 
@@ -35,12 +35,16 @@ interface SignInFormProps {
     activityId: number | null;
 }
 
+
 const SignInForm: React.FC<SignInFormProps> = ({ activityId }) => {
+    // const { setUser } = useGlobalContext();
     const router = useRouter();
     const { toast } = useToast();
     const form = useForm<z.infer<typeof FormSchema>>({
         resolver: zodResolver(FormSchema),
     });
+    // const { data: session, status} = useSession();
+
 
 
     const onSubmit = async (values: z.infer<typeof FormSchema>) => {
