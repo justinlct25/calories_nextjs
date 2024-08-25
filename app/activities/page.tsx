@@ -15,7 +15,7 @@ const ActivitiesMenuPage = () => {
     const [isAdmin, setIsAdmin] = useState<boolean>(false);
     useEffect(() => {
         if (session) {
-            setUser(session.user);
+            // setUser(session.user);
             fetch(`/api/admin/${session?.user.id}`)
             .then((res) => res.json())
             .then((data) => setIsAdmin(data.isAdmin));

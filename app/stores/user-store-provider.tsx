@@ -5,6 +5,9 @@ import { useStore } from 'zustand'
 
 import { type UserStore, createUserStore } from './user-store'
 
+import { useSession } from "next-auth/react"
+import { useState, useEffect } from "react";
+
 export type UserStoreApi = ReturnType<typeof createUserStore>
 
 export const UserStoreContext = createContext<UserStoreApi | undefined>(
