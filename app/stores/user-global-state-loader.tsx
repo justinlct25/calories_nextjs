@@ -21,14 +21,18 @@ export interface UserGlobalStateLoaderProps {
   
     useEffect(() => {
       if (session) {
-        setUser(session.user);
+        fetch(`/api/user`)
+        .then((res) => res.json())
+        .then((data) => {
+            setUser(data.user)
+        })
       }
     }, [session])
 
     return (
-        <div>
+        <>
           {children}
-        </div>
+        </>
       )
 
   }
