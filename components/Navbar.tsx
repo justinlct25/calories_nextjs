@@ -2,30 +2,16 @@
 
 
 import Link from 'next/link';
-import { useState, useEffect } from "react";
-import { useSession } from 'next-auth/react';
-import { Button, buttonVariants } from './ui/button';
+import { buttonVariants } from './ui/button';
 import { HandMetal, CircleUserRound } from 'lucide-react'
-import { signOut } from 'next-auth/react'
 import SignOutBtn from './SignOutBtn';
+import { useUserStore } from '@/app/stores/user-store-provider';
 
 
 const Navbar = () => {
-    // const session = await auth();
-    const { data: session, status } = useSession()
-    const [userInfo, setUserInfo] = useState<any>();
-
-    useEffect(() => {
-        if (session) {
-            fetch(`/api/user/${session?.user.id}`)
-                .then((res) => res.json())
-                .then((data) => {
-                    if (data.user) {
-                        setUserInfo(data.user);
-                    }
-                });
-        }
-    }, [session]);
+    const { user } = useUserStore(
+        (state: any) => state,
+      )
 
 
     return (
@@ -45,9 +31,9 @@ const Navbar = () => {
                 <Link href='/'>
                     About Us
                 </Link>
-                {userInfo ? (
+                {Object.keys(user).length !== 0 ? (
                     <>
-                        <Link href={`/donors/${userInfo.donor.id}`}>
+                        <Link href={`/donors/${user.donor.id}`}>
                             <CircleUserRound />
                         </Link>
                         <SignOutBtn />

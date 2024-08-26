@@ -1,16 +1,18 @@
-import React, { useState, useEffect } from "react";
-import { useSession } from "next-auth/react"
+import React from "react";
+import { useUserStore } from "@/app/stores/user-store-provider";
+import EditBtn from "../util/EditBtn";
 
 
 interface DonorPersonalDetailProps {
     open: boolean;
     onClose: () => void; 
-    donorInfo: any;
-
 }
 
-const DonorPersonalDetail: React.FC<DonorPersonalDetailProps> = ({ open, onClose, donorInfo }) => {
-    const { data: session, status } = useSession();
+const DonorPersonalDetail: React.FC<DonorPersonalDetailProps> = ({ open, onClose }) => {
+
+    const { user } = useUserStore(
+        (state: any) => state,
+      )
 
     const handleClose = () => {
         onClose(); 
@@ -24,13 +26,26 @@ const DonorPersonalDetail: React.FC<DonorPersonalDetailProps> = ({ open, onClose
                         <button onClick={handleClose} className="absolute top-0 right-0 m-2 text-black text-2xl">
                             X
                         </button>
-                        <div>
-                            {/* {JSON.stringify(donorInfo)} */}
-                            {JSON.stringify(session)}
-                            <div>Username: {donorInfo?.name}</div>
-                            <div>First Name: {donorInfo?.firstname ? donorInfo?.firstname : "-"}</div>
-                            <div>Last Name: {donorInfo?.lastname ? donorInfo?.lastname : "-"}</div>
-                            <div>E-mail: {donorInfo?.email}</div>
+                        <div >
+                            {/* {JSON.stringify(user)} */}
+                            <div className="mt-4">
+                                <EditBtn isNavbarPad={true} editUrl={`/activities`} />
+                                <h2 className="text-2xl font-bold mb-2">Donor Details</h2>
+                                <p>Username: {user.donor?.name}</p>
+                                <p>First Name: {user.donor?.firstname || "-"}</p>
+                                <p>Last Name: {user.donor?.lastname || "-"}</p>
+                                <p>Icon: {user.donor?.icon}</p>
+                                <p>Background: {user.donor?.background}</p>
+                                <p>Phone: {user.donor?.phone || "-"}</p>
+                                <p>Birth: {user.donor?.birth || "-"}</p>
+                                <p>Weight: {user.donor?.weight || "-"}</p>
+                            </div>
+                            <div className="mt-4">
+                                <h2 className="text-2xl font-bold mb-2">Account Details</h2>
+                                <p>E-mail: {user?.email}</p>
+                                <p>Created At: {user?.donor.createdAt}</p>
+                                <p>IsAdmin: {user?.isAdmin.toString()}</p>
+                            </div>
                         </div>
                     </div>
                 </div>

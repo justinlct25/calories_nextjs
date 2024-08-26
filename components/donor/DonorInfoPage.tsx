@@ -1,5 +1,4 @@
 
-import { donors } from "@/drizzle/schemas/donors.schema";
 import { useState, useEffect, use } from "react";
 import GoBack from "../util/GoBack";
 import EditBtn from '../util/EditBtn';
@@ -87,7 +86,7 @@ const DonorInfoPage: React.FC<DonorInfoPageProps> = ({ donorInfo, iconUrl, bgImg
                 <div className="w-full flex flex-col justify-center items-center mx-auto p-10">
                 {/* <EditBtn isNavbarPad={true} editUrl={`/activities`} /> */}
                 <DonorQRCode open={isQRCodeOpen} value={qrCodeValue} onClose={handleQRCodeClose} />
-                <DonorPersonalDetail open={isPersonalDetailOpen} onClose={handlePersonalDetailClose} donorInfo={donorInfo} />
+                <DonorPersonalDetail open={isPersonalDetailOpen} onClose={handlePersonalDetailClose} />
                 <h2 className="text-4xl">Activities Participated</h2>
                 {donorInfo?.activities && donorInfo.activities.map((activity: any, index: number) => (
                     <ActivityParticipated activityId={activity.activity.id} name={activity.activity.name} startAt={activity.activity.startAt} endAt={activity.activity.endAt} location={activity.activity.location} address={activity.activity.address} background={activity.activity.thumbnail} />
