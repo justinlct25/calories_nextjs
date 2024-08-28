@@ -29,7 +29,7 @@ const DonorPersonalDetail: React.FC<DonorPersonalDetailProps> = ({ open, onClose
                         <div >
                             {/* {JSON.stringify(user)} */}
                             <div className="mt-4">
-                                <EditBtn isNavbarPad={true} editUrl={`/activities`} />
+                                <EditBtn isNavbarPad={true} editUrl={`/donors/${user.donor.id}/edit`} />
                                 <h2 className="text-2xl font-bold mb-2">Donor Details</h2>
                                 <p>Username: {user.donor?.name}</p>
                                 <p>First Name: {user.donor?.firstname || "-"}</p>

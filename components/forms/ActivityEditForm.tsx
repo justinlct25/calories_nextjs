@@ -20,7 +20,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Tiptap from "@/components/rich-txt-editor/Tiptap";
 import DatePicker from "react-datepicker";
 import 'react-datepicker/dist/react-datepicker.css';
-import { format } from 'date-fns';
 
 
 const MAX_FILE_SIZE = 500000;
@@ -84,7 +83,6 @@ const ActivityEditForm: React.FC<ActivityEditFormProps> = ({ activityId, activit
         setDescriptionHTML(description);
         setThumbnailPreview(thumbnailUrl);
         setBackgroundPreview(backgroundUrl);
-        // console.log("description: "+descriptionHTML)
     }, [description, thumbnailUrl, backgroundUrl])
 
     const handleThumbnailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -156,7 +154,6 @@ const ActivityEditForm: React.FC<ActivityEditFormProps> = ({ activityId, activit
 
     return (
         <div>
-
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="w-full">
                     <div className='space-y-2'>
