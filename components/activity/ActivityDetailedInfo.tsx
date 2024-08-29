@@ -48,7 +48,7 @@ const ActivityDetailedInfo: React.FC<ActivityDetailedInfoProps> = ({ activityInf
                 className="w-full aspect-[3] bg-blend-darken bg-black bg-opacity-60 flex justify-center items-center pb-10 pl-10 pr-10"
             >
                 {thumbnailUrl && <img src={thumbnailUrl} alt="Thumbnail" className="mr-6 w-1/6 aspect-[1] rounded-xl" />}
-                <div className="text-4xl">{activityInfo?.name}</div>
+                <div className="text-4xl min-w-[40%]">{activityInfo?.name}</div>
             </div>
             <div className=" w-full aspect-[2] absolute top-0">
                 <div className="w-full aspect-[4]"></div> {/* padding from top */}

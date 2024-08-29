@@ -2,6 +2,10 @@ import { getUserByEmail, insertUser } from "@/drizzle/queries/auth-users.query";
 import { NextResponse } from "next/server";
 import { hash } from "bcrypt";
 import * as z from 'zod';
+import { auth } from "@/lib/auth"
+import { getUserDetailed } from "@/drizzle/queries/users.query";
+import { isAdminRole } from "@/drizzle/queries/users-to-roles.query";
+
 
 // Define a schema for input validation
 const userSignUpFormSchema = z.object({
@@ -43,6 +47,30 @@ export async function POST(req: Request) {
                 { status: 400 }
             )
         }
+    } catch(error) {
+        return NextResponse.json(
+            {message: "Something went wrong"},
+            {status: 500}
+        )
+    }
+}
+
+export async function GET(req: Request) {
+    try {
+        const session = await auth();
+        if (!session) {
+            return Response.json({ message: "unauthenticated "}, { status: 401});
+        }
+        let userInfo = await getUserDetailed(session?.user.id);
+        if (!userInfo) {
+            return NextResponse.json({message: "User not found"}, {status: 404})
+        }
+        const isAdmin = await isAdminRole(session?.user.id);
+        userInfo = { ...userInfo, isAdmin: isAdmin }
+        return NextResponse.json(
+            {user: userInfo},
+            {status: 200}
+        )
     } catch(error) {
         return NextResponse.json(
             {message: "Something went wrong"},

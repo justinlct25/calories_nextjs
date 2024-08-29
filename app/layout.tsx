@@ -3,8 +3,11 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import "../styles/main.scss"
 import Navbar from "@/components/Navbar";
-import Provider from "@/components/Provider";
 import { Toaster } from "@/components/ui/toaster";
+import GlobalContextProviders from "@/components/GlobalContextProviders";
+
+
+
 
 
 const inter = Inter({ subsets: ["latin"] });
@@ -19,17 +22,19 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
+  
+
   return (
     <html lang="en">
       <body className={`${inter.className} bg-[#252628] text-white`}>
-        <Provider>
-          {/* <main className='h-screen flex flex-col justify-center items-center'> */}
+        <GlobalContextProviders>
           <main className='flex flex-col justify-center items-center w-full'>
             <Navbar />
             {children}
+            <Toaster />
           </main>
-          <Toaster />
-        </Provider>
+        </GlobalContextProviders>
       </body>
     </html>
   );

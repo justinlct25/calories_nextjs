@@ -11,12 +11,11 @@ import { Button } from '../ui/button';
 
 interface ActivityParticipationBarProps {
     activityId: number;
-    donorId: number | undefined;
 }
 
 
 
-const ActivityParticipationBar: React.FC<ActivityParticipationBarProps> = ({ activityId, donorId }) => {
+const ActivityParticipationBar: React.FC<ActivityParticipationBarProps> = ({ activityId }) => {
     const { data: session, status } = useSession()
     const router = useRouter();
     const [numOfParticipants, setNumOfParticipants] = useState<number>(0);
@@ -24,7 +23,7 @@ const ActivityParticipationBar: React.FC<ActivityParticipationBarProps> = ({ act
 
     const fetchSetParticipantData = async () => {
         if (session) {
-            fetch(`/api/activities/${activityId}/participants/${donorId}`)
+            fetch(`/api/activities/${activityId}/participants`)
             .then((res) => res.json())
             .then((data) => {
                 setParticipation(data.participation)
@@ -38,7 +37,7 @@ const ActivityParticipationBar: React.FC<ActivityParticipationBarProps> = ({ act
 
     const handleJoin = async () => {
         if (session) {
-            fetch(`/api/activities/${activityId}/participants/${donorId}`, {
+            fetch(`/api/activities/${activityId}/participants`, {
                 method: 'POST',
             })
             .then((res) => res.json())
@@ -53,7 +52,7 @@ const ActivityParticipationBar: React.FC<ActivityParticipationBarProps> = ({ act
 
     const handleQuit = async () => {
         if (session) {
-            fetch(`/api/activities/${activityId}/participants/${donorId}`, {
+            fetch(`/api/activities/${activityId}/participants`, {
                 method: 'DELETE',
             })
             .then((res) => res.json())

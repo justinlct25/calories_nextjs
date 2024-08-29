@@ -19,6 +19,9 @@ import GoogleSignInBtn from "../GoogleSignInBtn";
 import { signIn } from 'next-auth/react';
 import { useRouter } from "next/navigation";
 import { useToast } from "../ui/use-toast";
+import { useSession } from "next-auth/react";
+
+
 
 const FormSchema = z.object({
     email: z.string().min(1, 'Email is required').email('Invalid email'),
@@ -32,12 +35,16 @@ interface SignInFormProps {
     activityId: number | null;
 }
 
+
 const SignInForm: React.FC<SignInFormProps> = ({ activityId }) => {
+    // const { setUser } = useGlobalContext();
     const router = useRouter();
     const { toast } = useToast();
     const form = useForm<z.infer<typeof FormSchema>>({
         resolver: zodResolver(FormSchema),
     });
+    // const { data: session, status} = useSession();
+
 
 
     const onSubmit = async (values: z.infer<typeof FormSchema>) => {
@@ -53,6 +60,7 @@ const SignInForm: React.FC<SignInFormProps> = ({ activityId }) => {
                 variant: 'destructive'
             })
         } else {
+            console.log(JSON.stringify(signInData, null, 2));
             router.refresh();
             if (activityId) {
                 router.push(`/activities/${activityId}`);

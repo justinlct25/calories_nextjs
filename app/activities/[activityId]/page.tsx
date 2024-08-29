@@ -9,21 +9,23 @@ import ActivityDetailedInfo from '@/components/activity/ActivityDetailedInfo';
 import { useState, useEffect } from 'react';
 import { useSession } from "next-auth/react"
 import ActivityParticipationBar from '@/components/activity/ActivityParticipationBar';
-
+// import { useGlobalContext } from '@/contexts';
 
 
 export default function ActivityInfoPage() {
-  const { data: session, status } = useSession()
+  const { data: session, status } = useSession();
   const { activityId } = useParams();
   const router = useRouter();
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
-  const [donorInfo, setDonorInfo] = useState<typeof donors.$inferInsert>();
   const [activityInfo, setActivityInfo] = useState<typeof activities.$inferInsert>();
   const [thumbnailUrl, setThumbnailUrl] = useState<string>("")
   const [backgroundUrl, setBackgroundUrl] = useState<string>("")
   const [descriptionHTML, setDescriptionHTML] = useState({ __html: "" })
 
+
   useEffect(() => {
+    // const { user } = useGlobalContext();
+    // console.log(user);
     if (session) {
       fetch(`/api/admin/${session?.user.id}`)
       .then((res) => res.json())
@@ -35,6 +37,7 @@ export default function ActivityInfoPage() {
         // setLoading(false)
         if (data.activity) {
             setActivityInfo(data.activity);
+            console.log(JSON.stringify(data.activity, null, 2));
             setThumbnailUrl(await loadActivityThumbnailUrl(data.activity.thumbnail));
             setBackgroundUrl(await loadActivityBackgroundUrl(data.activity.background));
             const HTMLwithBucketImgUrls: string = await loadActivityDescriptionHTMLImgUrls(data.activity.description);
@@ -47,7 +50,7 @@ export default function ActivityInfoPage() {
   return (
     <div className='w-full'>
       {activityInfo && <ActivityDetailedInfo activityInfo={activityInfo} thumbnailUrl={thumbnailUrl} backgroundUrl={backgroundUrl} descriptionHTML={descriptionHTML} />}
-      {(activityInfo) && <ActivityParticipationBar activityId={Number(activityId)} donorId={Number(donorInfo?.id)} />}
+      {(activityInfo) && <ActivityParticipationBar activityId={Number(activityId)} />}
     </div>
       
   );
