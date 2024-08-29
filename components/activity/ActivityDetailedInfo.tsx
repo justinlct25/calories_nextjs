@@ -1,7 +1,5 @@
 "use client";
 
-import { useState, useEffect } from 'react';
-import { useRouter } from "next/navigation";
 import { activities } from "@/drizzle/schemas/activities.schema"
 import { loadActivityThumbnailUrl, loadActivityDescriptionHTMLImgUrls } from '@/utils/loadBucket/loadBucketUrls';
 import GoBack from '../util/GoBack';
@@ -10,7 +8,7 @@ import ActivityTimes from './ActivityTimes';
 import { Pencil } from 'lucide-react';
 import EditBtn from '../util/EditBtn';
 import ActivityLocation from './ActivityLocation';
-import { useSession } from 'next-auth/react';
+import { useUserStore } from '../../app/stores/user-store-provider';
 
 interface ActivityDetailedInfoProps {
     activityInfo: typeof activities.$inferInsert;
@@ -21,21 +19,14 @@ interface ActivityDetailedInfoProps {
 
 
 const ActivityDetailedInfo: React.FC<ActivityDetailedInfoProps> = ({ activityInfo, thumbnailUrl, backgroundUrl, descriptionHTML }) => {
-    {/* TODO: is admin identity saved anywhere? Need better way to check */}
-    const { data: session, status } = useSession()
-    const [isAdmin, setIsAdmin] = useState<boolean>(false);
-    useEffect(() => {
-        if (session) {
-            fetch(`/api/admin/${session?.user.id}`)
-            .then((res) => res.json())
-            .then((data) => setIsAdmin(data.isAdmin));
-        }
-    }, [session])
+    const { user } = useUserStore(
+        (state) => state
+    )
 
     return (
         <div className="w-full">
             <GoBack isNavbarPad={true} backDirectory='parent' />
-            {isAdmin && <EditBtn isNavbarPad={true} editUrl={`/activities/${activityInfo?.id}/edit`} />}
+            {user.isAdmin && <EditBtn isNavbarPad={true} editUrl={`/activities/${activityInfo?.id}/edit`} />}
             <div
                 style={{
                     backgroundImage: `url("${backgroundUrl}")`,
