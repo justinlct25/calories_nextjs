@@ -1,8 +1,7 @@
-import { getActivityByName, updateActivity } from "@/drizzle/queries/activities.query";
+import { updateActivity } from "@/drizzle/queries/activities.query";
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { getActivityById } from "@/drizzle/queries/activities.query";
-import { getUserByEmail } from "@/drizzle/queries/auth-users.query";
 import { isAdminRole } from "@/drizzle/queries/users-to-roles.query";
 import { processTipTapBase64Images } from "@/utils/uploadBucket/tiptapImageHelper";
 import { uploadBufferToBucketStorage } from "@/utils/uploadBucket/uploadBucketStorage";
@@ -19,7 +18,6 @@ export async function POST(req: Request, {params}: any) {
         try {
             const session = await auth();
             const activityId = params.activityId;
-            console.log("activityId: ", activityId)
             const targetActivity = await getActivityById(activityId);
             if (!targetActivity) {
                 console.log("Activity not found")
@@ -67,7 +65,7 @@ export async function POST(req: Request, {params}: any) {
                     const descriptionWithUploadedImgLinks = await processTipTapBase64Images(targetActivity.id, description);
                     activityUpdateObj = {...activityUpdateObj, description: descriptionWithUploadedImgLinks}
                 }
-                console.log("update activity: " + JSON.stringify(activityUpdateObj))
+                // console.log("update activity: " + JSON.stringify(activityUpdateObj))
                 await updateActivity(targetActivity.id, activityUpdateObj);
                 return NextResponse.json(
                     {activityId: targetActivity.id, message: "Activity edited successfully"}, 

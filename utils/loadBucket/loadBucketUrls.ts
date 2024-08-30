@@ -4,7 +4,7 @@
 const bucketApiUrl = process.env.BUCKET_API_URL || "";
 const bucketName = process.env.BUCKET_STORAGE_IMAGES;
 const bucketFolderDonorIcon = process.env.BUCKET_STORAGE_FOLDER_DONOR_ICON;
-const bucketFolderDonorBgImg = process.env.BUCKET_STORAGE_FOLDER_DONOR_BG_IMG;
+const bucketFolderDonorBgImg = process.env.BUCKET_STORAGE_FOLDER_DONOR_BACKGROUND;
 const bucketFolderActivityThumbnail = process.env.BUCKET_STORAGE_FOLDER_ACTIVITY_THUMBNAIL;
 const bucketFolderActivityBackground = process.env.BUCKET_STORAGE_FOLDER_ACTIVITY_BACKGROUND;
 const bucketFolderActivityDescription = process.env.BUCKET_STORAGE_FOLDER_ACTIVITY_DESCRIPTION
