@@ -6,6 +6,8 @@ import DonorEditForm, { donorEditForm } from "@/components/forms/DonorEditForm";
 import { useUserStore } from "@/app/stores/user-store-provider";
 import * as z from "zod"
 import { loadDonorIconUrl, loadDonorBgImgUrl } from "@/utils/loadBucket/loadBucketUrls";
+import PageUnderNavbarWrapper from "@/components/PageUnderNavbarWrapper";
+import GoBack from "@/components/util/GoBack";
 
 
 export default function DonorEditPage() {
@@ -32,9 +34,10 @@ export default function DonorEditPage() {
 
 
     return (
-        <div>
+        <PageUnderNavbarWrapper>
+            <GoBack isNavbarPad={false} backDirectory="parent" />
             <h1>Donor Edit Page</h1>
             {donorInfo && <DonorEditForm donorId={user?.donor.id} donor={donorInfo} iconUrl={iconUrl} backgroundUrl={backgroundUrl} />}
-        </div>
+        </PageUnderNavbarWrapper>
     );
 }

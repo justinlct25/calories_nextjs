@@ -5,7 +5,7 @@ import TopPadding from './TopPadding';
 import { ChevronLeft } from 'lucide-react'
 
 
-const WrapperWithBack = ({
+const PageUnderNavbarWrapper = ({
     children,
   }: Readonly<{
     children: React.ReactNode;
@@ -29,4 +29,4 @@ const WrapperWithBack = ({
     );
 };
 
-export default WrapperWithBack;
+export default PageUnderNavbarWrapper;

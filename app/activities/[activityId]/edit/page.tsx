@@ -2,7 +2,7 @@
 
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import WrapperWithBack from "@/components/WrapperWithBack";
+import PageUnderNavbarWrapper from "@/components/PageUnderNavbarWrapper";
 import GoBack from "@/components/util/GoBack";
 import IsSignedIn from "@/components/util/IsSignedIn"; 
 import ActivityEditForm, { activityEditForm } from "@/components/forms/ActivityEditForm";
@@ -51,12 +51,12 @@ export default function ActivityEditPage() {
 
 
     return (
-        <WrapperWithBack>
+        <PageUnderNavbarWrapper>
             <IsSignedIn adminCheck={true} />
             <GoBack isNavbarPad={false} backDirectory="parent"/>  
             <h2>Edit Activity</h2>
             {activityInfo && <ActivityEditForm activityId={Number(activityId)} activity={activityInfo} thumbnailUrl={thumbnailUrl} backgroundUrl={backgroundUrl} description={descriptionHTML} />}
-        </WrapperWithBack>
+        </PageUnderNavbarWrapper>
     )
 } 
 
