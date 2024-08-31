@@ -27,7 +27,6 @@ const DonorPersonalDetail: React.FC<DonorPersonalDetailProps> = ({ open, onClose
                             X
                         </button>
                         <div >
-                            {/* {JSON.stringify(user)} */}
                             <div className="mt-4">
                                 <EditBtn isNavbarPad={true} editUrl={`/donors/${user.donor.id}/edit`} />
                                 <h2 className="text-2xl font-bold mb-2">Donor Details</h2>
@@ -44,7 +43,7 @@ const DonorPersonalDetail: React.FC<DonorPersonalDetailProps> = ({ open, onClose
                                 <h2 className="text-2xl font-bold mb-2">Account Details</h2>
                                 <p>E-mail: {user?.email}</p>
                                 <p>Created At: {user?.donor.createdAt}</p>
-                                <p>IsAdmin: {user?.isAdmin.toString()}</p>
+                                {user?.isAdmin? <p>IsAdmin: {user?.isAdmin.toString()}</p>: null}
                             </div>
                         </div>
                     </div>

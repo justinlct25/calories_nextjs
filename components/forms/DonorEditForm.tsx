@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button"
 import {
     Form,
     FormControl,
-    FormDescription,
     FormField,
     FormItem,
     FormLabel,
@@ -17,9 +16,9 @@ import * as z from "zod"
 import { useRouter } from 'next/navigation'
 import { toast, useToast } from '../ui/use-toast'
 import { zodResolver } from "@hookform/resolvers/zod";
-import Tiptap from "@/components/rich-txt-editor/Tiptap";
 import DatePicker from "react-datepicker";
 import 'react-datepicker/dist/react-datepicker.css';
+import { useUserStore } from "@/app/stores/user-store-provider";
 
 
 const MAX_FILE_SIZE = 500000;
@@ -31,7 +30,7 @@ export const donorEditForm = z.object({
     firstname: z.string().optional(),
     lastname: z.string().optional(),
     phone: z.string().optional(),
-    birth: z.string().datetime(),
+    birth: z.string().datetime().optional(),
     weight: z.number().optional(),
     address: z.string().optional(),
     icon: z.any()
@@ -53,6 +52,9 @@ interface DonorEditFormProps {
 
 const DonorEditForm: React.FC<DonorEditFormProps> = ({ donorId, donor, iconUrl, backgroundUrl }) => {  
     const router = useRouter();
+    const { user, setUser } = useUserStore(
+        (state) => state,
+    )
     const form = useForm<z.infer<typeof donorEditForm>>({
         resolver: zodResolver(donorEditForm),
         defaultValues: {
@@ -121,7 +123,14 @@ const DonorEditForm: React.FC<DonorEditFormProps> = ({ donorId, donor, iconUrl, 
         });
         const data = await response.json()
         if (response.ok) {
-            // const updatedActivityId = data.activityId
+            const updatedDonor = data.updatedDonor;
+            setUser({
+                ...user, 
+                donor: {
+                    ...user.donor,
+                    updatedDonor
+                }
+            })
             toast({
                 title: "Success",
                 description: `${data.message}`,

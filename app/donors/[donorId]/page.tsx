@@ -42,8 +42,7 @@ export default function DonorInfoPage() {
     }
 
     function checkIsDonorProfileOfUser() {
-        // console.log(JSON.stringify(user));
-        if (session && Object.keys(user).length !== 0 && user.donor.id == donorId) {
+        if (session && Object.keys(user).length !== 0 && String(user.donor.id) == String(donorId)) {
             setIsDonorProfileOfUser(true);
         }
     }
@@ -51,7 +50,7 @@ export default function DonorInfoPage() {
     useEffect(() => {
         loadDonorInfo();
         checkIsDonorProfileOfUser();
-    } , [session, user]);
+    } , [session, Object.keys(user).length]);
     
     const handleQRCodeClose = () => {
         setIsQRCodeOpen(false);
@@ -64,7 +63,6 @@ export default function DonorInfoPage() {
     useEffect(() => {
         if (donorInfo) {
             setQRCodeValue(donorInfo.id);
-            // setIsQRCodeOpen(true);
         }
     })
 
@@ -99,7 +97,7 @@ export default function DonorInfoPage() {
                 <div className="w-full aspect-[6]"></div> {/* padding from top */}  
                 <div className="w-1/5 aspect-[1] bg-white bg-opacity-20 z-[10] absolute left-1/2  -translate-x-1/2 rounded-full flex items-center justify-center">
                     <div className="w-9/12 aspect-[1] bg-yellow-500 rounded-full flex items-center justify-center">
-                        <img src={donorIconUrl} alt="icon" className="object-contain w-full h-full" />
+                        <img src={donorIconUrl} alt="icon" className="object-contain w-full h-full rounded-full" />
                     </div>
                     {/* <i className="fas fa-icon"></i> */}
                 </div>

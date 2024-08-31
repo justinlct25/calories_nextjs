@@ -27,10 +27,12 @@ export async function POST(req: Request, {params}: any) {
         }
         const formData = await req.formData();
         const donorName = String(formData.get('name'));
-        const existingDonor = await getDonorByName(donorName);
-        if (existingDonor) {
-            console.log("Donor name already exists")
-            return NextResponse.json({message: "Donor name already exists."}, {status: 409})
+        if (donorName !== userDonor.name) {
+            const existingDonor = await getDonorByName(donorName);
+            if (existingDonor) {
+                console.log("Donor name already exists")
+                return NextResponse.json({message: "Donor name already exists."}, {status: 409})
+            }
         }
         let donorUpdateObj: any = {
             name: donorName,
@@ -59,7 +61,7 @@ export async function POST(req: Request, {params}: any) {
             }
         }
         await updateDonor(Number(donorId), donorUpdateObj);
-        return NextResponse.json({message: "Donor profile updated."}, {status: 200});
+        return NextResponse.json({updatedDonor: donorUpdateObj, message: "Donor profile updated."}, {status: 200});
 
     } catch(error) {
         return NextResponse.json(
