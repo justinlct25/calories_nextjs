@@ -3,34 +3,29 @@
 
 import { useParams, useRouter } from 'next/navigation';
 import { activities } from "@/drizzle/schemas/activities.schema"
-import { donors } from "@/drizzle/schemas/donors.schema"
 import { loadActivityThumbnailUrl, loadActivityDescriptionHTMLImgUrls, loadActivityBackgroundUrl } from '@/utils/loadBucket/loadBucketUrls';
 import ActivityDetailedInfo from '@/components/activity/ActivityDetailedInfo';
 import { useState, useEffect } from 'react';
 import { useSession } from "next-auth/react"
 import ActivityParticipationBar from '@/components/activity/ActivityParticipationBar';
-// import { useGlobalContext } from '@/contexts';
+import { useUserStore } from '@/app/stores/user-store-provider';
 
 
 export default function ActivityInfoPage() {
-  const { data: session, status } = useSession();
+  // const { data: session, status } = useSession();
   const { activityId } = useParams();
   const router = useRouter();
-  const [isAdmin, setIsAdmin] = useState<boolean>(false);
   const [activityInfo, setActivityInfo] = useState<typeof activities.$inferInsert>();
   const [thumbnailUrl, setThumbnailUrl] = useState<string>("")
   const [backgroundUrl, setBackgroundUrl] = useState<string>("")
   const [descriptionHTML, setDescriptionHTML] = useState({ __html: "" })
 
+  const { user } = useUserStore(
+    (state: any) => state,
+  )
+
 
   useEffect(() => {
-    // const { user } = useGlobalContext();
-    // console.log(user);
-    if (session) {
-      fetch(`/api/admin/${session?.user.id}`)
-      .then((res) => res.json())
-      .then((data) => setIsAdmin(data.isAdmin));
-    }
     fetch(`/api/activities/${activityId}`)
     .then((res) => res.json())
     .then(async (data) => {
@@ -45,11 +40,11 @@ export default function ActivityInfoPage() {
         }
         else router.push("/activities")
     })
-}, [session])
+}, [])
 
   return (
     <div className='w-full'>
-      {activityInfo && <ActivityDetailedInfo activityInfo={activityInfo} thumbnailUrl={thumbnailUrl} backgroundUrl={backgroundUrl} descriptionHTML={descriptionHTML} />}
+      {activityInfo && <ActivityDetailedInfo activityInfo={activityInfo} thumbnailUrl={thumbnailUrl} backgroundUrl={backgroundUrl} descriptionHTML={descriptionHTML} isAdmin={user.isAdmin} />}
       {(activityInfo) && <ActivityParticipationBar activityId={Number(activityId)} />}
     </div>
       

@@ -7,7 +7,6 @@ import { loadActivityThumbnailUrl, loadActivityDescriptionHTMLImgUrls } from '@/
 import GoBack from '../util/GoBack';
 import ActivityDates from './ActivityDates';
 import ActivityTimes from './ActivityTimes';
-import { Pencil } from 'lucide-react';
 import EditBtn from '../util/EditBtn';
 import ActivityLocation from './ActivityLocation';
 
@@ -16,15 +15,16 @@ interface ActivityDetailedInfoProps {
     thumbnailUrl: string;
     backgroundUrl: string;
     descriptionHTML: { __html: string };
+    isAdmin: boolean | undefined;
 }
 
 
-const ActivityDetailedInfo: React.FC<ActivityDetailedInfoProps> = ({ activityInfo, thumbnailUrl, backgroundUrl, descriptionHTML }) => {
+const ActivityDetailedInfo: React.FC<ActivityDetailedInfoProps> = ({ activityInfo, thumbnailUrl, backgroundUrl, descriptionHTML, isAdmin }) => {
 
     return (
         <div className="w-full">
             <GoBack isNavbarPad={true} backDirectory='parent' />
-            <EditBtn isNavbarPad={true} editUrl={`/activities/${activityInfo?.id}/edit`} />
+            {isAdmin? <EditBtn isNavbarPad={true} editUrl={`/activities/${activityInfo?.id}/edit`} /> : null}
             <div
                 style={{
                     backgroundImage: `url("${backgroundUrl}")`,
@@ -48,7 +48,7 @@ const ActivityDetailedInfo: React.FC<ActivityDetailedInfoProps> = ({ activityInf
                 </div>
                 <div className="w-full aspect-[5]"></div>
                 <div className="w-full flex flex-col justify-center items-center max-w-screen-xl mx-auto">
-                    <div className="text-4xl">活動詳情 Event Detailss</div>
+                    <div className="text-4xl">活動詳情 Event Details</div>
                     <div className="mt-4" dangerouslySetInnerHTML={descriptionHTML} />
                 </div>
             </div>

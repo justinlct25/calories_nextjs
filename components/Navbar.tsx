@@ -31,7 +31,7 @@ const Navbar = () => {
                 <Link href='/'>
                     About Us
                 </Link>
-                {Object.keys(user).length !== 0 ? (
+                {user && Object.keys(user).length !== 0 ? (
                     <>
                         <Link href={`/donors/${user.donor.id}`}>
                             <CircleUserRound />

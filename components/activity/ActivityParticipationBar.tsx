@@ -7,6 +7,8 @@ import { donorsToActivities } from '@/drizzle/schemas/donors-to-activities.schem
 import { participate } from '@/drizzle/queries/donors-to-activities.query';
 import { User } from 'lucide-react';
 import { Button } from '../ui/button';
+import { useUserStore } from "@/app/stores/user-store-provider";
+
 
 
 interface ActivityParticipationBarProps {
@@ -21,8 +23,16 @@ const ActivityParticipationBar: React.FC<ActivityParticipationBarProps> = ({ act
     const [numOfParticipants, setNumOfParticipants] = useState<number>(0);
     const [participation, setParticipation] = useState<typeof donorsToActivities.$inferInsert | null>();
 
+    const { user, setUser } = useUserStore(
+        (state) => state,
+    )
+
     const fetchSetParticipantData = async () => {
-        if (session) {
+        if (session && user && Object.keys(user).length !== 0) {
+            if (!user.donor.firstname || !user.donor.lastname || !user.donor.phone || !user.donor.birth || !user.donor.weight) {
+                console.log("Please complete your donor profile first");
+                return;
+            } 
             fetch(`/api/activities/${activityId}/participants`)
             .then((res) => res.json())
             .then((data) => {
@@ -31,6 +41,7 @@ const ActivityParticipationBar: React.FC<ActivityParticipationBarProps> = ({ act
             });
         }
     }
+
     useEffect(() => {
         fetchSetParticipantData();
     }, [session])
@@ -68,15 +79,8 @@ const ActivityParticipationBar: React.FC<ActivityParticipationBarProps> = ({ act
 
     return (
         <div
-            // className='fixed bottom-0 w-full h-20 bg-blend-darken bg-black bg-opacity-60 flex justify-center items-center'
-            // className='fixed bottom-0 w-full h-20 bg-blend-darken bg-yellow-500 bg-opacity-70 flex justify-center items-center'
-            // className='fixed bottom-0 w-full h-20 bg-blend-darken bg-white bg-opacity-70 flex justify-center items-center'
             className='fixed bottom-0 w-full h-24 bg-blend-darken bg-black bg-opacity-90 flex justify-center items-center'
             style={{
-                // backgroundImage: `url(${thumbnailUrl})`,
-                // backgroundRepeat: 'no-repeat',
-                // backgroundSize: 'cover',
-                // backgroundPosition: 'bottom',
                 clipPath: 'polygon(100% 100%, 100% 0, 85% 0, 75% 45%, 0 45%, 0% 100%)'
             }}
         >
