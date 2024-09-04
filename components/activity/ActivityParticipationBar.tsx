@@ -97,7 +97,7 @@ const ActivityParticipationBar: React.FC<ActivityParticipationBarProps> = ({ act
 
     return (
         <div>
-            <DonorProfileUpdateRequest open={isDonorProfileUpdateRequestOpen} onClose={handleCloseDonorProfileUpdateRequest} fieldsRequiredUpdated={fieldsRequiredUpdated} />
+            <DonorProfileUpdateRequest open={isDonorProfileUpdateRequestOpen} onClose={handleCloseDonorProfileUpdateRequest} activityId={activityId} fieldsRequiredUpdated={fieldsRequiredUpdated} />
             <div
                 className='fixed bottom-0 w-full h-24 bg-blend-darken bg-black bg-opacity-90 flex justify-center items-center'
                 style={{

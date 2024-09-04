@@ -1,6 +1,7 @@
 import { db } from "@/lib/db"
 import { donorsToActivities } from "../schemas/donors-to-activities.schema"
 import { and, eq } from "drizzle-orm"
+import { NewParticipantInfo, insertParticipantInfo } from "./participant-info.query"
 
 export const findAllParticipants = async (activityId: number) => {
     const participants = await db.query.donorsToActivities.findMany({
@@ -34,10 +35,12 @@ export const findParticipant = async (donorId: number, activityId: number) => {
     }
 }
 
-export const participate = async (donorId: number, activityId: number) => {
+export const participate = async (donorId: number, activityId: number, participantInfo: NewParticipantInfo) => {
+    const newParticipantInfo = await insertParticipantInfo(participantInfo);
     const newParticipation = await db.insert(donorsToActivities).values({
         donorId: donorId,
-        activityId: activityId
+        activityId: activityId,
+        participantInfoId: newParticipantInfo.id,
     }).returning().then((res) => res[0] ?? null);
     return newParticipation;
 }

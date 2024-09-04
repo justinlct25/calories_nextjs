@@ -12,11 +12,13 @@ import {
 import { relations } from 'drizzle-orm'
 import { donors } from "./donors.schema"
 import { activities } from "./activities.schema"
+import { participantInfo } from "./participant-info.schema"
 
 
 export const donorsToActivities = pgTable('donors_to_activities', {
     donorId: integer('donor_id').notNull().references(() => donors.id),
     activityId: integer('activity_id').notNull().references(() => activities.id),
+    participantInfoId: integer('participant_info_id').notNull().references(() => participantInfo.id),
     createdAt: timestamp('created_at').defaultNow().notNull()
 });
 // }, (t) => ({
@@ -31,5 +33,9 @@ export const donorsToActivitiesRelations = relations(donorsToActivities, ({ one 
     activity: one(activities, {
         fields: [donorsToActivities.activityId],
         references: [activities.id]
+    }),
+    participantInfo: one(participantInfo, {
+        fields: [donorsToActivities.participantInfoId],
+        references: [participantInfo.id]
     })
 }))

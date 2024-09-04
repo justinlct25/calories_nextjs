@@ -1,125 +1,19 @@
 {
-  "version": "5",
-  "dialect": "pg",
-  "entries": [
-    {
-      "idx": 0,
-      "version": "5",
-      "when": 1708624537111,
-      "tag": "0000_breezy_manta",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "5",
-      "when": 1708636746853,
-      "tag": "0001_funny_martin_li",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "5",
-      "when": 1708641632340,
-      "tag": "0002_exotic_leader",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "5",
-      "when": 1708691561729,
-      "tag": "0003_brown_roland_deschain",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "5",
-      "when": 1708770218670,
-      "tag": "0004_sleepy_argent",
-      "breakpoints": true
-    },
-    {
-      "idx": 5,
-      "version": "5",
-      "when": 1709030841709,
-      "tag": "0005_bizarre_dreadnoughts",
-      "breakpoints": true
-    },
-    {
-      "idx": 6,
-      "version": "5",
-      "when": 1709058966389,
-      "tag": "0006_mysterious_lenny_balinger",
-      "breakpoints": true
-    },
-    {
-      "idx": 7,
-      "version": "5",
-      "when": 1709163120470,
-      "tag": "0007_rainy_fat_cobra",
-      "breakpoints": true
-    },
-    {
-      "idx": 8,
-      "version": "5",
-      "when": 1710892135094,
-      "tag": "0008_graceful_hammerhead",
-      "breakpoints": true
-    },
-    {
-      "idx": 9,
-      "version": "5",
-      "when": 1711100906766,
-      "tag": "0009_orange_senator_kelly",
-      "breakpoints": true
-    },
-    {
-      "idx": 10,
-      "version": "5",
-      "when": 1711145770990,
-      "tag": "0010_perfect_moira_mactaggert",
-      "breakpoints": true
-    },
-    {
-      "idx": 11,
-      "version": "5",
-      "when": 1711405933866,
-      "tag": "0011_unusual_inhumans",
-      "breakpoints": true
-    },
-    {
-      "idx": 12,
-      "version": "5",
-      "when": 1712618271834,
-      "tag": "0012_previous_sway",
-      "breakpoints": true
-    },
-    {
-      "idx": 13,
-      "version": "5",
-      "when": 1712618370458,
-      "tag": "0013_loud_xorn",
-      "breakpoints": true
-    },
-    {
-      "idx": 14,
-      "version": "5",
-      "when": 1715810515767,
-      "tag": "0014_keen_turbo",
-      "breakpoints": true
-    },
-    {
-      "idx": 15,
-      "version": "5",
-      "when": 1719240595937,
-      "tag": "0015_thankful_outlaw_kid",
-      "breakpoints": true
-    },
-    {
-      "idx": 16,
-      "version": "5",
-      "when": 1720544601895,
-      "tag": "0016_parallel_proudstar",
-      "breakpoints": true
-    }
-  ]
+    "version": "5",
+    "dialect": "pg",
+    "entries": [{
+            "idx": 0,
+            "version": "5",
+            "when": 1725487163144,
+            "tag": "0000_cuddly_dreaming_celestial",
+            "breakpoints": true
+        },
+        {
+            "idx": 1,
+            "version": "5",
+            "when": 1725487247700,
+            "tag": "0001_living_mattie_franklin",
+            "breakpoints": true
+        }
+    ]
 }

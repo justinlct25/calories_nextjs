@@ -1,20 +1,21 @@
 'use client'
 
 import { useEffect, useState } from "react";
-import { useSession } from "next-auth/react";
 import DonorEditForm, { donorEditForm } from "@/components/forms/DonorEditForm";
 import { useUserStore } from "@/app/stores/user-store-provider";
 import * as z from "zod"
 import { loadDonorIconUrl, loadDonorBgImgUrl } from "@/utils/loadBucket/loadBucketUrls";
 import PageUnderNavbarWrapper from "@/components/PageUnderNavbarWrapper";
 import GoBack from "@/components/util/GoBack";
+import { useSearchParams } from "next/navigation";
+
 
 
 export default function DonorEditPage() {
-    const { data: session, status } = useSession();
     const { user } = useUserStore(
         (state: any) => state,
       )
+    const params = useSearchParams();
 
     const [donorInfo, setDonorInfo] = useState<z.infer<typeof donorEditForm>>();
     const [iconUrl, setIconUrl] = useState<string>("")
