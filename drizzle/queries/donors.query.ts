@@ -39,9 +39,9 @@ export const getDonorByUserId = async (userId: string) => {
     return donorInfo;
 }
 
-export const getDonorByName = async (name: string) => {
+export const getDonorByName = async (username: string) => {
     const donorInfo = await db.query.donors.findFirst({
-        where: (donors, { eq }) => eq(donors.name, name)
+        where: (donors, { eq }) => eq(donors.username, username)
     })
     return donorInfo;
 }

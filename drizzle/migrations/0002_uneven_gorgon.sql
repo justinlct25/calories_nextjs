@@ -1,0 +1,1 @@
+ALTER TABLE "donor" RENAME COLUMN "name" TO "username";

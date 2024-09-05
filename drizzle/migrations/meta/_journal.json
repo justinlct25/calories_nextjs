@@ -1,19 +1,27 @@
 {
-    "version": "5",
-    "dialect": "pg",
-    "entries": [{
-            "idx": 0,
-            "version": "5",
-            "when": 1725487163144,
-            "tag": "0000_cuddly_dreaming_celestial",
-            "breakpoints": true
-        },
-        {
-            "idx": 1,
-            "version": "5",
-            "when": 1725487247700,
-            "tag": "0001_living_mattie_franklin",
-            "breakpoints": true
-        }
-    ]
+  "version": "5",
+  "dialect": "pg",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1725487163144,
+      "tag": "0000_cuddly_dreaming_celestial",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1725487247700,
+      "tag": "0001_living_mattie_franklin",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1725492052626,
+      "tag": "0002_uneven_gorgon",
+      "breakpoints": true
+    }
+  ]
 }

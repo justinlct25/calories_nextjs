@@ -21,7 +21,7 @@ export const donors = pgTable("donor", {
     id: serial("id").primaryKey(),
     userId: text("user_id").references(() => users.id),
     genderOptionId: integer("gender_option_id").references(() => genderOptions.id),
-    name: text("name").notNull(),
+    username: text("username").notNull(),
     icon: text("icon").default("default_donor_icon.png"),
     background: text("background").default("default_donor_bg.jpg"),
     firstname: text("firstname"),

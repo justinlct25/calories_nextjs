@@ -28,7 +28,7 @@ export default function DonorEditPage() {
     }
 
     useEffect(() => {
-        if (user) {
+        if (user.donor) {
             loadDonorInfo();
         }
     }, [user])

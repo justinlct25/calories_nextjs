@@ -26,7 +26,7 @@ const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/web
 
 
 export const donorEditForm = z.object({
-    name: z.string().optional(),
+    username: z.string().optional(),
     firstname: z.string().optional(),
     lastname: z.string().optional(),
     phone: z.string().optional(),
@@ -58,7 +58,7 @@ const DonorEditForm: React.FC<DonorEditFormProps> = ({ donorId, donor, iconUrl, 
     const form = useForm<z.infer<typeof donorEditForm>>({
         resolver: zodResolver(donorEditForm),
         defaultValues: {
-            name: donor.name ?? undefined,
+            username: donor.username ?? undefined,
             firstname: donor.firstname ?? undefined,
             lastname: donor.lastname ?? undefined,
             phone: donor.phone ?? undefined,
@@ -107,28 +107,74 @@ const DonorEditForm: React.FC<DonorEditFormProps> = ({ donorId, donor, iconUrl, 
     const onSubmit = async (values: z.infer<typeof donorEditForm>) => {
         const userConfirmed = window.confirm("Are you sure you want to submit the form?");
         if (!userConfirmed) return;
+        const currentDonor = user.donor;
+        console.log("current" + JSON.stringify(currentDonor));
         const formData = new FormData();
-        if (values.name) formData.append('name', values.name);
-        if (values.firstname) formData.append('firstname', values.firstname);
-        if (values.lastname) formData.append('lastname', values.lastname);
-        if (values.phone) formData.append('phone', String(values.phone));
-        if (values.birth) formData.append('birth', String(values.birth));
-        if (values.weight) formData.append('weight', String(values.weight));
-        if (values.address) formData.append('address', values.address);
+        console.log("values" + JSON.stringify(values));
+        if (values.username) {
+            formData.append('username', values.username);
+        } else {
+            console.log('username is required')
+        }
+        if (values.firstname) {
+            formData.append('firstname', values.firstname);
+        } else {
+            formData.append('firstname', '');
+        }
+
+        if (values.lastname) {
+            formData.append('lastname', values.lastname);
+        } else {
+            formData.append('lastname', '');
+        }
+
+        if (values.phone) {
+            formData.append('phone', String(values.phone));
+        } else {
+            formData.append('phone', '');
+        }
+
+        if (values.birth) {
+            // formData.append('birth', String(values.birth));
+        } else {
+            // formData.append('birth', '');
+        }
+
+        if (values.weight) {
+            formData.append('weight', String(values.weight));
+        } else {
+            formData.append('weight', '');
+        }
+
+        if (values.address) {
+            formData.append('address', values.address);
+        } else {
+            formData.append('address', '');
+        }   
         formData.append('icon', values.icon[0]);
         formData.append('background', values.background[0]);
         const response = await fetch(`/api/donors/${donorId}/edit`, {
             method: 'POST',
             body: formData
         });
+
         const data = await response.json()
         if (response.ok) {
             const updatedDonor = data.updatedDonor;
-            setUser({
+            console.log("updatedDonor" + JSON.stringify(updatedDonor));
+            const updatedUser = {
                 ...user, 
                 donor: {
                     ...user.donor,
                     updatedDonor
+                }
+            }
+            console.log("updatedUser" + JSON.stringify(updatedUser));
+            setUser({
+                ...user, 
+                donor: {
+                    ...user.donor,
+                    ...updatedDonor
                 }
             })
             toast({
@@ -153,7 +199,7 @@ const DonorEditForm: React.FC<DonorEditFormProps> = ({ donorId, donor, iconUrl, 
                     <div className='space-y-2'>
                         <FormField
                             control={form.control}
-                            name="name"
+                            name="username"
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel>Username</FormLabel>

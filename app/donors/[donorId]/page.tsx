@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
-import { useParams, useRouter } from 'next/navigation';
+import { useParams, useRouter, useSearchParams } from 'next/navigation';
 // import DonorInfoPag from "@/components/donor/DonorInfoPage";
 import { loadDonorBgImgUrl, loadDonorIconUrl } from "@/utils/loadBucket/loadBucketUrls";
 import GoBack from "@/components/util/GoBack";
@@ -15,8 +15,10 @@ import { useUserStore } from "@/app/stores/user-store-provider";
 
 
 export default function DonorInfoPage() {
+    const router = useRouter();
     const { data: session, status } = useSession();
     const { donorId } = useParams();
+    const queryParams = useSearchParams();
     const [donorInfo, setDonorInfo] = useState<any>();
     const [donorIconUrl, setDonorIconUrl] = useState<string>("");
     const [donorBgImgUrl, setDonorBgImgUrl] = useState<string>("");
@@ -90,7 +92,7 @@ export default function DonorInfoPage() {
                 className="w-full aspect-[3] bg-blend-darken bg-black bg-opacity-60 flex flex-col justify-center  items-center"
             >
                 <div>Level {donorInfo?.levels}</div>
-                <div className="text-4xl">{donorInfo?.name}</div>
+                <div className="text-4xl">{donorInfo?.username}</div>
                 <div className="h-1/4"></div>
             </div>
             <div className="w-full aspect-[2] absolute top-0">
@@ -120,8 +122,9 @@ export default function DonorInfoPage() {
                 {/* <EditBtn isNavbarPad={true} editUrl={`/activities`} /> */}
                 <DonorQRCode open={isQRCodeOpen} value={qrCodeValue} onClose={handleQRCodeClose} />
                 {isDonorProfileOfUser && (
-                    <DonorPersonalDetail open={isPersonalDetailOpen} onClose={handlePersonalDetailClose} />
+                    <DonorPersonalDetail open={isPersonalDetailOpen} onClose={handlePersonalDetailClose} user={user} />
                 )}
+                {JSON.stringify(user)}
                 <h2 className="text-4xl">Activities Participated</h2>
                 {donorInfo?.activities && donorInfo.activities.map((activity: any, index: number) => (
                     <ActivityParticipated activityId={activity.activity.id} name={activity.activity.name} startAt={activity.activity.startAt} endAt={activity.activity.endAt} location={activity.activity.location} address={activity.activity.address} background={activity.activity.thumbnail} />

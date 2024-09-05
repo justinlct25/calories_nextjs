@@ -26,22 +26,26 @@ export async function POST(req: Request, {params}: any) {
             return NextResponse.json({message: "Target donor profile does not belongs to the user."}, {status: 404})
         }
         const formData = await req.formData();
-        const donorName = String(formData.get('name'));
-        if (donorName !== userDonor.name) {
+        const donorName = String(formData.get('username'));
+        if (!donorName) {
+            console.log("Donor name is required")
+            return NextResponse.json({message: "Donor name is required."}, {status: 409})
+        }
+        if (donorName !== userDonor.username) {
             const existingDonor = await getDonorByName(donorName);
             if (existingDonor) {
-                console.log("Donor name already exists")
+                console.log("Donor username already exists")
                 return NextResponse.json({message: "Donor name already exists."}, {status: 409})
             }
         }
         let donorUpdateObj: any = {
-            name: donorName,
+            username: donorName,
         }
-        if (formData.get("firstname")) donorUpdateObj = { ...donorUpdateObj, firstname: String(formData.get("firstname")) }
-        if (formData.get("lastname")) donorUpdateObj = { ...donorUpdateObj, lastname: String(formData.get("lastname")) }
-        if (formData.get("phone")) donorUpdateObj = { ...donorUpdateObj, phone: String(formData.get("phone")) }
-        if (formData.get("weight")) donorUpdateObj = { ...donorUpdateObj, weight: Number(formData.get("weight")) }
-        if (formData.get("birth")) donorUpdateObj = { ...donorUpdateObj, birth: new Date(String(formData.get("birth")))}
+        if (formData.get("firstname") !== userDonor.firstname) donorUpdateObj = { ...donorUpdateObj, firstname: String(formData.get("firstname")) }
+        if (formData.get("lastname") !== userDonor.lastname) donorUpdateObj = { ...donorUpdateObj, lastname: String(formData.get("lastname")) }
+        if (formData.get("phone") !== userDonor.phone) donorUpdateObj = { ...donorUpdateObj, phone: String(formData.get("phone")) }
+        if (formData.get("weight") !== userDonor.weight) donorUpdateObj = { ...donorUpdateObj, weight: Number(formData.get("weight")) }
+        if (formData.get("birth") !== userDonor.birth) donorUpdateObj = { ...donorUpdateObj, birth: new Date(String(formData.get("birth")))}
         const iconFile = await formData.get('icon') as File;
         if (iconFile instanceof File) {
             const buffer = Buffer.from(await iconFile.arrayBuffer());
@@ -60,7 +64,10 @@ export async function POST(req: Request, {params}: any) {
                 donorUpdateObj = {...donorUpdateObj, background: fileName}
             }
         }
+        console.log("1")
+        console.log(JSON.stringify(donorUpdateObj));
         await updateDonor(Number(donorId), donorUpdateObj);
+        console.log("2")
         return NextResponse.json({updatedDonor: donorUpdateObj, message: "Donor profile updated."}, {status: 200});
 
     } catch(error) {

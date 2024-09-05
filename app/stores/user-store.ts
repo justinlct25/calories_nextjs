@@ -21,6 +21,6 @@ export const createUserStore = (
 ) => {
   return createStore<UserStore>()((set) => ({
     ...initState,
-    setUser: (user) => set((state) => ({ user: user })),
+    setUser: (user) => set((state) => ({ ...state, user: user })),
   }))
 }
