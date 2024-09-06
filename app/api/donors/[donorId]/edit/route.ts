@@ -64,10 +64,7 @@ export async function POST(req: Request, {params}: any) {
                 donorUpdateObj = {...donorUpdateObj, background: fileName}
             }
         }
-        console.log("1")
-        console.log(JSON.stringify(donorUpdateObj));
         await updateDonor(Number(donorId), donorUpdateObj);
-        console.log("2")
         return NextResponse.json({updatedDonor: donorUpdateObj, message: "Donor profile updated."}, {status: 200});
 
     } catch(error) {

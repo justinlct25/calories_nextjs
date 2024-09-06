@@ -124,7 +124,6 @@ export default function DonorInfoPage() {
                 {isDonorProfileOfUser && (
                     <DonorPersonalDetail open={isPersonalDetailOpen} onClose={handlePersonalDetailClose} user={user} />
                 )}
-                {JSON.stringify(user)}
                 <h2 className="text-4xl">Activities Participated</h2>
                 {donorInfo?.activities && donorInfo.activities.map((activity: any, index: number) => (
                     <ActivityParticipated activityId={activity.activity.id} name={activity.activity.name} startAt={activity.activity.startAt} endAt={activity.activity.endAt} location={activity.activity.location} address={activity.activity.address} background={activity.activity.thumbnail} />

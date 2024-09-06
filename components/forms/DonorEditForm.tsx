@@ -135,9 +135,9 @@ const DonorEditForm: React.FC<DonorEditFormProps> = ({ donorId, donor, iconUrl, 
         }
 
         if (values.birth) {
-            // formData.append('birth', String(values.birth));
+            formData.append('birth', values.birth);
         } else {
-            // formData.append('birth', '');
+            // formData.append('birth', null);
         }
 
         if (values.weight) {
@@ -161,7 +161,6 @@ const DonorEditForm: React.FC<DonorEditFormProps> = ({ donorId, donor, iconUrl, 
         const data = await response.json()
         if (response.ok) {
             const updatedDonor = data.updatedDonor;
-            console.log("updatedDonor" + JSON.stringify(updatedDonor));
             const updatedUser = {
                 ...user, 
                 donor: {
@@ -169,7 +168,6 @@ const DonorEditForm: React.FC<DonorEditFormProps> = ({ donorId, donor, iconUrl, 
                     updatedDonor
                 }
             }
-            console.log("updatedUser" + JSON.stringify(updatedUser));
             setUser({
                 ...user, 
                 donor: {
