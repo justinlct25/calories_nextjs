@@ -6,6 +6,8 @@ import ActivityDates from './ActivityDates';
 import ActivityTimes from './ActivityTimes';
 import EditBtn from '../util/EditBtn';
 import ActivityLocation from './ActivityLocation';
+import { InfoIcon, UsersIcon } from "lucide-react";
+import { useState } from "react";
 
 interface ActivityDetailedInfoProps {
     activityInfo: typeof activities.$inferInsert;
@@ -17,6 +19,7 @@ interface ActivityDetailedInfoProps {
 
 
 const ActivityDetailedInfo: React.FC<ActivityDetailedInfoProps> = ({ activityInfo, thumbnailUrl, backgroundUrl, descriptionHTML, isAdmin }) => {
+    const [view, setView] = useState<'info' | 'rank' | 'list'>('info');
 
     return (
         <div className="w-full">
@@ -43,11 +46,30 @@ const ActivityDetailedInfo: React.FC<ActivityDetailedInfoProps> = ({ activityInf
                     <ActivityLocation location={activityInfo?.location} address={activityInfo?.address} />
                     <ActivityTimes startAt={activityInfo?.startAt} endAt={activityInfo?.endAt} />
                 </div>
-                <div className="w-full aspect-[5]"></div>
-                <div className="w-full flex flex-col justify-center items-center max-w-screen-xl mx-auto">
-                    <div className="text-4xl">活動詳情 Event Details</div>
-                    <div className="mt-4" dangerouslySetInnerHTML={descriptionHTML} />
+                <div className="w-full aspect-[7]"></div> {/* padding from bottom */}
+                <div className="flex justify-center items-center w-full p-6 max-w-3/5 space-x-20">
+                <button onClick={() => setView('info')} className={view === 'info' ? '' : 'text-gray-400'} >
+                    <InfoIcon size={32} />
+                </button>
+                {/* <button onClick={() => setView('rank')}></button> */}
+                <button onClick={() => setView('list')} className={view === 'list' ? '' : 'text-gray-400'}>
+                    <UsersIcon size={32} />
+                </button>
                 </div>
+                { view === 'info' ? (
+                    <div className="w-full flex flex-col justify-center items-center max-w-screen-xl mx-auto">
+                        <div className="text-4xl">活動詳情 Event Details</div>
+                        <div className="mt-4" dangerouslySetInnerHTML={descriptionHTML} />
+                    </div>
+                ) : view === 'rank' ? (
+                    <div>
+                        {/* rank */}
+                    </div>
+                ) : (
+                    <div>
+                        {/* list */}
+                    </div>
+                )}
             </div>
         </div>
     );
