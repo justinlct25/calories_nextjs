@@ -30,7 +30,7 @@ export const donorEditForm = z.object({
     firstname: z.string().optional(),
     lastname: z.string().optional(),
     phone: z.string().optional(),
-    birth: z.string().datetime().optional(),
+    birth: z.string().date().optional(),
     weight: z.number().optional(),
     address: z.string().optional(),
     icon: z.any()
@@ -48,9 +48,10 @@ interface DonorEditFormProps {
     donor: z.infer<typeof donorEditForm>;
     iconUrl: string;
     backgroundUrl: string;
+    redirectRoute?: string | null ;
 }
 
-const DonorEditForm: React.FC<DonorEditFormProps> = ({ donorId, donor, iconUrl, backgroundUrl }) => {  
+const DonorEditForm: React.FC<DonorEditFormProps> = ({ donorId, donor, iconUrl, backgroundUrl, redirectRoute }) => {  
     const router = useRouter();
     const { user, setUser } = useUserStore(
         (state) => state,
@@ -77,6 +78,18 @@ const DonorEditForm: React.FC<DonorEditFormProps> = ({ donorId, donor, iconUrl, 
         setIconPreview(iconUrl);
         setBackgroundPreview(backgroundUrl);
     }, [iconUrl, backgroundUrl])
+
+    // const year = 2022; // can be provided externally
+    // const month = 2; // can be provided externally
+    // const date = 24; // can be provided externally
+    // const minDate = new Date(year, month, 1);
+    // const maxDate = new Date(year, month + 1 , 0);
+    // const renderDayContents = (day, date) => {
+    //     if(date < minDate || date > maxDate){
+    //       return <span></span>;
+    //     }
+    //     return <span>{date.getDate()}</span>;
+    // }
 
     const handleIconChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
@@ -107,10 +120,7 @@ const DonorEditForm: React.FC<DonorEditFormProps> = ({ donorId, donor, iconUrl, 
     const onSubmit = async (values: z.infer<typeof donorEditForm>) => {
         const userConfirmed = window.confirm("Are you sure you want to submit the form?");
         if (!userConfirmed) return;
-        const currentDonor = user.donor;
-        console.log("current" + JSON.stringify(currentDonor));
         const formData = new FormData();
-        console.log("values" + JSON.stringify(values));
         if (values.username) {
             formData.append('username', values.username);
         } else {
@@ -161,13 +171,6 @@ const DonorEditForm: React.FC<DonorEditFormProps> = ({ donorId, donor, iconUrl, 
         const data = await response.json()
         if (response.ok) {
             const updatedDonor = data.updatedDonor;
-            const updatedUser = {
-                ...user, 
-                donor: {
-                    ...user.donor,
-                    updatedDonor
-                }
-            }
             setUser({
                 ...user, 
                 donor: {
@@ -180,7 +183,12 @@ const DonorEditForm: React.FC<DonorEditFormProps> = ({ donorId, donor, iconUrl, 
                 description: `${data.message}`,
                 variant: 'primary'
             })
-            router.push(`/donors/${donorId}`);
+            console.log('edit redirectRoute', redirectRoute)
+            if (redirectRoute) {
+                router.push(redirectRoute);
+            } else {
+                router.push(`/donors/${donorId}`);
+            }
         } else {
             toast({
                 title: "Error",
@@ -258,11 +266,11 @@ const DonorEditForm: React.FC<DonorEditFormProps> = ({ donorId, donor, iconUrl, 
                                             placeholderText="Select Birth Date"
                                             className="text-black"
                                             selected={field.value ? new Date(field.value) : null}
-                                            showTimeSelect
-                                            dateFormat="yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
-                                            onChange={(date: Date) => field.onChange(date.toISOString())}
-                                            // dateFormat="yyyy-MM-dd HH:mm"
-                                            // {...field}
+                                            dateFormat="yyyy-MM-dd"
+                                            // renderDayContents={renderDayContents}
+                                            onChange={(date: Date) => {
+                                                field.onChange(date.toISOString().split('T')[0]);
+                                            }}
                                         />
                                     </FormControl>
                                     <FormMessage />

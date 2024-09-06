@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
-import { useParams, useRouter, useSearchParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 // import DonorInfoPag from "@/components/donor/DonorInfoPage";
 import { loadDonorBgImgUrl, loadDonorIconUrl } from "@/utils/loadBucket/loadBucketUrls";
 import GoBack from "@/components/util/GoBack";
@@ -18,7 +18,6 @@ export default function DonorInfoPage() {
     const router = useRouter();
     const { data: session, status } = useSession();
     const { donorId } = useParams();
-    const queryParams = useSearchParams();
     const [donorInfo, setDonorInfo] = useState<any>();
     const [donorIconUrl, setDonorIconUrl] = useState<string>("");
     const [donorBgImgUrl, setDonorBgImgUrl] = useState<string>("");

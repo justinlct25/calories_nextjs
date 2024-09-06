@@ -16,6 +16,7 @@ export default function DonorEditPage() {
         (state: any) => state,
       )
     const params = useSearchParams();
+    const activityId = params.get('activityId');
 
     const [donorInfo, setDonorInfo] = useState<z.infer<typeof donorEditForm>>();
     const [iconUrl, setIconUrl] = useState<string>("")
@@ -26,7 +27,7 @@ export default function DonorEditPage() {
         setIconUrl(await loadDonorIconUrl(user.donor.icon));
         setBackgroundUrl(await loadDonorBgImgUrl(user.donor.background));
     }
-
+    
     useEffect(() => {
         if (user.donor) {
             loadDonorInfo();
@@ -36,9 +37,9 @@ export default function DonorEditPage() {
 
     return (
         <PageUnderNavbarWrapper>
-            <GoBack isNavbarPad={false} backDirectory="parent" />
+            <GoBack isNavbarPad={false} backDirectory={activityId? `/activities/${activityId}` : "parent"} />
             <h1>Donor Edit Page</h1>
-            {donorInfo && <DonorEditForm donorId={user?.donor.id} donor={donorInfo} iconUrl={iconUrl} backgroundUrl={backgroundUrl} />}
+            {donorInfo && <DonorEditForm donorId={user?.donor.id} donor={donorInfo} iconUrl={iconUrl} backgroundUrl={backgroundUrl} redirectRoute={activityId ? `/activities/${activityId}` : null} />}
         </PageUnderNavbarWrapper>
     );
 }

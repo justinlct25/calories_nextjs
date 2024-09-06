@@ -12,10 +12,6 @@ interface DonorPersonalDetailProps {
 
 const DonorPersonalDetail: React.FC<DonorPersonalDetailProps> = ({ open, onClose, user }) => {
 
-    // const { user } = useUserStore(
-    //     (state: any) => state,
-    //   )
-
     const handleClose = () => {
         onClose(); 
     };

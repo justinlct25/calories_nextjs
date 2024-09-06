@@ -6,7 +6,6 @@ import { activities } from "@/drizzle/schemas/activities.schema"
 import { loadActivityThumbnailUrl, loadActivityDescriptionHTMLImgUrls, loadActivityBackgroundUrl } from '@/utils/loadBucket/loadBucketUrls';
 import ActivityDetailedInfo from '@/components/activity/ActivityDetailedInfo';
 import { useState, useEffect } from 'react';
-import { useSession } from "next-auth/react"
 import ActivityParticipationBar from '@/components/activity/ActivityParticipationBar';
 import { useUserStore } from '@/app/stores/user-store-provider';
 

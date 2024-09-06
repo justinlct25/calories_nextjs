@@ -1,9 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react';
-import { useRouter } from "next/navigation";
 import { activities } from "@/drizzle/schemas/activities.schema"
-import { loadActivityThumbnailUrl, loadActivityDescriptionHTMLImgUrls } from '@/utils/loadBucket/loadBucketUrls';
 import GoBack from '../util/GoBack';
 import ActivityDates from './ActivityDates';
 import ActivityTimes from './ActivityTimes';

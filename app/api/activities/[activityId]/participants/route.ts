@@ -9,12 +9,11 @@ export async function GET(req: Request, {params}: any) {
         const activityId = params.activityId;
         const session = await auth();
         if (!session?.user.id) { return NextResponse.json({message: "Invalid session"}, {status: 409}) }
-        const donorInfo = (await getUser(session?.user.id))
-        if (!donorInfo) { return NextResponse.json({message: "Donor not found"}, {status: 404}) }
-        const donorId = donorInfo?.donor?.id
+        const user = (await getUser(session?.user.id))
+        if (!user) { return NextResponse.json({message: "User not found"}, {status: 404}) }
+        const donorId = user?.donor?.id
         if (!donorId) { return NextResponse.json({message: "Donor not found"}, {status: 404}) }
         const participation = await findParticipant(donorId, activityId);
-        // console.log("participation" + participation);
         const numOfParticipants = await findNumberOfParticipants(activityId);
         return NextResponse.json(
             {

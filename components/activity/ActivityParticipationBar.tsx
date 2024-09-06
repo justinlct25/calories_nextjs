@@ -8,6 +8,7 @@ import { User } from 'lucide-react';
 import { Button } from '../ui/button';
 import { useUserStore } from "@/app/stores/user-store-provider";
 import DonorProfileUpdateRequest from '../donor/DonorProfileUpdateRequest';
+import ActivityParticipateConfirm from './ActivityParticipateConfirm';
 
 const REQUIRED_DONOR_INFORMATION = ['firstname', 'lastname', 'phone', 'birth', 'weight'];
 
@@ -22,17 +23,14 @@ const ActivityParticipationBar: React.FC<ActivityParticipationBarProps> = ({ act
     const [numOfParticipants, setNumOfParticipants] = useState<number>(0);
     const [participation, setParticipation] = useState<typeof donorsToActivities.$inferInsert | null>();
     const [isDonorProfileUpdateRequestOpen, setIsDonorProfileUpdateRequestOpen] = useState(false);
+    const [isActivityParticipateConfirmOpen, setIsActivityParticipateConfirmOpen] = useState(false);
     const [fieldsRequiredUpdated, setFieldsRequiredUpdated] = useState<String[]>([]);
-
-    const handleCloseDonorProfileUpdateRequest = () => {
-        setIsDonorProfileUpdateRequestOpen(false);
-    }
 
     const { user } = useUserStore(
         (state) => state,
     )
 
-    const fetchSetParticipantData = async () => {
+    const fetchParticipantInfo = async () => {
         if (session && user && Object.keys(user).length !== 0) {
             fetch(`/api/activities/${activityId}/participants`)
             .then((res) => res.json())
@@ -44,7 +42,7 @@ const ActivityParticipationBar: React.FC<ActivityParticipationBarProps> = ({ act
     }
 
     useEffect(() => {
-        fetchSetParticipantData();
+        fetchParticipantInfo();
     }, [session])
 
     const getFieldsRequiredUpdated = () => {
@@ -60,19 +58,11 @@ const ActivityParticipationBar: React.FC<ActivityParticipationBarProps> = ({ act
     const handleJoin = async () => {
         if (session && user && Object.keys(user).length !== 0) {
             if (!user.donor.firstname || !user.donor.lastname || !user.donor.phone || !user.donor.birth || !user.donor.weight) {
-                // console.log("Please complete your donor profile first");
                 const fields = getFieldsRequiredUpdated();
                 setFieldsRequiredUpdated(fields);
                 setIsDonorProfileUpdateRequestOpen(true);
             } else {
-                fetch(`/api/activities/${activityId}/participants`, {
-                    method: 'POST',
-                })
-                .then((res) => res.json())
-                .then((data) => {
-                    setParticipation(data.participation);
-                    fetchSetParticipantData();
-                })
+                setIsActivityParticipateConfirmOpen(true);
             }
         } else {
             router.push(`/sign-in?activityId=${activityId}`);
@@ -88,7 +78,7 @@ const ActivityParticipationBar: React.FC<ActivityParticipationBarProps> = ({ act
             .then((data) => {
                 if (data.success) {
                     setParticipation(null);
-                    fetchSetParticipantData();
+                    fetchParticipantInfo();
                 }
             });
         }
@@ -97,7 +87,10 @@ const ActivityParticipationBar: React.FC<ActivityParticipationBarProps> = ({ act
 
     return (
         <div>
-            <DonorProfileUpdateRequest open={isDonorProfileUpdateRequestOpen} onClose={handleCloseDonorProfileUpdateRequest} activityId={activityId} fieldsRequiredUpdated={fieldsRequiredUpdated} />
+            {user.donor && <>
+                <DonorProfileUpdateRequest open={isDonorProfileUpdateRequestOpen} onClose={() => setIsDonorProfileUpdateRequestOpen(false)} activityId={activityId} donorId={user.donor.id} fieldsRequiredUpdated={fieldsRequiredUpdated} />
+                <ActivityParticipateConfirm open={isActivityParticipateConfirmOpen} onClose={() => setIsActivityParticipateConfirmOpen(false)} activityId={activityId} donorInfo={user.donor} updateParticipantInfo={fetchParticipantInfo} />
+            </>}
             <div
                 className='fixed bottom-0 w-full h-24 bg-blend-darken bg-black bg-opacity-90 flex justify-center items-center'
                 style={{
