@@ -32,18 +32,20 @@ const ActivityParticipationBar: React.FC<ActivityParticipationBarProps> = ({ act
 
     const fetchParticipantInfo = async () => {
         if (session && user && Object.keys(user).length !== 0) {
-            fetch(`/api/activities/${activityId}/participants`)
+            fetch(`/api/activities/${activityId}/participants/${user.donor.id}`)
             .then((res) => res.json())
             .then((data) => {
                 setParticipation(data.participation)
                 setNumOfParticipants(data.numOfParticipants)
             });
+        } else {
+            console.log("no session")
         }
     }
 
     useEffect(() => {
         fetchParticipantInfo();
-    }, [session])
+    }, [session, user])
 
     const getFieldsRequiredUpdated = () => {
         const fieldsRequiredUpdated: String[] = [];
@@ -71,7 +73,7 @@ const ActivityParticipationBar: React.FC<ActivityParticipationBarProps> = ({ act
 
     const handleQuit = async () => {
         if (session) {
-            fetch(`/api/activities/${activityId}/participants`, {
+            fetch(`/api/activities/${activityId}/participants/${user.donor.id}`, {
                 method: 'DELETE',
             })
             .then((res) => res.json())

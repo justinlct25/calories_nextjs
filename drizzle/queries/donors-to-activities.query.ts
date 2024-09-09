@@ -4,10 +4,19 @@ import { and, eq } from "drizzle-orm"
 import { NewParticipantInfo, insertParticipantInfo } from "./participant-info.query"
 
 export const findAllParticipants = async (activityId: number) => {
-    const participants = await db.query.donorsToActivities.findMany({
-        where: (donorsToActivities, { eq }) => eq(donorsToActivities.activityId, activityId)
-    })
-    return participants;
+    try {
+        const participants = await db.query.donorsToActivities.findMany({
+            where: (donorsToActivities, { eq }) => eq(donorsToActivities.activityId, activityId),
+            with: {
+                participant: true,
+            }
+        })
+        console.log(participants)
+        return participants;
+    } catch (e) {
+        console.log(e);
+    }
+    return "Error";
 }
 
 export const findNumberOfParticipants = async (activityId: number) => {
@@ -21,7 +30,6 @@ export const findNumberOfParticipants = async (activityId: number) => {
 }
 
 export const findParticipant = async (donorId: number, activityId: number) => {
-    console.log("donorId: " + donorId + " activityId: " + activityId)
     if (donorId && activityId) {
         const participant = await db.query.donorsToActivities.findFirst({
             where: (donorsToActivities, { and, eq }) => and(

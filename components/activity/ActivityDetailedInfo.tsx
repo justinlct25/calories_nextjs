@@ -14,11 +14,12 @@ interface ActivityDetailedInfoProps {
     thumbnailUrl: string;
     backgroundUrl: string;
     descriptionHTML: { __html: string };
+    participants: any;
     isAdmin: boolean | undefined;
 }
 
 
-const ActivityDetailedInfo: React.FC<ActivityDetailedInfoProps> = ({ activityInfo, thumbnailUrl, backgroundUrl, descriptionHTML, isAdmin }) => {
+const ActivityDetailedInfo: React.FC<ActivityDetailedInfoProps> = ({ activityInfo, thumbnailUrl, backgroundUrl, descriptionHTML, participants, isAdmin }) => {
     const [view, setView] = useState<'info' | 'rank' | 'list'>('info');
 
     return (
@@ -67,7 +68,7 @@ const ActivityDetailedInfo: React.FC<ActivityDetailedInfoProps> = ({ activityInf
                     </div>
                 ) : (
                     <div>
-                        {/* list */}
+                        {JSON.stringify(participants)}
                     </div>
                 )}
             </div>

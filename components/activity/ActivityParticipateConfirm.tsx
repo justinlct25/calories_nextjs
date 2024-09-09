@@ -27,7 +27,7 @@ const ActivityParticipateConfirm: React.FC<ActivityParticipateConfirmProps> = ({
 
     const handleJoin = async () => {
         if (session && user && Object.keys(user).length !== 0) {
-            fetch(`/api/activities/${activityId}/participants`, {
+            fetch(`/api/activities/${activityId}/participants/${donorInfo.id}`, {
                 method: 'POST',
             })
             .then((res) => res.json())

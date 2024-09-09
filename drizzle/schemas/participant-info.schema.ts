@@ -14,8 +14,5 @@ export const participantInfo = pgTable("participant_info", {
 });
 
 export const participantInfoRelations = relations(participantInfo, ({ one }) => ({
-    activities: one(donorsToActivities, {
-        fields: [participantInfo.id],
-        references: [donorsToActivities.participantInfoId]
-    })
+    participation: one(donorsToActivities)
 }));

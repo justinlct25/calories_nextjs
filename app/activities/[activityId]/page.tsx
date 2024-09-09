@@ -18,6 +18,7 @@ export default function ActivityInfoPage() {
   const [thumbnailUrl, setThumbnailUrl] = useState<string>("")
   const [backgroundUrl, setBackgroundUrl] = useState<string>("")
   const [descriptionHTML, setDescriptionHTML] = useState({ __html: "" })
+  const [participants, setParticipants] = useState<any[]>([]);
 
   const { user } = useUserStore(
     (state: any) => state,
@@ -38,11 +39,18 @@ export default function ActivityInfoPage() {
         }
         else router.push("/activities")
     })
+    fetch(`/api/activities/${activityId}/participants`)
+    .then((res) => res.json())
+    .then(async (data) => {
+      if (data.participants) {
+        setParticipants(data.participants);
+      }
+    })
 }, [])
 
   return (
     <div className='w-full'>
-      {activityInfo && <ActivityDetailedInfo activityInfo={activityInfo} thumbnailUrl={thumbnailUrl} backgroundUrl={backgroundUrl} descriptionHTML={descriptionHTML} isAdmin={user.isAdmin} />}
+      {activityInfo && <ActivityDetailedInfo activityInfo={activityInfo} thumbnailUrl={thumbnailUrl} backgroundUrl={backgroundUrl} descriptionHTML={descriptionHTML} participants={participants} isAdmin={user.isAdmin} />}
       {(activityInfo) && <ActivityParticipationBar activityId={Number(activityId)} />}
     </div>
       
