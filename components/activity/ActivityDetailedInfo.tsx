@@ -8,6 +8,7 @@ import EditBtn from '../util/EditBtn';
 import ActivityLocation from './ActivityLocation';
 import { InfoIcon, UsersIcon } from "lucide-react";
 import { useState } from "react";
+import ActivityParticipant from "./ActivityParticipant";
 
 interface ActivityDetailedInfoProps {
     activityInfo: typeof activities.$inferInsert;
@@ -67,8 +68,13 @@ const ActivityDetailedInfo: React.FC<ActivityDetailedInfoProps> = ({ activityInf
                         {/* rank */}
                     </div>
                 ) : (
-                    <div>
-                        {JSON.stringify(participants)}
+                    <div className="w-full flex flex-col justify-center items-center max-w-screen-xl mx-auto">
+                        <h2 className="text-4xl">Participated Donor</h2>
+                        {participants.map((participant: any) => (
+                            <div>
+                                {participant.donor && <ActivityParticipant donorInfo={participant.donor} />}
+                            </div>
+                        ))}
                     </div>
                 )}
             </div>

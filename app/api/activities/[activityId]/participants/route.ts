@@ -2,6 +2,7 @@ import { findAllParticipants, findNumberOfParticipants, findParticipant, partici
 import { getUser } from "@/drizzle/queries/users.query";
 import { auth } from "@/lib/auth";
 import { NextResponse } from "next/server";
+import { isAdminRole } from "@/drizzle/queries/users-to-roles.query";
 
 
 export async function GET(req: Request, {params}: any) {
@@ -11,7 +12,8 @@ export async function GET(req: Request, {params}: any) {
         if (!session?.user.id) { return NextResponse.json({message: "Invalid session"}, {status: 409}) }
         const user = (await getUser(session?.user.id))
         if (!user) { return NextResponse.json({message: "User not found"}, {status: 404}) }
-        const participants = await findAllParticipants(activityId);
+        const isAdmin = await isAdminRole(user.id);
+        const participants = await findAllParticipants(activityId, isAdmin ? true: false);
         return NextResponse.json(
             {
                 participants: participants

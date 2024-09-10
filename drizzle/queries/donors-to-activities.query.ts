@@ -3,15 +3,36 @@ import { donorsToActivities } from "../schemas/donors-to-activities.schema"
 import { and, eq } from "drizzle-orm"
 import { NewParticipantInfo, insertParticipantInfo } from "./participant-info.query"
 
-export const findAllParticipants = async (activityId: number) => {
+export const findAllParticipants = async (activityId: number, withParticipantInfo: boolean) => {
     try {
-        const participants = await db.query.donorsToActivities.findMany({
-            where: (donorsToActivities, { eq }) => eq(donorsToActivities.activityId, activityId),
-            with: {
-                participant: true,
-            }
-        })
-        console.log(participants)
+        let participants: any;
+        if (withParticipantInfo) {
+            participants = await db.query.donorsToActivities.findMany({
+                where: (donorsToActivities, { eq }) => eq(donorsToActivities.activityId, activityId),
+                with: {
+                    participant: true,
+                    donor: true
+                }
+            })
+        } else {
+            participants = await db.query.donorsToActivities.findMany({
+                where: (donorsToActivities, { eq }) => eq(donorsToActivities.activityId, activityId), 
+                with: {
+                    donor: {
+                        columns: {
+                            userId: false,
+                            username: false,
+                            firstname: false,
+                            lastname: false,
+                            phone: false,
+                            weight: false,
+                            birth: false,
+                            createdAt: false,
+                        }
+                    }
+                }
+            })
+        }
         return participants;
     } catch (e) {
         console.log(e);

@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react';
 import { loadActivityThumbnailUrl } from "@/utils/loadBucket/loadBucketUrls";
 import { useRouter } from "next/navigation";
 
-interface ActivityParticipatedProps {
+interface ActivityDonorParticipatedProps {
     activityId: number;
     name: string;
     startAt: string;
@@ -15,7 +15,7 @@ interface ActivityParticipatedProps {
     background?: string;
 }
 
-const ActivityParticipated: React.FC<ActivityParticipatedProps> = ({ activityId, name, startAt, endAt, location, address, background }) => {
+const ActivityDonorParticipated: React.FC<ActivityDonorParticipatedProps> = ({ activityId, name, startAt, endAt, location, address, background }) => {
     const router = useRouter();
     const [backgroundUrl, setThumbnailUrl] = useState<string>('');
 
@@ -49,4 +49,4 @@ const ActivityParticipated: React.FC<ActivityParticipatedProps> = ({ activityId,
     );
 };
 
-export default ActivityParticipated;
+export default ActivityDonorParticipated;

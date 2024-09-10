@@ -9,7 +9,7 @@ import GoBack from "@/components/util/GoBack";
 import { BookUser, QrCode } from "lucide-react";
 // import QRCode from "react-qr-code"
 import DonorQRCode from "@/components/donor/DonorQRCode";
-import ActivityParticipated from "@/components/activity/ActivityParticipated";
+import ActivityDonorParticipated from "@/components/activity/ActivityDonorParticipated";
 import DonorPersonalDetail from "@/components/donor/DonorPersonlDetail";
 import { useUserStore } from "@/app/stores/user-store-provider";
 
@@ -125,7 +125,7 @@ export default function DonorInfoPage() {
                 )}
                 <h2 className="text-4xl">Activities Participated</h2>
                 {donorInfo?.activities && donorInfo.activities.map((activity: any, index: number) => (
-                    <ActivityParticipated activityId={activity.activity.id} name={activity.activity.name} startAt={activity.activity.startAt} endAt={activity.activity.endAt} location={activity.activity.location} address={activity.activity.address} background={activity.activity.thumbnail} />
+                    <ActivityDonorParticipated activityId={activity.activity.id} name={activity.activity.name} startAt={activity.activity.startAt} endAt={activity.activity.endAt} location={activity.activity.location} address={activity.activity.address} background={activity.activity.thumbnail} />
                 ))}
                 </div>
             </div>
