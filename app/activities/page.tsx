@@ -35,24 +35,10 @@ const ActivitiesMenuPage = () => {
             
             <div className='container flex items-center justify-between'>
                 <h2 className='text-3xl font-bold px-20'>Exercises</h2>
-                {user.isAdmin && <Link href='/activities/create'><PlusCircle /></Link>}
+                {/* {user.isAdmin && <Link href='/activities/create'><PlusCircle /></Link>} */}
             </div>    
             
             <ActivitiesSelectionPanel />
-            {/* <div>
-                Count: {count}
-                <hr />
-                <button type="button" onClick={() => void incrementCount()}>
-                    Increment Count
-                </button>
-                <button type="button" onClick={() => void decrementCount()}>
-                    Decrement Count
-                </button>
-            </div> */}
-            {/* <div>
-                User: {JSON.stringify(user)}
-            </div> */}
-
         </div>
     );
 } 

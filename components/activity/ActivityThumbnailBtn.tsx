@@ -29,7 +29,7 @@ const ActivityThumbnailBtn = ({activityInfo} : any) => {
             {thumbnailUrl && (
                 <div className="rounded-lg">
                     <div
-                        className="bg-cover bg-center cursor-pointer h-60 w-60 rounded-lg bg-blend-darken bg-black/15 hover:bg-black/60 relative"
+                        className="bg-cover bg-center cursor-pointer h-60 w-60 rounded-lg bg-blend-darken bg-black/15 hover:bg-neutral-700/90 relative"
                         style={{ backgroundImage: `url('${thumbnailUrl}')` }}
                         onClick={handleActivityClick}
                     >

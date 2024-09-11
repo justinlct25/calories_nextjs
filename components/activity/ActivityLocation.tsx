@@ -14,7 +14,7 @@ const ActivityLocation: React.FC<ActivityLocationProps> = ({
   address,
 }) => {
   if (!location || !address) {
-    return <div className="flex justify-center items-center">Loading...</div>;
+    return <div className="flex justify-center items-center">N/A</div>;
   }
 
   return (

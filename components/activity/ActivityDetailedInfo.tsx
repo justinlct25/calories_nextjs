@@ -31,12 +31,12 @@ const ActivityDetailedInfo: React.FC<ActivityDetailedInfoProps> = ({
   return (
     <div className="w-full">
       <GoBack isNavbarPad={true} backDirectory="parent" />
-      {user.isAdmin && (
+      {/* {user.isAdmin && ( */}
         <EditBtn
           isNavbarPad={true}
           editUrl={`/activities/${activityInfo?.id}/edit`}
         />
-      )}
+      {/* )} */}
       <div
         style={{
           backgroundImage: `url("${backgroundUrl}")`,
