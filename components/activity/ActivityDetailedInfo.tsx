@@ -71,9 +71,9 @@ const ActivityDetailedInfo: React.FC<ActivityDetailedInfoProps> = ({ activityInf
                     <div className="w-full flex flex-col justify-center items-center max-w-screen-xl mx-auto">
                         <h2 className="text-4xl">Participated Donor</h2>
                         {participants.map((participant: any) => (
-                            <div>
+                            <>
                                 {participant.donor && <ActivityParticipant donorInfo={participant.donor} />}
-                            </div>
+                            </>
                         ))}
                     </div>
                 )}

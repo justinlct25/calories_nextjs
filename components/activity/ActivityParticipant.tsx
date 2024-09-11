@@ -27,20 +27,18 @@ const ActivityParticipant: React.FC<ActivityParticipantProps> = ({ donorInfo }) 
     }, []);
 
     return (
-        <div className="cursor-pointer activity m-4 rounded-lg bg-cover bg-center h-48 w-full max-w-screen-2xl"
-            onClick={handleParticipantClick}
-        >
-            <div className=" bg-black bg-opacity-60 p-2 text-sm h-full">
-                <div className="flex items-center">
-                    <div className="rounded-full h-16 w-16 bg-cover bg-center" 
-                        style={{ backgroundImage: `url('${iconUrl}')` }}
-                    ></div>
-                    <h3 className="text-4xl ml-4">{donorInfo.username}</h3>
-                </div>
-                <p>Level: 0</p>
-            </div>
+    <div className="cursor-pointer activity m-1 rounded-lg bg-cover bg-center h-24 w-full max-w-96 mx-auto bg-black bg-opacity-60 p-2 text-sm flex items-center justify-center"
+        onClick={handleParticipantClick}
+    >
+        <div className="w-[50%] flex items-center justify-center">
+            <div className="w-[50%]">Level: 0</div>
+            <div className="rounded-full h-16 w-16 bg-cover bg-center" 
+                style={{ backgroundImage: `url('${iconUrl}')` }}
+            ></div>
         </div>
-    );
+        <div className="w-[50%] text-lg ml-4">{donorInfo.username}</div>
+    </div>
+);
 }
 
 export default ActivityParticipant;
