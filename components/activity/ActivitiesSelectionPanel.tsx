@@ -33,10 +33,10 @@ const ActivitiesSelectionPanel = () => {
                   <div>
                     <ActivityThumbnailBtn activityInfo={activity} />
                   </div>
-                  <p className="break-words w-full text-center px-2">
+                  <p className="break-words w-full text-center px-2 font-bold">
                     {activity?.name}
                   </p>
-                  <p>
+                  <p className="pt-2">
                     {new Date(activity?.startAt).toLocaleDateString()} -{" "}
                     {new Date(activity?.endAt).toLocaleDateString()}
                   </p>
