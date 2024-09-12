@@ -84,39 +84,46 @@ const ActivityParticipationBar: React.FC<ActivityParticipationBarProps> = ({
   };
 
   return (
-    <div
-      // className='fixed bottom-0 w-full h-20 bg-blend-darken bg-black bg-opacity-60 flex justify-center items-center'
-      // className='fixed bottom-0 w-full h-20 bg-blend-darken bg-yellow-500 bg-opacity-70 flex justify-center items-center'
-      // className='fixed bottom-0 w-full h-20 bg-blend-darken bg-white bg-opacity-70 flex justify-center items-center'
-      className="fixed bottom-0 w-full h-24 bg-blend-darken bg-black bg-opacity-90 flex justify-center items-center"
-      style={{
-        // backgroundImage: `url(${thumbnailUrl})`,
-        // backgroundRepeat: 'no-repeat',
-        // backgroundSize: 'cover',
-        // backgroundPosition: 'bottom',
-        clipPath: "polygon(100% 100%, 100% 0, 85% 0, 75% 45%, 0 45%, 0% 100%)",
-      }}
-    >
-      <div className="w-5/6 flex justify-center items-end pt-10">
-        <div className="flex ">
-          <User />
-          {numOfParticipants}
+    <>
+      <div
+        // className='fixed bottom-0 w-full h-20 bg-blend-darken bg-black bg-opacity-60 flex justify-center items-center'
+        // className='fixed bottom-0 w-full h-20 bg-blend-darken bg-yellow-500 bg-opacity-70 flex justify-center items-center'
+        // className='fixed bottom-0 w-full h-20 bg-blend-darken bg-white bg-opacity-70 flex justify-center items-center'
+        className="fixed bottom-0 w-full h-24 bg-blend-darken bg-black bg-opacity-90 flex justify-center items-center"
+        style={{
+          // backgroundImage: `url(${thumbnailUrl})`,
+          // backgroundRepeat: 'no-repeat',
+          // backgroundSize: 'cover',
+          // backgroundPosition: 'bottom',
+          clipPath:
+            "polygon(100% 100%, 100% 0, 85% 0, 75% 45%, 0 45%, 0% 100%)",
+        }}
+      >
+        <div className="w-5/6 flex justify-center items-end pt-10">
+          <div className="flex ">
+            <User />
+            {numOfParticipants}
+          </div>
+        </div>
+        <div className="w-1/6 flex justify-center">
+          <Button className="m2" onClick={() => handleShare()}>
+            Share
+          </Button>
+          {participation !== null && participation !== undefined ? (
+            <Button className="m2" variant="destructive" onClick={handleQuit}>
+              Quit
+            </Button>
+          ) : (
+            <Button className="m2" variant="secondary" onClick={handleJoin}>
+              Join
+            </Button>
+          )}
         </div>
       </div>
-      <div className="w-1/6 flex justify-center">
-        <Button className="m2" onClick={() => handleShare()}>Share</Button>
-        {participation !== null && participation !== undefined ? (
-          <Button className="m2" variant="destructive" onClick={handleQuit}>
-            Quit
-          </Button>
-        ) : (
-          <Button className="m2" variant="secondary" onClick={handleJoin}>
-            Join
-          </Button>
-        )}
-      </div>
-      {showSocials && <ShareSocialsModal closeModal={() => setShowSocials(false)} />}
-    </div>
+      {showSocials && (
+        <ShareSocialsModal closeModal={() => setShowSocials(false)} />
+      )}
+    </>
   );
 };
 
