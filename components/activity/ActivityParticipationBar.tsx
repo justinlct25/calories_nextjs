@@ -100,23 +100,23 @@ const ActivityParticipationBar: React.FC<ActivityParticipationBarProps> = ({
             "polygon(100% 100%, 100% 0px, 75% 0px, 70% 45%, 0px 45%, 0% 100%)"
         }}
       >
-        <div className="w-3/4 flex justify-center items-end pt-10">
+        <div className="w-2/3 md:w-3/4 flex justify-center items-end pt-10">
           <div className="flex ">
             <User />
             {numOfParticipants}
           </div>
         </div>
-        <div className="w-1/4 flex justify-evenly">
+        <div className="w-1/3 md:w-1/4 flex flex-col md:flex-row justify-evenly max-w-20 md:max-w-none">
           {participation !== null && participation !== undefined ? (
             <Button className="m2" variant="destructive" onClick={handleQuit}>
               Quit
             </Button>
           ) : (
-            <Button className="m2 bg-green-500 hover:bg-green-400" variant="secondary" onClick={handleJoin}>
+            <Button className="m2 bg-green-500 hover:bg-green-400 max-w-20 mb-2 md:mb-0 ml-2 md:ml-0" variant="secondary" onClick={handleJoin}>
               Join
             </Button>
           )}
-          <Button className="m2 bg-slate-100 text-black hover:bg-gray-400" onClick={() => handleShare()}>
+          <Button className="m2 bg-slate-100 text-black hover:bg-gray-400 max-w-20 ml-2 md:ml-0" onClick={() => handleShare()}>
             Share
           </Button>
         </div>

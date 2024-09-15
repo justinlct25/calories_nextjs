@@ -2,7 +2,6 @@
 
 import React from "react";
 import { ChevronLeft } from "lucide-react";
-import { useState } from "react";
 
 interface ActivityLocationProps {
   location?: String | null;
@@ -14,11 +13,11 @@ const ActivityLocation: React.FC<ActivityLocationProps> = ({
   address,
 }) => {
   if (!location || !address) {
-    return <div className="flex justify-center items-center">N/A</div>;
+    return <div className="flex justify-start md:justify-center items-center">N/A</div>;
   }
 
   return (
-    <div className="flex flex-col justify-center items-center">
+    <div className="flex flex-col justify-start md:justify-center items-center pb-8 md:pb-0 w-full md:w-fit">
       <h1 className="text-xl">地點 Location</h1>
       <div className="mt-4">{location}</div>
       <div>

@@ -1,8 +1,6 @@
 import ActivityThumbnailBtn from "@/components/activity/ActivityThumbnailBtn";
 import { Loading } from "../ui/loading";
 import { useState, useEffect } from "react";
-import ActivityDates from "./ActivityDates";
-import ActivityLocation from "./ActivityLocation";
 
 const ActivitiesSelectionPanel = () => {
   const [loading, setLoading] = useState<boolean>(true);

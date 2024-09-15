@@ -37,7 +37,6 @@ const ActivityThumbnailBtn = ({activityInfo} : any) => {
                             {activityInfo.name}
                         </div>
                     </div>
-                    {/* <div className="backdrop-blur-sm bg-white/30">{activityInfo?.name}</div> */}
                 </div>
             )}
         </div>

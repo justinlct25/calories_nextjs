@@ -2,7 +2,6 @@
 
 import React from 'react';
 import { ChevronLeft } from 'lucide-react'
-import { useState } from 'react';
 
 
 interface ActivityDatesProps {
@@ -13,7 +12,7 @@ interface ActivityDatesProps {
 const ActivityDates: React.FC<ActivityDatesProps> = ({ startAt, endAt }) => {
 
     if (!startAt || !endAt) {
-        return <div className="flex justify-center items-center">Loading...</div>;
+        return <div className="flex justify-start md:justify-center items-center">Loading...</div>;
     }
 
     const startDateTime = new Date(startAt);
@@ -42,7 +41,7 @@ const ActivityDates: React.FC<ActivityDatesProps> = ({ startAt, endAt }) => {
     const isSameTime = startTimeEng===endTimeEng
 
     return (
-        <div className="flex flex-col justify-center items-center">
+        <div className="flex flex-col justify-start md:justify-center items-center w-full md:w-fit">
             <h1 className="text-xl">時間 Times</h1>
             {isSameTime ? (
                 <div className="mt-4">{startTimeEng}</div>
@@ -50,8 +49,6 @@ const ActivityDates: React.FC<ActivityDatesProps> = ({ startAt, endAt }) => {
                 <div className="mt-3">
                     <div>{startTimeChi} - {endTimeChi}</div>
                     <div>{startTimeEng} - {endTimeEng}</div>
-                    {/* <div>to</div> */}
-                    {/* <div>{endTime}</div> */}
                 </div>
             )}
         </div>
