@@ -22,7 +22,7 @@ const DonorPersonalDetail: React.FC<DonorPersonalDetailProps> = ({ open, onClose
                 <ModalDialog open={open} onClose={handleClose}>
                     <div >
                         <div className="mt-4">
-                            <EditBtn isNavbarPad={true} editUrl={`/donors/${user.donor?.id}/edit`} />
+                            <EditBtn isNavbarPad={true} absolute={true} editUrl={`/donors/${user.donor?.id}/edit`} />
                             <h2 className="text-2xl font-bold mb-2">Donor Details</h2>
                             <p>Username: {user.donor?.username}</p>
                             <p>First Name: {user.donor?.firstname || "-"}</p>

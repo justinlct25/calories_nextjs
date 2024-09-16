@@ -20,9 +20,9 @@ const PageUnderNavbarWrapper = ({
         <div className='w-full'>
             <TopPadding />
             <div className='w-full relative'>
-                <div className="ml-20 mr-20">
+                {/* <div className="ml-20 mr-20"> */}
                     {children}
-                </div>
+                {/* </div> */}
             </div>
 
         </div>

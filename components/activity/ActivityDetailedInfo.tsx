@@ -10,6 +10,9 @@ import { InfoIcon, UsersIcon } from "lucide-react";
 import { useState } from "react";
 import ActivityParticipantList from "./ActivityParticipantList";
 import ActivityParticipantTable from "./ActivityParticipantTable";
+import ToggleBtn from "../util/ToggleBtn";
+import TopPadding from "../TopPadding";
+import ActivityPublicToggleButton from "./ActivityPublicToggleButton";
 
 interface ActivityDetailedInfoProps {
     activityInfo: typeof activities.$inferInsert;
@@ -27,7 +30,18 @@ const ActivityDetailedInfo: React.FC<ActivityDetailedInfoProps> = ({ activityInf
     return (
         <div className="w-full">
             <GoBack isNavbarPad={true} backDirectory='parent' />
-            {isAdmin? <EditBtn isNavbarPad={true} editUrl={`/activities/${activityInfo?.id}/edit`} /> : null}
+            {
+                isAdmin && 
+                // <div className="mt-24 ml-24">
+                // <div className="absolute top-0 right-0">
+                <div className="absolute top-0 right-10 z-[100]">
+                    <TopPadding />
+                    <div className='flex space-x-5'>
+                        <EditBtn editUrl={`/activities/${activityInfo?.id}/edit`} />
+                        <ActivityPublicToggleButton isPublic={true} activityId={activityInfo?.id} />
+                    </div>
+                </div>
+            }
             <div
                 style={{
                     backgroundImage: `url("${backgroundUrl}")`,

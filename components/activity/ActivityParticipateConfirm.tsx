@@ -40,10 +40,6 @@ const ActivityParticipateConfirm: React.FC<ActivityParticipateConfirmProps> = ({
         }
     };
 
-    const handleUpdate = () => {
-        router.push(`/donors/${user.donor.id}/edit?activityId=${activityId}`);
-    };
-
     const handleClose = () => {
         onClose(); 
     };
@@ -62,7 +58,7 @@ const ActivityParticipateConfirm: React.FC<ActivityParticipateConfirmProps> = ({
                             <div>Phone: {donorInfo.phone}</div>
                             <div>Weight: {donorInfo.weight} kg</div>
                             <div>Birth: {(donorInfo.birth).split("T")[0]}</div>
-                            <EditBtn isNavbarPad={false} bottom={true} editUrl={`/donors/${user.donor?.id}/edit?activityId=${activityId}`} />
+                            <EditBtn isNavbarPad={false} bottom={true} absolute={true} editUrl={`/donors/${user.donor?.id}/edit?activityId=${activityId}`} />
                         </div>
                         <div>Once you are participated, the participant information for this activity can not be changed. </div>
                         <div className="flex space-x-4">
