@@ -7,7 +7,7 @@ import ActivityTimes from './ActivityTimes';
 import EditBtn from '../util/EditBtn';
 import ActivityLocation from './ActivityLocation';
 import { InfoIcon, UsersIcon } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ActivityParticipantList from "./ActivityParticipantList";
 import ActivityParticipantTable from "./ActivityParticipantTable";
 import ToggleBtn from "../util/ToggleBtn";
@@ -26,6 +26,11 @@ interface ActivityDetailedInfoProps {
 
 const ActivityDetailedInfo: React.FC<ActivityDetailedInfoProps> = ({ activityInfo, thumbnailUrl, backgroundUrl, descriptionHTML, participants, isAdmin }) => {
     const [view, setView] = useState<'info' | 'rank' | 'list'>('info');
+    const [isActivityPublic, setIsActivityPublic] = useState<boolean>(false);
+
+    useEffect(() => {
+        setIsActivityPublic(activityInfo?.public ? activityInfo?.public : false);
+    }, [activityInfo]);
 
     return (
         <div className="w-full">
@@ -38,7 +43,7 @@ const ActivityDetailedInfo: React.FC<ActivityDetailedInfoProps> = ({ activityInf
                     <TopPadding />
                     <div className='flex space-x-5'>
                         <EditBtn editUrl={`/activities/${activityInfo?.id}/edit`} />
-                        <ActivityPublicToggleButton isPublic={true} activityId={activityInfo?.id} />
+                        <ActivityPublicToggleButton isPublic={isActivityPublic} setIsPublic={setIsActivityPublic} activityId={activityInfo?.id} />
                     </div>
                 </div>
             }
@@ -76,6 +81,7 @@ const ActivityDetailedInfo: React.FC<ActivityDetailedInfoProps> = ({ activityInf
                 { view === 'info' ? (
                     <div className="w-full flex flex-col justify-center items-center max-w-screen-xl mx-auto">
                         <div className="text-4xl">活動詳情 Event Details</div>
+                        {JSON.stringify(activityInfo)}
                         <div className="mt-4" dangerouslySetInnerHTML={descriptionHTML} />
                     </div>
                 ) : view === 'rank' ? (

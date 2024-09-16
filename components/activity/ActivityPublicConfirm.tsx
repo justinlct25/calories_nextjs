@@ -13,10 +13,10 @@ interface ActivityPublicConfirmProps {
     open: boolean;
     onClose: () => void; 
     activityId: number;
-    updateActivityPublicity: () => void;
+    confirmSetPublic: (activityId: number) => void;
 }
 
-const ActivityPublicConfirm: React.FC<ActivityPublicConfirmProps> = ({ open, onClose, activityId, updateActivityPublicity }) => {
+const ActivityPublicConfirm: React.FC<ActivityPublicConfirmProps> = ({ open, onClose, activityId, confirmSetPublic }) => {
     const router = useRouter();
     const { data: session, status } = useSession()
 
@@ -26,14 +26,7 @@ const ActivityPublicConfirm: React.FC<ActivityPublicConfirmProps> = ({ open, onC
 
     const handlePublic = async () => {
         if (session && user && Object.keys(user).length !== 0) {
-            fetch(`/api/activities/${activityId}/public`, {
-                method: 'POST',
-            })
-            .then((res) => res.json())
-            .then((data) => {
-                updateActivityPublicity();
-                onClose();
-            })
+            await confirmSetPublic(activityId);
         } else {
             router.push(`/sign-in?activityId=${activityId}`);
         }
@@ -52,7 +45,7 @@ const ActivityPublicConfirm: React.FC<ActivityPublicConfirmProps> = ({ open, onC
                         <div>Are you sure make this activity public for participating? </div>
                         <div>You could lock it again after it is set to public. </div>
                         <div className="flex space-x-4">
-                            <Button variant='secondary' onClick={handlePublic}>Join</Button>
+                            <Button variant='secondary' onClick={handlePublic}>Make Public</Button>
                             <Button onClick={onClose}>Cancel</Button>
                         </div>
                     </div>
