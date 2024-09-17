@@ -6,7 +6,7 @@ import ActivityDates from './ActivityDates';
 import ActivityTimes from './ActivityTimes';
 import EditBtn from '../util/EditBtn';
 import ActivityLocation from './ActivityLocation';
-import { InfoIcon, UsersIcon } from "lucide-react";
+import { InfoIcon, TableIcon, UsersIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import ActivityParticipantList from "./ActivityParticipantList";
 import ActivityParticipantTable from "./ActivityParticipantTable";
@@ -25,7 +25,7 @@ interface ActivityDetailedInfoProps {
 
 
 const ActivityDetailedInfo: React.FC<ActivityDetailedInfoProps> = ({ activityInfo, thumbnailUrl, backgroundUrl, descriptionHTML, participants, isAdmin }) => {
-    const [view, setView] = useState<'info' | 'rank' | 'list'>('info');
+    const [view, setView] = useState<'info' | 'rank' | 'list' | 'table'>('info');
     const [isActivityPublic, setIsActivityPublic] = useState<boolean>(false);
 
     useEffect(() => {
@@ -61,7 +61,7 @@ const ActivityDetailedInfo: React.FC<ActivityDetailedInfoProps> = ({ activityInf
                 {thumbnailUrl && <img src={thumbnailUrl} alt="Thumbnail" className="mr-6 w-1/6 aspect-[1] rounded-xl" />}
                 <div className="text-4xl min-w-[40%]">{activityInfo?.name}</div>
             </div>
-            <div className=" w-full aspect-[2] absolute top-0">
+            <div className=" w-full aspect-[2] absolute top-0 pb-20">
                 <div className="w-full aspect-[4]"></div> {/* padding from top */}
                 <div className="bg-black w-9/12 aspect-[5.5] z-[-10] absolute left-1/2 transform -translate-x-1/2 flex flex-row justify-around items-center rounded-md">
                     <ActivityDates startAt={activityInfo?.startAt} endAt={activityInfo?.endAt} />
@@ -70,31 +70,35 @@ const ActivityDetailedInfo: React.FC<ActivityDetailedInfoProps> = ({ activityInf
                 </div>
                 <div className="w-full aspect-[7]"></div> {/* padding from bottom */}
                 <div className="flex justify-center items-center w-full p-6 max-w-3/5 space-x-20">
-                <button onClick={() => setView('info')} className={view === 'info' ? '' : 'text-gray-400'} >
-                    <InfoIcon size={32} />
-                </button>
-                {/* <button onClick={() => setView('rank')}></button> */}
-                <button onClick={() => setView('list')} className={view === 'list' ? '' : 'text-gray-400'}>
-                    <UsersIcon size={32} />
-                </button>
+                    <button onClick={() => setView('info')} className={view === 'info' ? '' : 'text-gray-400'} >
+                        <InfoIcon size={32} />
+                    </button>
+                    <button onClick={() => setView('list')} className={view === 'list' ? '' : 'text-gray-400'}>
+                        <UsersIcon size={32} />
+                    </button>
+                    { isAdmin && (
+                        <button onClick={() => setView('table')} className={view === 'table' ? '' : 'text-gray-400'}>
+                            <TableIcon size={32} />
+                        </button>
+                    )}
                 </div>
                 { view === 'info' ? (
                     <div className="w-full flex flex-col justify-center items-center max-w-screen-xl mx-auto">
                         <div className="text-4xl">活動詳情 Event Details</div>
-                        {JSON.stringify(activityInfo)}
                         <div className="mt-4" dangerouslySetInnerHTML={descriptionHTML} />
                     </div>
-                ) : view === 'rank' ? (
-                    <div>
-                        {/* rank */}
-                    </div>
-                ) : (
-                    
+                ) : view === 'list' ? (
                     <div className="w-full flex flex-col justify-center items-center max-w-screen-xl mx-auto">
                         <h2 className="text-4xl">Participated Donors</h2>
-                        {/* <ActivityParticipantList participants={participants} /> */}
-                        <ActivityParticipantTable data={participants} />
+                        <ActivityParticipantList participants={participants} />
                     </div>
+                ) : (
+                    isAdmin && (
+                        <div className="w-full flex flex-col justify-center items-center max-w-screen-xl mx-auto">
+                            <h2 className="text-4xl">Participated Donors</h2>
+                            <ActivityParticipantTable data={participants} />
+                        </div>
+                    )
                 )}
             </div>
         </div>
