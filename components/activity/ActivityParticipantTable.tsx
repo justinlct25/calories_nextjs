@@ -5,6 +5,7 @@ import {
   getCoreRowModel,
   useReactTable,
 } from '@tanstack/react-table'
+import { EditIcon } from 'lucide-react'
 
 
   type Participant = {
@@ -26,9 +27,17 @@ type Donor = {
 //   scores: null | number
 }
 
+type AttendanceRecord = {
+  id: number
+  attendanceStatus: any
+  record: string
+  calories: number
+}
+
 type ActivityParticipant = {
-  participant: Participant
+  participantInfo: Participant
   donor: Donor
+  attendanceRecord: AttendanceRecord
 }
 
 const columnHelper = createColumnHelper<ActivityParticipant>()
@@ -59,43 +68,108 @@ const columns = [
         id: 'participantInfo',
         header: () => <span style={{ color: 'white' }}>Participant Info</span>,
         columns: [
-            columnHelper.accessor('participant.id', {
+            columnHelper.accessor('participantInfo.id', {
                 id: 'participantId',
                 cell: info => info.getValue(),
                 header: () => <span style={{ color: 'white' }}>ID</span>,
               }),
-              columnHelper.accessor('participant.firstname', {
+              columnHelper.accessor('participantInfo.firstname', {
                 id: 'participantFirstname',
                 cell: info => info.getValue(),
                 header: () => <span style={{ color: 'white' }}>First Name</span>,
               }),
-              columnHelper.accessor('participant.lastname', {
+              columnHelper.accessor('participantInfo.lastname', {
                 id: 'participantLastname',
                 cell: info => info.getValue(),
                 header: () => <span style={{ color: 'white' }}>Last Name</span>,
               }),
-              columnHelper.accessor('participant.phone', {
+              columnHelper.accessor('participantInfo.phone', {
                 id: 'participantPhone',
                 cell: info => info.getValue(),
                 header: () => <span style={{ color: 'white' }}>Phone</span>,
               }),
-              columnHelper.accessor('participant.email', {
+              columnHelper.accessor('participantInfo.email', {
                 id: 'participantEmail',
                 cell: info => info.getValue(),
                 header: () => <span style={{ color: 'white' }}>Email</span>,
               }),
-              columnHelper.accessor('participant.weight', {
+              columnHelper.accessor('participantInfo.weight', {
                 id: 'participantWeight',
                 cell: info => info.getValue(),
                 header: () => <span style={{ color: 'white' }}>Weight</span>,
               }),
-              columnHelper.accessor('participant.birth', {
+              columnHelper.accessor('participantInfo.birth', {
                 id: 'participantBirth',
                 cell: info => info.getValue(),
                 header: () => <span style={{ color: 'white' }}>Birth</span>,
               }),
         ]
     }),
+    columnHelper.group({
+        id: 'info-actions',
+        header: () => <span style={{ color: 'white' }}>Info Actions</span>,
+        columns: [
+            columnHelper.display({
+                id: 'edit',
+                cell: () => <button>
+                  <EditIcon />
+                </button>,
+                header: () => <span style={{ color: 'white' }}>Edit</span>,
+              }),
+              columnHelper.display({
+                id: 'delete',
+                cell: (row) => <button onClick={() => {
+                  console.log(row.row.original)
+                }}>Delete</button>,
+                header: () => <span style={{ color: 'white' }}>Delete</span>,
+              }),
+
+        ]
+    }),
+    columnHelper.group({
+      id: 'record-actions',
+      header: () => <span style={{ color: 'white' }}>Record Actions</span>,
+      columns: [
+          // columnHelper.display({
+          //     id: 'attended',
+          //     cell: () => <button>Attended</button>,
+          //     header: () => <span style={{ color: 'white' }}>Attended</span>,
+          //   }),
+          //   columnHelper.display({
+          //     id: 'record',
+          //     cell: (row) => <button onClick={() => {
+          //       console.log(row.row.original)
+          //     }}>
+          //       <EditIcon />
+          //     </button>,
+          //     header: () => <span style={{ color: 'white' }}>Record</span>,
+          //   }),
+          //   columnHelper.display({
+          //     id: 'calories',
+          //     cell: (row) => <button onClick={() => {
+          //       console.log(row.row.original)
+          //     }}>Delete</button>,
+          //     header: () => <span style={{ color: 'white' }}>Calories</span>,
+          //   }),
+          columnHelper.accessor('attendanceRecord.attendanceStatus.name', {
+            id: 'attendanceStatus',
+            cell: info => info.getValue(),
+            header: () => <span style={{ color: 'white' }}>Status</span>,
+          }),
+          columnHelper.accessor('attendanceRecord.record', {
+            id: 'attendanceRecord',
+            cell: info => info.getValue(),
+            header: () => <span style={{ color: 'white' }}>Record</span>,
+          }),
+          columnHelper.accessor('attendanceRecord.calories', {
+            id: 'attendanceCalories',
+            cell: info => info.getValue(),
+            header: () => <span style={{ color: 'white' }}>Calories</span>,
+          }),
+
+      ]
+  }),
+    
 ]
 
 interface ActivityParticipantTableProps {

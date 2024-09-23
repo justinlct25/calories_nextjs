@@ -2,6 +2,8 @@ import { db } from "@/lib/db"
 import { donorsToActivities } from "../schemas/donors-to-activities.schema"
 import { and, eq } from "drizzle-orm"
 import { NewParticipantInfo, insertParticipantInfo } from "./participant-info.query"
+import { insertAttendanceRecord } from "./attendance-record.query"
+import { attendanceRecord } from "../schemas/attendance-record.schema"
 
 export const findAllParticipants = async (activityId: number, withParticipantInfo: boolean) => {
     try {
@@ -10,8 +12,13 @@ export const findAllParticipants = async (activityId: number, withParticipantInf
             participants = await db.query.donorsToActivities.findMany({
                 where: (donorsToActivities, { eq }) => eq(donorsToActivities.activityId, activityId),
                 with: {
-                    participant: true,
-                    donor: true
+                    donor: true,
+                    participantInfo: true,
+                    attendanceRecord: {
+                        with: {
+                            attendanceStatus: true
+                        }
+                    }
                 }
             })
         } else {
@@ -66,11 +73,16 @@ export const findParticipant = async (donorId: number, activityId: number) => {
 
 export const participate = async (donorId: number, activityId: number, participantInfo: NewParticipantInfo) => {
     const newParticipantInfo = await insertParticipantInfo(participantInfo);
+    const newAttendanceRecord = await insertAttendanceRecord({
+        statusId: 1,
+    });
     const newParticipation = await db.insert(donorsToActivities).values({
         donorId: donorId,
         activityId: activityId,
         participantInfoId: newParticipantInfo.id,
-    }).returning().then((res) => res[0] ?? null);
+        attendanceRecordId: newAttendanceRecord.id
+    }).returning()
+    .then((res) => Array.isArray(res) ? res[0] ?? null : null);
     return newParticipation;
 }
 

@@ -10,7 +10,6 @@ import { InfoIcon, TableIcon, UsersIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import ActivityParticipantList from "./ActivityParticipantList";
 import ActivityParticipantTable from "./ActivityParticipantTable";
-import ToggleBtn from "../util/ToggleBtn";
 import TopPadding from "../TopPadding";
 import ActivityPublicToggleButton from "./ActivityPublicToggleButton";
 
@@ -96,6 +95,7 @@ const ActivityDetailedInfo: React.FC<ActivityDetailedInfoProps> = ({ activityInf
                     isAdmin && (
                         <div className="w-full flex flex-col justify-center items-center max-w-screen-xl mx-auto">
                             <h2 className="text-4xl">Participated Donors</h2>
+                            <>{JSON.stringify(participants)}</>
                             <ActivityParticipantTable data={participants} />
                         </div>
                     )

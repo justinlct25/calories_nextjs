@@ -27,7 +27,7 @@ export const activities = pgTable("activity", {
     description: text("description"),
     thumbnail: text("thumbnail").default("default_activity_thumbnail.jpg"),
     background: text("background").default("default_activity_bg.jpg"),
-    public: boolean("public").default(true),
+    public: boolean("public").default(false),
     closed: boolean("closed").default(false),
     online: boolean("online").default(false),
     location: text("location"),

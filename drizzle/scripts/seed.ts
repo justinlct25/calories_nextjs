@@ -3,6 +3,7 @@ import { NewRole, insertRole } from "../queries/roles.query";
 import { NewUserWithoutId, insertUser } from "../queries/auth-users.query";
 import { ROLE_NAMES } from "@/utils/configVariables";
 import { hash } from "bcrypt";
+import { insertAttendanceStatus } from "../queries/attendance-status.query";
 
 
 const seedRoles = [
@@ -43,15 +44,42 @@ const seedUsers = [
     }
 ]
 
+const seedAttendanceStatus = [
+    {
+        name: "attending",
+        description: "user is attending the activity"
+    },
+    {
+        name: "not attending",
+        description: "user not attending the activity"
+    },
+    {
+        name: "attended",
+        description: "user attended the activity"
+    },
+    {
+        name: "absent",
+        description: "user did not attend the activity"
+    },
+    {
+        name: "absent (informed)",
+        description: "user did not attend the activity but informed in advance"
+    }
+]
+
 async function main() {
     
-    for (const role of seedRoles) {
-        const response = await insertRole(role);
-        console.log(response);
-    }
-    for (const user of seedUsers) {
-        user.user.password = await hash(user.user.password, 10);
-        const response = await insertUser(user.user, user.role);
+    // for (const role of seedRoles) {
+    //     const response = await insertRole(role);
+    //     console.log(response);
+    // }
+    // for (const user of seedUsers) {
+    //     user.user.password = await hash(user.user.password, 10);
+    //     const response = await insertUser(user.user, user.role);
+    //     console.log(response);
+    // }
+    for (const status of seedAttendanceStatus) {
+        const response = await insertAttendanceStatus(status);
         console.log(response);
     }
     process.exit();
