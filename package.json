@@ -15,8 +15,11 @@
     },
     "dependencies": {
         "@auth/drizzle-adapter": "^0.7.0",
+        "@emotion/react": "^11.13.3",
+        "@emotion/styled": "^11.13.0",
         "@google-cloud/storage": "^7.9.0",
         "@hookform/resolvers": "^3.3.4",
+        "@mui/material": "^6.1.1",
         "@radix-ui/react-label": "^2.0.2",
         "@radix-ui/react-slot": "^1.0.2",
         "@radix-ui/react-toast": "^1.1.5",

@@ -6,6 +6,7 @@ import {
   useReactTable,
 } from '@tanstack/react-table'
 import { EditIcon } from 'lucide-react'
+import Select from '@mui/material/Select';
 
 
   type Participant = {
@@ -153,7 +154,19 @@ const columns = [
           //   }),
           columnHelper.accessor('attendanceRecord.attendanceStatus.name', {
             id: 'attendanceStatus',
-            cell: info => info.getValue(),
+            // cell: info => info.getValue(),
+            cell: (info) => {
+              return <Select
+                value={info.getValue()}
+                onChange={(e) => {
+                  console.log(e.target.value)
+                }}
+              >
+                <option value="Absent">Absent</option>
+                <option value="attending">Attending</option>
+                <option value="Excused">Excused</option>
+              </Select>
+            },
             header: () => <span style={{ color: 'white' }}>Status</span>,
           }),
           columnHelper.accessor('attendanceRecord.record', {
