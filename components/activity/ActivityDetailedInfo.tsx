@@ -95,7 +95,7 @@ const ActivityDetailedInfo: React.FC<ActivityDetailedInfoProps> = ({ activityInf
                     isAdmin && (
                         <div className="w-full flex flex-col justify-center items-center max-w-screen-xl mx-auto">
                             <h2 className="text-4xl">Participated Donors</h2>
-                            <>{JSON.stringify(participants)}</>
+                            {/* <>{JSON.stringify(participants)}</> */}
                             <ActivityParticipantTable data={participants} />
                         </div>
                     )
