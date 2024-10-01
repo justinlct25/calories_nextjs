@@ -4,29 +4,29 @@ import { MenuItem, IconButton, TextField } from '@mui/material';
 import { AttendanceStatus } from '@/drizzle/queries/attendance-status.query';
 import { Check, Cross, CrossIcon, Edit, X } from 'lucide-react';
 
-interface SelectionMenuProps {
+interface OptionalSelectionMenuProps {
   options: AttendanceStatus[];
   value: string;
-  onChange: (value: string) => void;
+  updateFunc: (updateObj: any) => any;
 }
 
-const SelectionMenu: React.FC<SelectionMenuProps> = ({ options, value, onChange }) => {
-    const [currentValue, setCurrentValue] = useState(value);
-    const [isEditing, setIsEditing] = useState(false);
-    const [selectedValue, setSelectedValue] = useState(value);
-    const handleChange = (event: any) => {
-      setSelectedValue(event.target.value);
-    };
-  
-    const handleConfirm = async () => {
-      setIsEditing(false);
-      // Call your fetch function here. For example:
-      // const result = await fetchAndUpdateStatus(selectedValue);
-      // if (result.success) {
-        // onChange(selectedValue);
-        setCurrentValue(selectedValue);
-      // }
-    };
+const OptionalSelectionMenu: React.FC<OptionalSelectionMenuProps> = ({ options, value, updateFunc }) => {
+  const [currentValue, setCurrentValue] = useState(value);
+  const [isEditing, setIsEditing] = useState(false);
+  const [selectedOption, setSelectedOption] = useState(options.find(option => option.name === value));
+
+  const handleChange = (event: any) => {
+    setSelectedOption(options.find(option => option.name === event.target.value));
+  };
+
+  const handleConfirm = async () => {
+    setIsEditing(false);
+    if (selectedOption) {
+      const updateObj = { statusId: selectedOption.id };
+      await updateFunc(updateObj);
+      setCurrentValue(selectedOption.name);
+    }
+  };
   
     return (
       <div className="text-white">
@@ -39,10 +39,10 @@ const SelectionMenu: React.FC<SelectionMenuProps> = ({ options, value, onChange 
           </div>
         ) : (
           <div className="flex items-center">
-            <Select value={selectedValue} onChange={handleChange}>
+            <Select value={selectedOption ? selectedOption.name : ''} onChange={handleChange}>
               {options.map((option) => (
                 <MenuItem key={option.id} value={option.name}>
-                    <span className={selectedValue === option.name ? 'text-white' : ''}>
+                    <span className={selectedOption ? (selectedOption.name === option.name ? 'text-white' : '') : ''}>
                     {capitalizeFirstLetter(option.name)}
                     </span>
                 </MenuItem>
@@ -62,7 +62,7 @@ const SelectionMenu: React.FC<SelectionMenuProps> = ({ options, value, onChange 
     );
   };
   
-  export default SelectionMenu;
+  export default OptionalSelectionMenu;
 
 function capitalizeFirstLetter(string: string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
