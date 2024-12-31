@@ -9,7 +9,7 @@ import { EditIcon } from 'lucide-react'
 import Select from '@mui/material/Select';
 import { MenuItem } from '@mui/material';
 import { useState, useEffect } from 'react';
-import SelectionMenu from '../table/OptionalSelectionMenu';
+import OptionalSelectionMenu from '../table/OptionalSelectionMenu';
 
 
 type Participant = {
@@ -180,18 +180,18 @@ const ActivityParticipantTable: React.FC<ActivityParticipantTableProps> = ({ dat
               // cell: info => info.getValue(),
               cell: (info) => {
                 return (
-                  <SelectionMenu 
+                  <OptionalSelectionMenu 
                     options={attendanceStatuses} 
                     value={info.getValue()} 
                     updateFunc={async (updateObj: any) => {
-                      console.log(updateObj);
-                      await fetch(`/api/attendance-record/${info.row.original.attendanceRecord.id}`, {
+                      const res = await fetch(`/api/attendance-record/${info.row.original.attendanceRecord.id}`, {
                         method: 'PUT',
                         headers: {
                           'Content-Type': 'application/json'
                         },
                         body: JSON.stringify(updateObj)
                       })
+                      return res;
                     }}
                   />
                 )

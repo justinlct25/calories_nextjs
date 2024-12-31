@@ -25,8 +25,8 @@ const ActivityPublicToggleButton: React.FC<ActivityPublicToggleButtonProps> = ({
               method: 'POST',
             });
             const data = await res.json();
-              setIsPublic(data.isPublic);
-              setIsActivityPublicConfirmOpen(false);
+            setIsPublic(data.isPublic);
+            setIsActivityPublicConfirmOpen(false);
           } catch (error) {
             console.error('Error making public:', error);
           }
@@ -38,7 +38,7 @@ const ActivityPublicToggleButton: React.FC<ActivityPublicToggleButtonProps> = ({
             method: 'POST',
           });
           const data = await res.json();
-            setIsPublic(data.isPublic);
+          setIsPublic(data.isPublic);
         } catch (error) {
           console.error('Error making private:', error);
         }

@@ -20,11 +20,15 @@ const OptionalSelectionMenu: React.FC<OptionalSelectionMenuProps> = ({ options, 
   };
 
   const handleConfirm = async () => {
-    setIsEditing(false);
-    if (selectedOption) {
+    if (selectedOption && selectedOption.name !== currentValue) {
       const updateObj = { statusId: selectedOption.id };
-      await updateFunc(updateObj);
-      setCurrentValue(selectedOption.name);
+      const res = await updateFunc(updateObj);
+      if (res.status == 200) {
+        setCurrentValue(selectedOption.name);
+        setIsEditing(false);
+      }
+    } else {
+      setIsEditing(false);
     }
   };
   
