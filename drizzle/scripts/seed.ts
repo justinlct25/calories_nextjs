@@ -4,6 +4,7 @@ import { NewUserWithoutId, insertUser } from "../queries/auth-users.query";
 import { ROLE_NAMES } from "@/utils/configVariables";
 import { hash } from "bcrypt";
 import { insertAttendanceStatus } from "../queries/attendance-status.query";
+import { insertActivityStatus } from "../queries/activity-status.query";
 
 
 const seedRoles = [
@@ -67,6 +68,41 @@ const seedAttendanceStatus = [
     }
 ]
 
+const seedActivityStatus = [
+    {
+        name: "pending",
+        description: "activity is pending"
+    },
+    {
+        name: "upcoming",
+        description: "activity is upcoming"
+    }, 
+    {
+        name: "ongoing",
+        description: "activity is ongoing"
+    },
+    {
+        name: "processing",
+        description: "activity is processing"
+    },
+    {
+        name: "completed",
+        description: "activity is completed"
+    },
+    {
+        name: "postponed",
+        description: "activity is postponed"
+    },
+    {
+        name: "rescheduled",
+        description: "activity is rescheduled"
+    },
+    {
+        name: "cancelled",
+        description: "activity is cancelled"
+    }
+]
+
 async function main() {
     
     // for (const role of seedRoles) {
@@ -78,8 +114,12 @@ async function main() {
     //     const response = await insertUser(user.user, user.role);
     //     console.log(response);
     // }
-    for (const status of seedAttendanceStatus) {
-        const response = await insertAttendanceStatus(status);
+    // for (const status of seedAttendanceStatus) {
+        // const response = await insertAttendanceStatus(status);
+    //     console.log(response);
+    // }
+    for (const status of seedActivityStatus) {
+        const response = await insertActivityStatus(status);
         console.log(response);
     }
     process.exit();

@@ -56,3 +56,11 @@ export const updateActivityPublicity = async (activityId: number, isPublic: bool
         throw new Error(`${error}`)
     }
 }
+
+export const updateActivityStatus = async (activityId: number, statusId: number) => {
+    try {
+        await db.update(activities).set({statusId: statusId}).where(eq(activities.id, activityId));
+    } catch(error) {
+        throw new Error(`${error}`)
+    }
+}
