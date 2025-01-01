@@ -1,39 +1,38 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { IconButton } from '@mui/material';
 import { Check, Edit, X } from 'lucide-react';
 import { useToast } from "../ui/use-toast";
 
-interface NumericInputMenuProps {
-  value: number;
+interface OptionalTextInputProps {
+  value: string;
   valueKey: string;
   updateFunc: (updateObj: any) => any;
 }
 
-const NumericInputMenu: React.FC<NumericInputMenuProps> = ({ value, valueKey, updateFunc }) => {
+const OptionalTextInput: React.FC<OptionalTextInputProps> = ({ value, valueKey, updateFunc }) => {
   const { toast } = useToast();
   const [currentValue, setCurrentValue] = useState(value);
   const [isEditing, setIsEditing] = useState(false);
-  const [inputValue, setInputValue] = useState<string>(value ? value.toString() : ""); // Input value as string for better control
+  const [inputValue, setInputValue] = useState<string>(value || ""); // Input value as string for better control
 
   const handleConfirm = async () => {
-    const numericValue = Number(inputValue);
-    if (!isNaN(numericValue) && numericValue !== currentValue) {
-      const updateObj = { [valueKey]: numericValue };
+    if (inputValue !== currentValue) {
+      const updateObj = { [valueKey]: inputValue };
       const res = await updateFunc(updateObj);
       const data = await res.json();
       if (res.status === 200) {
         toast({
           title: "Success",
           description: data.message,
-        })
-        setCurrentValue(numericValue);
+        });
+        setCurrentValue(inputValue);
         setIsEditing(false);
       } else {
         toast({
           title: "Error",
           description: data.message,
           variant: 'destructive'
-        })
+        });
       }
     } else {
       setIsEditing(false);
@@ -41,24 +40,18 @@ const NumericInputMenu: React.FC<NumericInputMenuProps> = ({ value, valueKey, up
   };
 
   const handleCancel = () => {
-    // setInputValue(currentValue.toString()); // Reset input value on cancel
     setIsEditing(false);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-
-    // Allow only numbers and an optional negative sign
-    if (/^-?\d*$/.test(value)) {
-      setInputValue(value); // Update inputValue if it matches the pattern
-    }
+    setInputValue(e.target.value);
   };
 
   return (
     <div className="text-white">
       {!isEditing ? (
         <div className="flex items-center">
-          <div>{(currentValue && currentValue !== 0) ? currentValue : "-"}</div>
+          <div>{currentValue || "-"}</div>
           <IconButton onClick={() => setIsEditing(true)} className="text-white">
             <Edit className="text-white" />
           </IconButton>
@@ -66,12 +59,11 @@ const NumericInputMenu: React.FC<NumericInputMenuProps> = ({ value, valueKey, up
       ) : (
         <div className="flex items-center">
           <input
-            type="text" // Using type="text" for better control over allowed input
+            type="text"
             value={inputValue}
             onChange={handleChange}
             className="bg-transparent border border-white text-white p-1 rounded w-20"
-            placeholder="Enter a number"
-            inputMode="numeric" // Hints the keyboard to show numbers on mobile
+            placeholder="Enter text"
           />
           <div>
             <IconButton onClick={handleConfirm} className="text-white">
@@ -87,4 +79,4 @@ const NumericInputMenu: React.FC<NumericInputMenuProps> = ({ value, valueKey, up
   );
 };
 
-export default NumericInputMenu;
+export default OptionalTextInput;

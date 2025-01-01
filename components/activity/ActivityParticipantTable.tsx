@@ -11,6 +11,7 @@ import { MenuItem } from '@mui/material';
 import { useState, useEffect } from 'react';
 import OptionalSelectionMenu from '../table/OptionalSelectionMenu';
 import OptionalNumericInput from '../table/OptionalNumericInput';
+import OptionalTextInput from '../table/OptionalTextInput';
 
 
 type Participant = {
@@ -153,7 +154,7 @@ const ActivityParticipantTable: React.FC<ActivityParticipantTableProps> = ({ dat
       }),
       columnHelper.group({
         id: 'record-actions',
-        header: () => <span style={{ color: 'white' }}>Record Actions</span>,
+        header: () => <span style={{ color: 'white' }}>Attendance Record</span>,
         columns: [
             columnHelper.accessor('attendanceRecord.attendanceStatus.name', {
               id: 'attendanceStatus',
@@ -180,7 +181,24 @@ const ActivityParticipantTable: React.FC<ActivityParticipantTableProps> = ({ dat
             }),
             columnHelper.accessor('attendanceRecord.record', {
               id: 'attendanceRecord',
-              cell: info => info.getValue(),
+              cell: (info) => {
+                return (
+                  <OptionalTextInput
+                    value={info.getValue()}
+                    valueKey={'record'}
+                    updateFunc={async (updateObj: any) => {
+                      const res = await fetch(`/api/attendance-record/${info.row.original.attendanceRecord.id}`, {
+                        method: 'PUT',
+                        headers: {
+                          'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(updateObj)
+                      })
+                      return res;
+                    }}
+                  />
+                )
+              },
               header: () => <span style={{ color: 'white' }}>Record</span>,
             }),
             columnHelper.accessor('attendanceRecord.calories', {
