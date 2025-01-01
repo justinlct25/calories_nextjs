@@ -5,13 +5,14 @@ import {
   getCoreRowModel,
   useReactTable,
 } from '@tanstack/react-table'
-import { EditIcon } from 'lucide-react'
+import { EditIcon, Trash2Icon } from 'lucide-react'
 import Select from '@mui/material/Select';
 import { MenuItem } from '@mui/material';
 import { useState, useEffect } from 'react';
 import OptionalSelectionMenu from '../table/OptionalSelectionMenu';
 import OptionalNumericInput from '../table/OptionalNumericInput';
 import OptionalTextInput from '../table/OptionalTextInput';
+import { Loading } from '../ui/loading';
 
 
 type Participant = {
@@ -55,6 +56,7 @@ interface ActivityParticipantTableProps {
 
 const ActivityParticipantTable: React.FC<ActivityParticipantTableProps> = ({ data }) => {
   const [attendanceStatuses, setAttendanceStatuses] = useState<any[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     fetch(`/api/attendance-status`)
@@ -62,6 +64,7 @@ const ActivityParticipantTable: React.FC<ActivityParticipantTableProps> = ({ dat
     .then(async (data) => {
       if (data) {
         setAttendanceStatuses(data);
+        setLoading(false);
       }
     })
   }, [])
@@ -129,27 +132,22 @@ const ActivityParticipantTable: React.FC<ActivityParticipantTableProps> = ({ dat
                   cell: info => info.getValue(),
                   header: () => <span style={{ color: 'white' }}>Birth</span>,
                 }),
-          ]
-      }),
-      columnHelper.group({
-          id: 'info-actions',
-          header: () => <span style={{ color: 'white' }}>Info Actions</span>,
-          columns: [
-              columnHelper.display({
-                  id: 'edit',
-                  cell: () => <button>
-                    <EditIcon />
-                  </button>,
+                columnHelper.display({
+                  id: 'Actions',
+                  cell: () => {
+                    return (
+                      <>
+                        <button>
+                          <EditIcon />
+                        </button>
+                        <button>
+                          <Trash2Icon />
+                        </button>
+                      </>
+                    )
+                  },
                   header: () => <span style={{ color: 'white' }}>Edit</span>,
                 }),
-                columnHelper.display({
-                  id: 'delete',
-                  cell: (row) => <button onClick={() => {
-                    console.log(row.row.original)
-                  }}>Delete</button>,
-                  header: () => <span style={{ color: 'white' }}>Delete</span>,
-                }),
-  
           ]
       }),
       columnHelper.group({
@@ -237,44 +235,47 @@ const ActivityParticipantTable: React.FC<ActivityParticipantTableProps> = ({ dat
 
   return (
     <div className="flex justify-center mb-24">
-      <table 
-        className="my-auto border"
-      >
-        <thead>
-          {table.getHeaderGroups().map(headerGroup => (
-            <tr
-              key={headerGroup.id}
-            //   className="border-b text-gray-800 uppercase"
-              >
-              {headerGroup.headers.map(header => (
-                <th
-                  key={header.id} colSpan={header.colSpan}
-                className=" border border-white"
-
+      {
+        loading ? <Loading /> :
+          <table 
+            className="my-auto border"
+          >
+            <thead>
+              {table.getHeaderGroups().map(headerGroup => (
+                <tr
+                  key={headerGroup.id}
+                //   className="border-b text-gray-800 uppercase"
                   >
-                  {header.isPlaceholder
-                    ? null
-                    : flexRender(
-                        header.column.columnDef.header,
-                        header.getContext()
-                      )}
-                </th>
+                  {headerGroup.headers.map(header => (
+                    <th
+                      key={header.id} colSpan={header.colSpan}
+                    className=" border border-white"
+
+                      >
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
+                    </th>
+                  ))}
+                </tr>
               ))}
-            </tr>
-          ))}
-        </thead>
-        <tbody>
-          {table.getRowModel().rows.map(row => (
-            <tr key={row.id} className="border-b">
-              {row.getVisibleCells().map(cell => (
-                <td key={cell.id} className="px-4 pt-[14px] pb-[18px] border border-white">
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </td>
+            </thead>
+            <tbody>
+              {table.getRowModel().rows.map(row => (
+                <tr key={row.id} className="border-b">
+                  {row.getVisibleCells().map(cell => (
+                    <td key={cell.id} className="px-4 pt-[14px] pb-[18px] border border-white">
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    </td>
+                  ))}
+                </tr>
               ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
+            </tbody>
+          </table>
+        }
       <div/>
     </div>
   )

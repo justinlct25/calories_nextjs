@@ -4,6 +4,7 @@ import { MenuItem, IconButton } from '@mui/material';
 import { AttendanceStatus } from '@/drizzle/queries/attendance-status.query';
 import { Check, Edit, X } from 'lucide-react';
 import { useToast } from "../ui/use-toast";
+import { Loading } from '../ui/loading';
 
 
 interface OptionalSelectionMenuProps {
@@ -15,6 +16,7 @@ interface OptionalSelectionMenuProps {
 
 const OptionalSelectionMenu: React.FC<OptionalSelectionMenuProps> = ({ options, value, valueKey, updateFunc }) => {
   const { toast } = useToast();
+  const [loading, setLoading] = useState<boolean>(false);
   const [currentValue, setCurrentValue] = useState(value);
   const [isEditing, setIsEditing] = useState(false);
   const [selectedOption, setSelectedOption] = useState(options.find(option => option.name === value));
@@ -25,6 +27,7 @@ const OptionalSelectionMenu: React.FC<OptionalSelectionMenuProps> = ({ options, 
 
   const handleConfirm = async () => {
     if (selectedOption && selectedOption.name !== currentValue) {
+      setLoading(true);
       const updateObj = { [valueKey]: selectedOption.id };
       const res = await updateFunc(updateObj);
       const data = await res.json();
@@ -42,6 +45,7 @@ const OptionalSelectionMenu: React.FC<OptionalSelectionMenuProps> = ({ options, 
           variant: 'destructive'
         })
       }
+      setLoading(false);
     } else {
       setIsEditing(false);
     }
@@ -49,33 +53,35 @@ const OptionalSelectionMenu: React.FC<OptionalSelectionMenuProps> = ({ options, 
   
     return (
       <div className="text-white">
-        {!isEditing ? (
-          <div className="flex items-center">
-            <div>{capitalizeFirstLetter(currentValue)}</div>
-            <IconButton onClick={() => setIsEditing(true)} className="text-white">
-              <Edit className="text-white" />
-            </IconButton>
-          </div>
-        ) : (
-          <div className="flex items-center">
-            <Select value={selectedOption ? selectedOption.name : ''} onChange={handleChange}>
-              {options.map((option) => (
-                <MenuItem key={option.id} value={option.name}>
-                    <span className={selectedOption ? (selectedOption.name === option.name ? 'text-white' : '') : ''}>
-                    {capitalizeFirstLetter(option.name)}
-                    </span>
-                </MenuItem>
-              ))}
-            </Select>
-            <div>
-              <IconButton onClick={handleConfirm} className="text-white">
-                <Check className="text-white" />
-              </IconButton>
-              <IconButton onClick={() => setIsEditing(false)} className="text-white">
-                <X className="text-white" />
+        { loading ? <Loading hasText={false} hasHeight={false} /> : (
+          !isEditing ? (
+            <div className="flex items-center">
+              <div>{capitalizeFirstLetter(currentValue)}</div>
+              <IconButton onClick={() => setIsEditing(true)} className="text-white">
+                <Edit className="text-white" />
               </IconButton>
             </div>
-          </div>
+          ) : (
+            <div className="flex items-center">
+              <Select value={selectedOption ? selectedOption.name : ''} onChange={handleChange}>
+                {options.map((option) => (
+                  <MenuItem key={option.id} value={option.name}>
+                      <span className={selectedOption ? (selectedOption.name === option.name ? 'text-white' : '') : ''}>
+                      {capitalizeFirstLetter(option.name)}
+                      </span>
+                  </MenuItem>
+                ))}
+              </Select>
+              <div>
+                <IconButton onClick={handleConfirm} className="text-white">
+                  <Check className="text-white" />
+                </IconButton>
+                <IconButton onClick={() => setIsEditing(false)} className="text-white">
+                  <X className="text-white" />
+                </IconButton>
+              </div>
+            </div>
+          )
         )}
       </div>
     );
