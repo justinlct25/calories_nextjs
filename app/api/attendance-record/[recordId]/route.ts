@@ -13,10 +13,10 @@ export async function PUT(req: Request, {params}: any) {
         if (!existingRecord) { return NextResponse.json({message: "Record not found"}, {status: 404}) }
         const updateObj = await req.json();
         console.log("updateObj", JSON.stringify(updateObj));
-        // const newAttendanceRecord = await updateAttendanceRecord(recordId, updateObj)
+        const newAttendanceRecord = await updateAttendanceRecord(recordId, updateObj);
+        const updatedKeys = Object.keys(updateObj);
         return NextResponse.json(
-            // {attendanceRecord: newAttendanceRecord, message: "Attendance record updated"},
-            {attendanceRecord: existingRecord, message: "Attendance record updated"},
+            {attendanceRecord: newAttendanceRecord, message: `Updated ${updatedKeys} of attendance record. `},
             {status: 200}
         )
     } catch (e) {

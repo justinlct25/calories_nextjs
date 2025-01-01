@@ -1,16 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Select from '@mui/material/Select';
-import { MenuItem, IconButton, TextField } from '@mui/material';
+import { MenuItem, IconButton } from '@mui/material';
 import { AttendanceStatus } from '@/drizzle/queries/attendance-status.query';
-import { Check, Cross, CrossIcon, Edit, X } from 'lucide-react';
+import { Check, Edit, X } from 'lucide-react';
+import { useToast } from "../ui/use-toast";
+
 
 interface OptionalSelectionMenuProps {
   options: AttendanceStatus[];
   value: string;
+  valueKey: string;
   updateFunc: (updateObj: any) => any;
 }
 
-const OptionalSelectionMenu: React.FC<OptionalSelectionMenuProps> = ({ options, value, updateFunc }) => {
+const OptionalSelectionMenu: React.FC<OptionalSelectionMenuProps> = ({ options, value, valueKey, updateFunc }) => {
+  const { toast } = useToast();
   const [currentValue, setCurrentValue] = useState(value);
   const [isEditing, setIsEditing] = useState(false);
   const [selectedOption, setSelectedOption] = useState(options.find(option => option.name === value));
@@ -21,11 +25,22 @@ const OptionalSelectionMenu: React.FC<OptionalSelectionMenuProps> = ({ options, 
 
   const handleConfirm = async () => {
     if (selectedOption && selectedOption.name !== currentValue) {
-      const updateObj = { statusId: selectedOption.id };
+      const updateObj = { [valueKey]: selectedOption.id };
       const res = await updateFunc(updateObj);
+      const data = await res.json();
       if (res.status == 200) {
+        toast({
+          title: "Success",
+          description: data.message,
+        })
         setCurrentValue(selectedOption.name);
         setIsEditing(false);
+      } else {
+        toast({
+          title: "Error",
+          description: data.message,
+          variant: 'destructive'
+        })
       }
     } else {
       setIsEditing(false);

@@ -10,6 +10,7 @@ import Select from '@mui/material/Select';
 import { MenuItem } from '@mui/material';
 import { useState, useEffect } from 'react';
 import OptionalSelectionMenu from '../table/OptionalSelectionMenu';
+import OptionalNumericInput from '../table/OptionalNumericInput';
 
 
 type Participant = {
@@ -60,10 +61,10 @@ const ActivityParticipantTable: React.FC<ActivityParticipantTableProps> = ({ dat
     .then(async (data) => {
       if (data) {
         setAttendanceStatuses(data);
-        console.log("statuses" + JSON.stringify(attendanceStatuses));
       }
     })
   }, [])
+
 
 
   const columns = [
@@ -154,35 +155,14 @@ const ActivityParticipantTable: React.FC<ActivityParticipantTableProps> = ({ dat
         id: 'record-actions',
         header: () => <span style={{ color: 'white' }}>Record Actions</span>,
         columns: [
-            // columnHelper.display({
-            //     id: 'attended',
-            //     cell: () => <button>Attended</button>,
-            //     header: () => <span style={{ color: 'white' }}>Attended</span>,
-            //   }),
-            //   columnHelper.display({
-            //     id: 'record',
-            //     cell: (row) => <button onClick={() => {
-            //       console.log(row.row.original)
-            //     }}>
-            //       <EditIcon />
-            //     </button>,
-            //     header: () => <span style={{ color: 'white' }}>Record</span>,
-            //   }),
-            //   columnHelper.display({
-            //     id: 'calories',
-            //     cell: (row) => <button onClick={() => {
-            //       console.log(row.row.original)
-            //     }}>Delete</button>,
-            //     header: () => <span style={{ color: 'white' }}>Calories</span>,
-            //   }),
             columnHelper.accessor('attendanceRecord.attendanceStatus.name', {
               id: 'attendanceStatus',
-              // cell: info => info.getValue(),
               cell: (info) => {
                 return (
                   <OptionalSelectionMenu 
                     options={attendanceStatuses} 
                     value={info.getValue()} 
+                    valueKey={'statusId'}
                     updateFunc={async (updateObj: any) => {
                       const res = await fetch(`/api/attendance-record/${info.row.original.attendanceRecord.id}`, {
                         method: 'PUT',
@@ -195,16 +175,6 @@ const ActivityParticipantTable: React.FC<ActivityParticipantTableProps> = ({ dat
                     }}
                   />
                 )
-                // <Select
-                //   value={info.getValue()}
-                //   onChange={(e) => {
-                //     console.log(e.target.value)
-                //   }}
-                // >
-                //   <MenuItem value="Absent">Absent</MenuItem>
-                //   <MenuItem value="attending">Attending</MenuItem>
-                //   <MenuItem value="Excused">Excused</MenuItem>
-                // </Select>
               },
               header: () => <span style={{ color: 'white' }}>Status</span>,
             }),
@@ -215,7 +185,24 @@ const ActivityParticipantTable: React.FC<ActivityParticipantTableProps> = ({ dat
             }),
             columnHelper.accessor('attendanceRecord.calories', {
               id: 'attendanceCalories',
-              cell: info => info.getValue(),
+              cell: (info) => {
+                return (
+                  <OptionalNumericInput
+                    value={info.getValue()}
+                    valueKey={'calories'}
+                    updateFunc={async (updateObj: any) => {
+                      const res = await fetch(`/api/attendance-record/${info.row.original.attendanceRecord.id}`, {
+                        method: 'PUT',
+                        headers: {
+                          'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(updateObj)
+                      })
+                      return res;
+                    }}
+                  />
+                )
+              },
               header: () => <span style={{ color: 'white' }}>Calories</span>,
             }),
   

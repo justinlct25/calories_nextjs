@@ -19,7 +19,6 @@ import GoogleSignInBtn from "../GoogleSignInBtn";
 import { signIn } from 'next-auth/react';
 import { useRouter } from "next/navigation";
 import { useToast } from "../ui/use-toast";
-import { useSession } from "next-auth/react";
 
 
 
