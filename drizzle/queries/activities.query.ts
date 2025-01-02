@@ -16,9 +16,9 @@ export const getActivityById = async (activityId: number) => {
 
     const activity = await db.query.activities.findFirst({
         where: (activities, { eq }) => eq(activities.id, activityId),
-        // with: {
-        //     participants: true
-        // }
+        with: {
+            status: true
+        }
     })
     return activity;
 }

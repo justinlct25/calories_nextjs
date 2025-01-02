@@ -43,7 +43,7 @@ export const activitiesRelations = relations(activities, ({ one, many }) => ({
         fields: [activities.creatorId],
         references: [admins.id],
     }),
-    activityStatus: one(activityStatus, {
+    status: one(activityStatus, {
         fields: [activities.statusId],
         references: [activityStatus.id],
     }),

@@ -59,7 +59,7 @@ const ActivityParticipantTable: React.FC<ActivityParticipantTableProps> = ({ dat
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    fetch(`/api/attendance-status`)
+    fetch(`/api/attendance/statuses`)
     .then((res) => res.json())
     .then(async (data) => {
       if (data) {
@@ -163,7 +163,7 @@ const ActivityParticipantTable: React.FC<ActivityParticipantTableProps> = ({ dat
                     value={info.getValue()} 
                     valueKey={'statusId'}
                     updateFunc={async (updateObj: any) => {
-                      const res = await fetch(`/api/attendance-record/${info.row.original.attendanceRecord.id}`, {
+                      const res = await fetch(`/api/attendance/records/${info.row.original.attendanceRecord.id}`, {
                         method: 'PUT',
                         headers: {
                           'Content-Type': 'application/json'
@@ -185,7 +185,7 @@ const ActivityParticipantTable: React.FC<ActivityParticipantTableProps> = ({ dat
                     value={info.getValue()}
                     valueKey={'record'}
                     updateFunc={async (updateObj: any) => {
-                      const res = await fetch(`/api/attendance-record/${info.row.original.attendanceRecord.id}`, {
+                      const res = await fetch(`/api/attendance/records/${info.row.original.attendanceRecord.id}`, {
                         method: 'PUT',
                         headers: {
                           'Content-Type': 'application/json'
@@ -207,7 +207,7 @@ const ActivityParticipantTable: React.FC<ActivityParticipantTableProps> = ({ dat
                     value={info.getValue()}
                     valueKey={'calories'}
                     updateFunc={async (updateObj: any) => {
-                      const res = await fetch(`/api/attendance-record/${info.row.original.attendanceRecord.id}`, {
+                      const res = await fetch(`/api/attendance/records/${info.row.original.attendanceRecord.id}`, {
                         method: 'PUT',
                         headers: {
                           'Content-Type': 'application/json'
