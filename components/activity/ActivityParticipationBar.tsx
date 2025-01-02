@@ -9,6 +9,7 @@ import { Button } from '../ui/button';
 import { useUserStore } from "@/app/stores/user-store-provider";
 import DonorProfileUpdateRequest from '../donor/DonorProfileUpdateRequest';
 import ActivityParticipateConfirm from './ActivityParticipateConfirm';
+import { Loading } from '../ui/loading';
 
 const REQUIRED_DONOR_INFORMATION = ['firstname', 'lastname', 'phone', 'birth', 'weight'];
 
@@ -20,6 +21,7 @@ interface ActivityParticipationBarProps {
 const ActivityParticipationBar: React.FC<ActivityParticipationBarProps> = ({ activityId }) => {
     const { data: session, status } = useSession()
     const router = useRouter();
+    const [loading, setLoading] = useState<boolean>(true);
     const [numOfParticipants, setNumOfParticipants] = useState<number>(0);
     const [participation, setParticipation] = useState<typeof donorsToActivities.$inferInsert | null>();
     const [isDonorProfileUpdateRequestOpen, setIsDonorProfileUpdateRequestOpen] = useState(false);
@@ -32,20 +34,31 @@ const ActivityParticipationBar: React.FC<ActivityParticipationBarProps> = ({ act
 
     const fetchParticipantInfo = async () => {
         if (session && user && Object.keys(user).length !== 0) {
-            fetch(`/api/activities/${activityId}/participants/${user.donor.id}`)
-            .then((res) => res.json())
-            .then((data) => {
-                setParticipation(data.participation)
-                setNumOfParticipants(data.numOfParticipants)
-            });
+          try {
+            const res = await fetch(`/api/activities/${activityId}/participants/${user.donor.id}`);
+            const data = await res.json();
+            setParticipation(data.participation);
+            setNumOfParticipants(data.numOfParticipants);
+          } catch (error) {
+            console.error('Error fetching participant info:', error);
+          } finally {
+            setLoading(false);
+          }
         } else {
-            console.log("no session")
+          console.log("no session");
+          setLoading(false);
         }
-    }
+      };
 
-    useEffect(() => {
-        fetchParticipantInfo();
-    }, [session, user])
+      useEffect(() => {
+        // Only fetch participant info when the session status is "authenticated"
+        if (status === 'authenticated' && user && Object.keys(user).length !== 0) {
+            fetchParticipantInfo();
+        } else if (status === 'unauthenticated') {
+            setLoading(false);
+        }
+    }, [status, user]);
+    
 
     const getFieldsRequiredUpdated = () => {
         const fieldsRequiredUpdated: String[] = [];
@@ -99,20 +112,32 @@ const ActivityParticipationBar: React.FC<ActivityParticipationBarProps> = ({ act
                     clipPath: 'polygon(100% 100%, 100% 0, 85% 0, 75% 45%, 0 45%, 0% 100%)'
                 }}
             >
-                <div className="w-5/6 flex justify-center items-end pt-10">
-                    <div className='flex '>
-                        <User />
-                        {numOfParticipants}
-                    </div>
-                </div>
-                <div className="w-1/6 flex justify-center">
-                    <Button>Share</Button> 
-                    {
-                        (participation !== null && participation !== undefined) ?
-                            <Button variant='destructive' onClick={handleQuit}>Quit</Button> : 
-                            <Button variant='secondary' onClick={handleJoin}>Join</Button>
-                    }
-                </div>
+                {loading ? (
+                    <>
+                        <div className="w-5/6 flex justify-center items-end pt-10"></div>
+                        <div className="w-1/6 flex justify-center">
+                            <Loading hasText={false} hasHeight={false} />
+                        </div> 
+                    </>
+                    ) : (
+                    <>
+                        <div className="w-5/6 flex justify-center items-end pt-10">
+                            <div className='flex '>
+                                <User />
+                                {numOfParticipants}
+                            </div>
+                        </div>
+                        <div className="w-1/6 flex justify-center">
+                            <Button>Share</Button> 
+                            {
+                                (participation !== null && participation !== undefined) ?
+                                    <Button variant='destructive' onClick={handleQuit}>Quit</Button> : 
+                                    <Button variant='secondary' onClick={handleJoin}>Join</Button>
+                            }
+                        </div>
+                    </>
+                )
+}
             </div>
         </div>
     );
