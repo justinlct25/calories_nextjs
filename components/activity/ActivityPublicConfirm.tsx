@@ -26,6 +26,7 @@ const ActivityPublicConfirm: React.FC<ActivityPublicConfirmProps> = ({ open, onC
 
     const handlePublic = async () => {
         if (session && user && Object.keys(user).length !== 0) {
+            onClose();
             await confirmSetPublic(activityId);
         } else {
             router.push(`/sign-in?activityId=${activityId}`);
