@@ -10,7 +10,7 @@ interface DonorProfileUpdateRequestProps {
     onClose: () => void; 
     activityId: number;
     donorId: number;
-    fieldsRequiredUpdated: String[]
+    fieldsRequiredUpdated: String[];
 }
 
 const DonorProfileUpdateRequest: React.FC<DonorProfileUpdateRequestProps> = ({ open, onClose, activityId, donorId, fieldsRequiredUpdated }) => {

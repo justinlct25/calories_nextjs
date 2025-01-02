@@ -86,58 +86,74 @@ const ActivityParticipationBar: React.FC<ActivityParticipationBarProps> = ({ act
 
     const handleQuit = async () => {
         if (session) {
-            fetch(`/api/activities/${activityId}/participants/${user.donor.id}`, {
-                method: 'DELETE',
-            })
-            .then((res) => res.json())
-            .then((data) => {
+            setLoading(true);
+            try {
+                const res = await fetch(`/api/activities/${activityId}/participants/${user.donor.id}`, {
+                  method: 'DELETE',
+                });
+                const data = await res.json();
                 if (data.success) {
-                    setParticipation(null);
-                    fetchParticipantInfo();
+                  setParticipation(null);
+                  fetchParticipantInfo();
                 }
-            });
+              } catch (error) {
+                console.error('Error quitting activity:', error);
+              } finally {
+                setLoading(false);
+              }
         }
     }
     
 
     return (
         <div>
-            {user.donor && <>
-                <DonorProfileUpdateRequest open={isDonorProfileUpdateRequestOpen} onClose={() => setIsDonorProfileUpdateRequestOpen(false)} activityId={activityId} donorId={user.donor.id} fieldsRequiredUpdated={fieldsRequiredUpdated} />
-                <ActivityParticipateConfirm open={isActivityParticipateConfirmOpen} onClose={() => setIsActivityParticipateConfirmOpen(false)} activityId={activityId} donorInfo={user.donor} updateParticipantInfo={fetchParticipantInfo} />
-            </>}
+            {user.donor && (
+                <>
+                    <DonorProfileUpdateRequest
+                        open={isDonorProfileUpdateRequestOpen}
+                        onClose={() => setIsDonorProfileUpdateRequestOpen(false)}
+                        activityId={activityId}
+                        donorId={user.donor.id}
+                        fieldsRequiredUpdated={fieldsRequiredUpdated}
+                    />
+                    <ActivityParticipateConfirm
+                        open={isActivityParticipateConfirmOpen}
+                        onClose={() => setIsActivityParticipateConfirmOpen(false)}
+                        activityId={activityId}
+                        donorInfo={user.donor}
+                        updateParticipantInfo={fetchParticipantInfo}
+                        setLoading={setLoading}
+                    />
+                </>
+            )}
             <div
                 className='fixed bottom-0 w-full h-24 bg-blend-darken bg-black bg-opacity-90 flex justify-center items-center'
                 style={{
                     clipPath: 'polygon(100% 100%, 100% 0, 85% 0, 75% 45%, 0 45%, 0% 100%)'
                 }}
             >
-                {loading ? (
-                    <>
-                        <div className="w-5/6 flex justify-center items-end pt-10"></div>
-                        <div className="w-1/6 flex justify-center">
-                            <Loading hasText={false} hasHeight={false} />
-                        </div> 
-                    </>
+                <div className="w-5/6 flex justify-center items-end pt-10">
+                {!loading &&
+                    <div className='flex '>
+                        <User />
+                        {numOfParticipants}
+                    </div>
+                }
+                </div>
+                <div className="w-1/6 flex justify-center">
+                    {loading ? (
+                        <Loading hasText={false} hasHeight={false} />
                     ) : (
-                    <>
-                        <div className="w-5/6 flex justify-center items-end pt-10">
-                            <div className='flex '>
-                                <User />
-                                {numOfParticipants}
-                            </div>
-                        </div>
-                        <div className="w-1/6 flex justify-center">
-                            <Button>Share</Button> 
-                            {
-                                (participation !== null && participation !== undefined) ?
-                                    <Button variant='destructive' onClick={handleQuit}>Quit</Button> : 
-                                    <Button variant='secondary' onClick={handleJoin}>Join</Button>
-                            }
-                        </div>
-                    </>
-                )
-}
+                        <>
+                            <Button>Share</Button>
+                            {participation !== null && participation !== undefined ? (
+                                <Button variant='destructive' onClick={handleQuit}>Quit</Button>
+                            ) : (
+                                <Button variant='secondary' onClick={handleJoin}>Join</Button>
+                            )}
+                        </>
+                    )}
+                </div>
             </div>
         </div>
     );

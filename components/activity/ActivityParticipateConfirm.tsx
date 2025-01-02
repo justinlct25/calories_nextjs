@@ -15,9 +15,10 @@ interface ActivityParticipateConfirmProps {
     activityId: number;
     donorInfo: any;
     updateParticipantInfo: () => void;
+    setLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const ActivityParticipateConfirm: React.FC<ActivityParticipateConfirmProps> = ({ open, onClose, activityId, donorInfo, updateParticipantInfo }) => {
+const ActivityParticipateConfirm: React.FC<ActivityParticipateConfirmProps> = ({ open, onClose, activityId, donorInfo, updateParticipantInfo, setLoading }) => {
     const router = useRouter();
     const { data: session, status } = useSession()
 
@@ -27,13 +28,15 @@ const ActivityParticipateConfirm: React.FC<ActivityParticipateConfirmProps> = ({
 
     const handleJoin = async () => {
         if (session && user && Object.keys(user).length !== 0) {
+            setLoading(true);
+            onClose();
             fetch(`/api/activities/${activityId}/participants/${donorInfo.id}`, {
                 method: 'POST',
             })
             .then((res) => res.json())
-            .then((data) => {
-                updateParticipantInfo();
-                onClose();
+            .then(async (data) => {
+                await updateParticipantInfo();
+                setLoading(false);
             })
         } else {
             router.push(`/sign-in?activityId=${activityId}`);
