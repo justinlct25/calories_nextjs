@@ -74,18 +74,21 @@ const ActivityDetailedInfo: React.FC<ActivityDetailedInfoProps> = ({ activityInf
             >
                 {thumbnailUrl && <img src={thumbnailUrl} alt="Thumbnail" className="mr-6 w-1/6 aspect-[1] rounded-xl" />}
                 <div>
-                    <ActivityStatusSelection options={activityStatuses} value={activityInfo?.status?.name} valueKey="statusId" 
-                        updateFunc={async () => {
-                            const url = `/api/activities/${activityInfo?.id}/status/${activityInfo?.status?.id}`
-                            console.log(url);
-                            const res = await fetch(url, {
-                                method: 'PUT',
-                                headers: {
-                                    'Content-Type': 'application/json'
-                                },
-                            });
-                            return res;
-                        }} />
+                    {
+                        isAdmin &&
+                        <ActivityStatusSelection options={activityStatuses} value={activityInfo?.status?.name} valueKey="statusId" 
+                            updateFunc={async () => {
+                                const url = `/api/activities/${activityInfo?.id}/status/${activityInfo?.status?.id}`
+                                console.log(url);
+                                const res = await fetch(url, {
+                                    method: 'PUT',
+                                    headers: {
+                                        'Content-Type': 'application/json'
+                                    },
+                                });
+                                return res;
+                            }} />
+                    }
                     <div className="text-4xl min-w-[40%]">{activityInfo?.name}</div>
                 </div>
             </div>
