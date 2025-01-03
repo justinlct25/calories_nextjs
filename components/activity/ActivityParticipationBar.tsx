@@ -10,17 +10,18 @@ import { useUserStore } from "@/app/stores/user-store-provider";
 import DonorProfileUpdateRequestDialog from '../donor/DonorProfileUpdateRequestDialog';
 import ActivityParticipateConfirmDialog from './ActivityParticipateConfirmDialog';
 import { Loading } from '../ui/loading';
+import { useToast } from '../ui/use-toast';
 
 const REQUIRED_DONOR_INFORMATION = ['firstname', 'lastname', 'phone', 'birth', 'weight'];
-
 
 interface ActivityParticipationBarProps {
     activityId: number;
 }
 
 const ActivityParticipationBar: React.FC<ActivityParticipationBarProps> = ({ activityId }) => {
-    const { data: session, status } = useSession()
+    const { data: session, status } = useSession();
     const router = useRouter();
+    const { toast } = useToast();
     const [loading, setLoading] = useState<boolean>(true);
     const [numOfParticipants, setNumOfParticipants] = useState<number>(0);
     const [participation, setParticipation] = useState<typeof donorsToActivities.$inferInsert | null>();
@@ -28,37 +29,33 @@ const ActivityParticipationBar: React.FC<ActivityParticipationBarProps> = ({ act
     const [isActivityParticipateConfirmDialogOpen, setIsActivityParticipateConfirmDialogOpen] = useState(false);
     const [fieldsRequiredUpdated, setFieldsRequiredUpdated] = useState<String[]>([]);
 
-    const { user } = useUserStore(
-        (state) => state,
-    )
+    const { user } = useUserStore((state) => state);
 
     const fetchParticipantInfo = async () => {
         if (session && user && Object.keys(user).length !== 0) {
-          try {
-            const res = await fetch(`/api/activities/${activityId}/participants/${user.donor.id}`);
-            const data = await res.json();
-            setParticipation(data.participation);
-            setNumOfParticipants(data.numOfParticipants);
-          } catch (error) {
-            console.error('Error fetching participant info:', error);
-          } finally {
-            setLoading(false);
-          }
+            try {
+                const res = await fetch(`/api/activities/${activityId}/participants/${user.donor.id}`);
+                const data = await res.json();
+                setParticipation(data.participation);
+                setNumOfParticipants(data.numOfParticipants);
+            } catch (error) {
+                console.error('Error fetching participant info:', error);
+            } finally {
+                setLoading(false);
+            }
         } else {
-          console.log("no session");
-          setLoading(false);
+            console.log("no session");
+            setLoading(false);
         }
-      };
+    };
 
-      useEffect(() => {
-        // Only fetch participant info when the session status is "authenticated"
+    useEffect(() => {
         if (status === 'authenticated' && user && Object.keys(user).length !== 0) {
             fetchParticipantInfo();
         } else if (status === 'unauthenticated') {
             setLoading(false);
         }
     }, [status, user]);
-    
 
     const getFieldsRequiredUpdated = () => {
         const fieldsRequiredUpdated: String[] = [];
@@ -68,7 +65,7 @@ const ActivityParticipationBar: React.FC<ActivityParticipationBarProps> = ({ act
             }
         });
         return fieldsRequiredUpdated;
-    }
+    };
 
     const handleJoin = async () => {
         if (session && user && Object.keys(user).length !== 0) {
@@ -84,26 +81,62 @@ const ActivityParticipationBar: React.FC<ActivityParticipationBarProps> = ({ act
         }
     };
 
+    const handleJoinConfirm = async () => {
+        if (session && user && Object.keys(user).length !== 0) {
+            setLoading(true);
+            setIsActivityParticipateConfirmDialogOpen(false);
+            const res = await fetch(`/api/activities/${activityId}/participants/${user.donor.id}`, {
+                method: 'POST',
+            });
+            const data = await res.json();
+            if (data.success) {
+                await fetchParticipantInfo();
+                toast({
+                    title: "Success",
+                    description: data.message,
+                });
+            } else {
+                toast({
+                    title: "Error",
+                    description: data.message,
+                    variant: 'destructive'
+                });
+            }
+            setLoading(false);
+        } else {
+            router.push(`/sign-in?activityId=${activityId}`);
+        }
+    };
+
     const handleQuit = async () => {
         if (session) {
             setLoading(true);
             try {
                 const res = await fetch(`/api/activities/${activityId}/participants/${user.donor.id}`, {
-                  method: 'DELETE',
+                    method: 'DELETE',
                 });
                 const data = await res.json();
                 if (data.success) {
-                  setParticipation(null);
-                  fetchParticipantInfo();
+                    await fetchParticipantInfo();
+                    toast({
+                        title: "Success",
+                        description: data.message,
+                    });
+                } else {
+                    toast({
+                        title: "Error",
+                        description: data.message,
+                        variant: 'destructive'
+                    });
                 }
-              } catch (error) {
+            } catch (error) {
                 console.error('Error quitting activity:', error);
-              } finally {
+            } finally {
+                await fetchParticipantInfo();
                 setLoading(false);
-              }
+            }
         }
-    }
-    
+    };
 
     return (
         <div>
@@ -121,8 +154,7 @@ const ActivityParticipationBar: React.FC<ActivityParticipationBarProps> = ({ act
                         onClose={() => setIsActivityParticipateConfirmDialogOpen(false)}
                         activityId={activityId}
                         donorInfo={user.donor}
-                        updateParticipantInfo={fetchParticipantInfo}
-                        setLoading={setLoading}
+                        confirmFunc={handleJoinConfirm}
                     />
                 </>
             )}
@@ -133,12 +165,12 @@ const ActivityParticipationBar: React.FC<ActivityParticipationBarProps> = ({ act
                 }}
             >
                 <div className="w-5/6 flex justify-center items-end pt-10">
-                {!loading &&
-                    <div className='flex '>
-                        <User />
-                        {numOfParticipants}
-                    </div>
-                }
+                    {!loading && (
+                        <div className='flex '>
+                            <User />
+                            {numOfParticipants}
+                        </div>
+                    )}
                 </div>
                 <div className="w-1/6 flex justify-center">
                     {loading ? (

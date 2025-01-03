@@ -26,7 +26,7 @@ export async function POST(req: Request, {params}: any) {
             } else {
                 await updateActivityPublicity(activityId, true);
                 return NextResponse.json(
-                    {isPublic: true},
+                    {isPublic: true, message: "Activity is now public."},
                     {status: 200}
                 )
             }

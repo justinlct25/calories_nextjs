@@ -60,7 +60,7 @@ export async function POST(req: Request, {params}: any) {
         }
         const newParticipation = await participate(donorId, activityId, participantInfo);
         return NextResponse.json(
-            {participation: newParticipation, message: "Participant added"},
+            {participation: newParticipation, message: "Joined activity successfully"},
             {status: 200}
         )
     } catch (e) {

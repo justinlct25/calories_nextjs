@@ -4,8 +4,6 @@ import React from "react";
 import { useUserStore } from "@/app/stores/user-store-provider";
 import ModalDialog from "../ModalDialog";
 import { Button } from "../ui/button";
-import { useRouter } from "next/navigation";
-import { useSession } from "next-auth/react";
 import EditBtn from "../util/EditBtn";
 
 
@@ -14,34 +12,14 @@ interface ActivityParticipateConfirmDialogProps {
     onClose: () => void; 
     activityId: number;
     donorInfo: any;
-    updateParticipantInfo: () => void;
-    setLoading: React.Dispatch<React.SetStateAction<boolean>>;
+    confirmFunc: () => void;
 }
 
-const ActivityParticipateConfirmDialog: React.FC<ActivityParticipateConfirmDialogProps> = ({ open, onClose, activityId, donorInfo, updateParticipantInfo, setLoading }) => {
-    const router = useRouter();
-    const { data: session, status } = useSession()
+const ActivityParticipateConfirmDialog: React.FC<ActivityParticipateConfirmDialogProps> = ({ open, onClose, activityId, donorInfo,  confirmFunc }) => {
 
     const { user } = useUserStore(
         (state: any) => state,
       )
-
-    const handleJoin = async () => {
-        if (session && user && Object.keys(user).length !== 0) {
-            setLoading(true);
-            onClose();
-            fetch(`/api/activities/${activityId}/participants/${donorInfo.id}`, {
-                method: 'POST',
-            })
-            .then((res) => res.json())
-            .then(async (data) => {
-                await updateParticipantInfo();
-                setLoading(false);
-            })
-        } else {
-            router.push(`/sign-in?activityId=${activityId}`);
-        }
-    };
 
     const handleClose = () => {
         onClose(); 
@@ -65,7 +43,7 @@ const ActivityParticipateConfirmDialog: React.FC<ActivityParticipateConfirmDialo
                         </div>
                         <div>Once you are participated, the participant information for this activity can not be changed. </div>
                         <div className="flex space-x-4">
-                            <Button variant='secondary' onClick={handleJoin}>Join</Button>
+                            <Button variant='secondary' onClick={confirmFunc}>Join</Button>
                             <Button onClick={onClose}>Cancel</Button>
                         </div>
                     </div>

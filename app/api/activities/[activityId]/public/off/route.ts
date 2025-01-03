@@ -26,7 +26,7 @@ export async function POST(req: Request, {params}: any) {
             } else {
                 await updateActivityPublicity(activityId, false);
                 return NextResponse.json(
-                    {isPublic: false},
+                    {isPublic: false, message: "Activity is now locked."},
                     {status: 200}
                 )
             }
