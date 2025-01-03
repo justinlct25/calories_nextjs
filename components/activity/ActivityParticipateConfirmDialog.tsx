@@ -9,7 +9,7 @@ import { useSession } from "next-auth/react";
 import EditBtn from "../util/EditBtn";
 
 
-interface ActivityParticipateConfirmProps {
+interface ActivityParticipateConfirmDialogProps {
     open: boolean;
     onClose: () => void; 
     activityId: number;
@@ -18,7 +18,7 @@ interface ActivityParticipateConfirmProps {
     setLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const ActivityParticipateConfirm: React.FC<ActivityParticipateConfirmProps> = ({ open, onClose, activityId, donorInfo, updateParticipantInfo, setLoading }) => {
+const ActivityParticipateConfirmDialog: React.FC<ActivityParticipateConfirmDialogProps> = ({ open, onClose, activityId, donorInfo, updateParticipantInfo, setLoading }) => {
     const router = useRouter();
     const { data: session, status } = useSession()
 
@@ -76,4 +76,4 @@ const ActivityParticipateConfirm: React.FC<ActivityParticipateConfirmProps> = ({
     );
 };
 
-export default ActivityParticipateConfirm;
+export default ActivityParticipateConfirmDialog;

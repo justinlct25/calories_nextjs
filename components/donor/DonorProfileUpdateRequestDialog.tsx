@@ -5,7 +5,7 @@ import ModalDialog from "../ModalDialog";
 import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
 
-interface DonorProfileUpdateRequestProps {
+interface DonorProfileUpdateRequestDialogProps {
     open: boolean;
     onClose: () => void; 
     activityId: number;
@@ -13,7 +13,7 @@ interface DonorProfileUpdateRequestProps {
     fieldsRequiredUpdated: String[];
 }
 
-const DonorProfileUpdateRequest: React.FC<DonorProfileUpdateRequestProps> = ({ open, onClose, activityId, donorId, fieldsRequiredUpdated }) => {
+const DonorProfileUpdateRequestDialog: React.FC<DonorProfileUpdateRequestDialogProps> = ({ open, onClose, activityId, donorId, fieldsRequiredUpdated }) => {
 
     const router = useRouter();
 
@@ -44,4 +44,4 @@ const DonorProfileUpdateRequest: React.FC<DonorProfileUpdateRequestProps> = ({ o
     );
 };
 
-export default DonorProfileUpdateRequest;
+export default DonorProfileUpdateRequestDialog;

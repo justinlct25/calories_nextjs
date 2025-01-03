@@ -7,8 +7,8 @@ import { donorsToActivities } from '@/drizzle/schemas/donors-to-activities.schem
 import { User } from 'lucide-react';
 import { Button } from '../ui/button';
 import { useUserStore } from "@/app/stores/user-store-provider";
-import DonorProfileUpdateRequest from '../donor/DonorProfileUpdateRequest';
-import ActivityParticipateConfirm from './ActivityParticipateConfirm';
+import DonorProfileUpdateRequestDialog from '../donor/DonorProfileUpdateRequestDialog';
+import ActivityParticipateConfirmDialog from './ActivityParticipateConfirmDialog';
 import { Loading } from '../ui/loading';
 
 const REQUIRED_DONOR_INFORMATION = ['firstname', 'lastname', 'phone', 'birth', 'weight'];
@@ -24,8 +24,8 @@ const ActivityParticipationBar: React.FC<ActivityParticipationBarProps> = ({ act
     const [loading, setLoading] = useState<boolean>(true);
     const [numOfParticipants, setNumOfParticipants] = useState<number>(0);
     const [participation, setParticipation] = useState<typeof donorsToActivities.$inferInsert | null>();
-    const [isDonorProfileUpdateRequestOpen, setIsDonorProfileUpdateRequestOpen] = useState(false);
-    const [isActivityParticipateConfirmOpen, setIsActivityParticipateConfirmOpen] = useState(false);
+    const [isDonorProfileUpdateRequestDialogOpen, setIsDonorProfileUpdateRequestDialogOpen] = useState(false);
+    const [isActivityParticipateConfirmDialogOpen, setIsActivityParticipateConfirmDialogOpen] = useState(false);
     const [fieldsRequiredUpdated, setFieldsRequiredUpdated] = useState<String[]>([]);
 
     const { user } = useUserStore(
@@ -75,9 +75,9 @@ const ActivityParticipationBar: React.FC<ActivityParticipationBarProps> = ({ act
             if (!user.donor.firstname || !user.donor.lastname || !user.donor.phone || !user.donor.birth || !user.donor.weight) {
                 const fields = getFieldsRequiredUpdated();
                 setFieldsRequiredUpdated(fields);
-                setIsDonorProfileUpdateRequestOpen(true);
+                setIsDonorProfileUpdateRequestDialogOpen(true);
             } else {
-                setIsActivityParticipateConfirmOpen(true);
+                setIsActivityParticipateConfirmDialogOpen(true);
             }
         } else {
             router.push(`/sign-in?activityId=${activityId}`);
@@ -109,16 +109,16 @@ const ActivityParticipationBar: React.FC<ActivityParticipationBarProps> = ({ act
         <div>
             {user.donor && (
                 <>
-                    <DonorProfileUpdateRequest
-                        open={isDonorProfileUpdateRequestOpen}
-                        onClose={() => setIsDonorProfileUpdateRequestOpen(false)}
+                    <DonorProfileUpdateRequestDialog
+                        open={isDonorProfileUpdateRequestDialogOpen}
+                        onClose={() => setIsDonorProfileUpdateRequestDialogOpen(false)}
                         activityId={activityId}
                         donorId={user.donor.id}
                         fieldsRequiredUpdated={fieldsRequiredUpdated}
                     />
-                    <ActivityParticipateConfirm
-                        open={isActivityParticipateConfirmOpen}
-                        onClose={() => setIsActivityParticipateConfirmOpen(false)}
+                    <ActivityParticipateConfirmDialog
+                        open={isActivityParticipateConfirmDialogOpen}
+                        onClose={() => setIsActivityParticipateConfirmDialogOpen(false)}
                         activityId={activityId}
                         donorInfo={user.donor}
                         updateParticipantInfo={fetchParticipantInfo}
