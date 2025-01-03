@@ -11,6 +11,7 @@ import DonorProfileUpdateRequestDialog from '../donor/DonorProfileUpdateRequestD
 import ActivityParticipateConfirmDialog from './ActivityParticipateConfirmDialog';
 import { Loading } from '../ui/loading';
 import { useToast } from '../ui/use-toast';
+import ActivityQuitConfirmDialog from './ActivityQuitConfirmDialog';
 
 const REQUIRED_DONOR_INFORMATION = ['firstname', 'lastname', 'phone', 'birth', 'weight'];
 
@@ -27,6 +28,7 @@ const ActivityParticipationBar: React.FC<ActivityParticipationBarProps> = ({ act
     const [participation, setParticipation] = useState<typeof donorsToActivities.$inferInsert | null>();
     const [isDonorProfileUpdateRequestDialogOpen, setIsDonorProfileUpdateRequestDialogOpen] = useState(false);
     const [isActivityParticipateConfirmDialogOpen, setIsActivityParticipateConfirmDialogOpen] = useState(false);
+    const [isActivityQuitConfirmDialogOpen, setIsActivityQuitConfirmDialogOpen] = useState(false);
     const [fieldsRequiredUpdated, setFieldsRequiredUpdated] = useState<String[]>([]);
 
     const { user } = useUserStore((state) => state);
@@ -109,6 +111,10 @@ const ActivityParticipationBar: React.FC<ActivityParticipationBarProps> = ({ act
     };
 
     const handleQuit = async () => {
+        setIsActivityQuitConfirmDialogOpen(true);
+    }
+
+    const handleQuitConfirm = async () => {
         if (session) {
             setLoading(true);
             try {
@@ -155,6 +161,11 @@ const ActivityParticipationBar: React.FC<ActivityParticipationBarProps> = ({ act
                         activityId={activityId}
                         donorInfo={user.donor}
                         confirmFunc={handleJoinConfirm}
+                    />
+                    <ActivityQuitConfirmDialog
+                        open={isActivityQuitConfirmDialogOpen}
+                        onClose={() => setIsActivityQuitConfirmDialogOpen(false)}
+                        confirmFunc={handleQuitConfirm}
                     />
                 </>
             )}
