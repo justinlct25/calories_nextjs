@@ -12,6 +12,7 @@ import ActivityParticipateConfirmDialog from './ActivityParticipateConfirmDialog
 import { Loading } from '../ui/loading';
 import { useToast } from '../ui/use-toast';
 import ActivityQuitConfirmDialog from './ActivityQuitConfirmDialog';
+import ActivityAbsentConfirmDialog from './ActivityAbsentConfirmDialog';
 
 const REQUIRED_DONOR_INFORMATION = ['firstname', 'lastname', 'phone', 'birth', 'weight'];
 
@@ -28,6 +29,7 @@ const ActivityParticipationBar: React.FC<ActivityParticipationBarProps> = ({ act
     const [participation, setParticipation] = useState<typeof donorsToActivities.$inferInsert | null>();
     const [isDonorProfileUpdateRequestDialogOpen, setIsDonorProfileUpdateRequestDialogOpen] = useState(false);
     const [isActivityParticipateConfirmDialogOpen, setIsActivityParticipateConfirmDialogOpen] = useState(false);
+    const [isActivityAbsentConfirmDialogOpen, setIsActivityAbsentConfirmDialogOpen] = useState(false);
     const [isActivityQuitConfirmDialogOpen, setIsActivityQuitConfirmDialogOpen] = useState(false);
     const [fieldsRequiredUpdated, setFieldsRequiredUpdated] = useState<String[]>([]);
 
@@ -110,6 +112,40 @@ const ActivityParticipationBar: React.FC<ActivityParticipationBarProps> = ({ act
         }
     };
 
+    const handleAbsent = async () => {
+        setIsActivityAbsentConfirmDialogOpen(true);
+    }
+
+    const handleAbsentConfirm = async () => {
+        if (session) {
+            setLoading(true);
+            try {
+                const res = await fetch(`/api/activities/${activityId}/participants/${user.donor.id}/absent`, {
+                    method: 'POST',
+                });
+                const data = await res.json();
+                if (data.success) {
+                    await fetchParticipantInfo();
+                    toast({
+                        title: "Success",
+                        description: data.message,
+                    });
+                } else {
+                    toast({
+                        title: "Error",
+                        description: data.message,
+                        variant: 'destructive'
+                    });
+                }
+            } catch (error) {
+                console.error('Error marking absent:', error);
+            } finally {
+                await fetchParticipantInfo();
+                setLoading(false);
+            }
+        }
+    }
+
     const handleQuit = async () => {
         setIsActivityQuitConfirmDialogOpen(true);
     }
@@ -162,6 +198,11 @@ const ActivityParticipationBar: React.FC<ActivityParticipationBarProps> = ({ act
                         donorInfo={user.donor}
                         confirmFunc={handleJoinConfirm}
                     />
+                    <ActivityAbsentConfirmDialog
+                        open={isActivityAbsentConfirmDialogOpen}
+                        onClose={() => setIsActivityAbsentConfirmDialogOpen(false)}
+                        confirmFunc={handleAbsentConfirm}
+                    />
                     <ActivityQuitConfirmDialog
                         open={isActivityQuitConfirmDialogOpen}
                         onClose={() => setIsActivityQuitConfirmDialogOpen(false)}
@@ -190,7 +231,10 @@ const ActivityParticipationBar: React.FC<ActivityParticipationBarProps> = ({ act
                         <>
                             <Button>Share</Button>
                             {participation !== null && participation !== undefined ? (
-                                <Button variant='destructive' onClick={handleQuit}>Quit</Button>
+                                <>
+                                    <Button variant='secondary' onClick={handleAbsent}>Absent</Button>
+                                    <Button variant='destructive' onClick={handleQuit}>Quit</Button>
+                                </>
                             ) : (
                                 <Button variant='secondary' onClick={handleJoin}>Join</Button>
                             )}

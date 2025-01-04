@@ -4,13 +4,10 @@ import { and, eq } from "drizzle-orm"
 
 
 export type NewAttendanceRecord = typeof attendanceRecord.$inferInsert;
+
 export const insertAttendanceRecord = async (attendanceRecordObj: NewAttendanceRecord) => {
-    // try {
-        const newAttendanceRecord = await db.insert(attendanceRecord).values(attendanceRecordObj).returning().then((res) => res[0] ?? null);
-        return newAttendanceRecord;
-    // } catch(e) {
-    //     console.log(e);
-    // }
+    const newAttendanceRecord = await db.insert(attendanceRecord).values(attendanceRecordObj).returning().then((res) => res[0] ?? null);
+    return newAttendanceRecord;
 }
 
 export const getAttendanceRecordById = async (recordId: number) => {
@@ -23,4 +20,10 @@ export const getAttendanceRecordById = async (recordId: number) => {
 export const updateAttendanceRecord = async (recordId: number, updateObj: any) => {
     const updatedAttendanceRecord = await db.update(attendanceRecord).set(updateObj).where(eq(attendanceRecord.id, recordId)).returning().then((res) => res[0] ?? null);
     return updatedAttendanceRecord;
+}
+
+export const deleteAttendanceRecord = async (recordId: number) => {
+    const deletedAttendanceRecord = await db.delete(attendanceRecord)
+        .where(eq(attendanceRecord.id, recordId));
+    return deletedAttendanceRecord;
 }

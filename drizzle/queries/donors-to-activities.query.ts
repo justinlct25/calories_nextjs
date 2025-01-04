@@ -2,8 +2,9 @@ import { db } from "@/lib/db"
 import { donorsToActivities } from "../schemas/donors-to-activities.schema"
 import { and, eq } from "drizzle-orm"
 import { NewParticipantInfo, insertParticipantInfo } from "./participant-info.query"
-import { insertAttendanceRecord } from "./attendance-record.query"
+import { deleteAttendanceRecord, insertAttendanceRecord, updateAttendanceRecord } from "./attendance-record.query"
 import { attendanceRecord } from "../schemas/attendance-record.schema"
+import { findAttendanceStatusByName } from "./attendance-status.query"
 
 export const findAllParticipants = async (activityId: number, withParticipantInfo: boolean) => {
     try {
@@ -63,7 +64,14 @@ export const findParticipant = async (donorId: number, activityId: number) => {
             where: (donorsToActivities, { and, eq }) => and(
                 eq(donorsToActivities.donorId, donorId),
                 eq(donorsToActivities.activityId, activityId)
-            )
+            ),
+            with: {
+                attendanceRecord: {
+                    with: {
+                        attendanceStatus: true
+                    }
+                }
+            }
         })
         return participant;
     } else {
@@ -86,11 +94,36 @@ export const participate = async (donorId: number, activityId: number, participa
     return newParticipation;
 }
 
+export const informAbsent = async (donorId: number, activityId: number, reason?: string) => {
+    const participant = await db.query.donorsToActivities.findFirst({
+        where: (donorsToActivities, { and, eq }) => and(
+            eq(donorsToActivities.donorId, donorId),
+            eq(donorsToActivities.activityId, activityId)
+        ),
+        with: {
+            attendanceRecord: true
+        }
+    });
+    const absentStatus = await findAttendanceStatusByName("Absent (informed)");
+    if (participant && absentStatus) {
+        const updateObj: any = {
+            statusId: absentStatus.id,
+        };
+        if (reason) updateObj.absentReason = reason;
+        const updated = await updateAttendanceRecord(participant.attendanceRecordId, updateObj);
+        return updated;
+    }
+    return false;
+}
+
 export const quit = async (donorId: number, activityId: number) => {
+    const participant = await findParticipant(donorId, activityId);
+    if (!participant) return false;
     const deletedParticipation = await db.delete(donorsToActivities).where(and(
         eq(donorsToActivities.donorId, donorId),
         eq(donorsToActivities.activityId, activityId)
     ));
+    await deleteAttendanceRecord(participant.attendanceRecordId);
     const wasSuccessful = Boolean(deletedParticipation);
     return wasSuccessful;
 }

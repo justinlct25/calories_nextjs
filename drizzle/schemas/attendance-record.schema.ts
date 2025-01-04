@@ -8,6 +8,8 @@ export const attendanceRecord = pgTable("attendance_record", {
     statusId: integer('status_id').notNull().references(() => attendanceStatus.id),
     record: text("record"),
     calories: integer("calories"),
+    remark: text("remark"),
+    absentReason: text("absent_reason"),
     createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
