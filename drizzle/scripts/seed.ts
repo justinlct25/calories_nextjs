@@ -1,10 +1,11 @@
 import { NewAccount, insertAccount } from "@/drizzle/queries/auth-accounts.query";
 import { NewRole, insertRole } from "../queries/roles.query";
 import { NewUserWithoutId, insertUser } from "../queries/auth-users.query";
-import { ROLE_NAMES } from "@/utils/configVariables";
+import { ROLE_NAMES } from "@/utils/constants";
 import { hash } from "bcrypt";
 import { insertAttendanceStatus } from "../queries/attendance-status.query";
 import { insertActivityStatus } from "../queries/activity-status.query";
+import { ACTIVITY_STATUS_NAMES } from "@/utils/constants";
 
 
 const seedRoles = [
@@ -70,38 +71,38 @@ const seedAttendanceStatus = [
 
 const seedActivityStatus = [
     {
-        name: "pending",
-        description: "activity is pending"
+        name: ACTIVITY_STATUS_NAMES.PENDING,
+        description: "activity is created but not yet confirmed"
     },
     {
-        name: "upcoming",
-        description: "activity is upcoming"
-    }, 
-    {
-        name: "ongoing",
-        description: "activity is ongoing"
+        name: ACTIVITY_STATUS_NAMES.UPCOMING,
+        description: "activity is confirmed and scheduled to start soon"
     },
     {
-        name: "processing",
-        description: "activity is processing"
+        name: ACTIVITY_STATUS_NAMES.ONGOING,
+        description: "activity is currently happening"
     },
     {
-        name: "completed",
+        name: ACTIVITY_STATUS_NAMES.PROCESSING,
+        description: "activity has ended and results are being processed"
+    },
+    {
+        name: ACTIVITY_STATUS_NAMES.COMPLETED,
         description: "activity is completed"
     },
     {
-        name: "postponed",
-        description: "activity is postponed"
+        name: ACTIVITY_STATUS_NAMES.POSTPONED,
+        description: "activity is postponed to a later date"
     },
     {
-        name: "rescheduled",
-        description: "activity is rescheduled"
+        name: ACTIVITY_STATUS_NAMES.RESCHEDULED,
+        description: "activity is rescheduled to a different date"
     },
     {
-        name: "cancelled",
+        name: ACTIVITY_STATUS_NAMES.CANCELLED,
         description: "activity is cancelled"
     }
-]
+];
 
 async function main() {
     

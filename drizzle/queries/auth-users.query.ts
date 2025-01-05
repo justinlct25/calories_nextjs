@@ -2,7 +2,7 @@ import { db } from "@/lib/db";
 import { users } from "../schemas/users.schema";
 import { usersToRoles } from "../schemas/users-to-roles.schema";
 import { roles } from "../schemas/roles.schema";
-import { ROLE_NAMES } from "@/utils/configVariables";
+import { ROLE_NAMES } from "@/utils/constants";
 import { admins } from "../schemas/admins.schema";
 import { donors } from "../schemas/donors.schema";
 

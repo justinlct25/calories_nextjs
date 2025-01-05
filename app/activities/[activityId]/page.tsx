@@ -51,7 +51,7 @@ export default function ActivityInfoPage() {
   return (
         <div className='w-full'>
           {activityInfo && <ActivityDetailedInfo activityInfo={activityInfo} thumbnailUrl={thumbnailUrl} backgroundUrl={backgroundUrl} descriptionHTML={descriptionHTML} participants={participants} isAdmin={user.isAdmin} />}
-          {(activityInfo) && <ActivityParticipationBar activityId={Number(activityId)} />}
+          {activityInfo && <ActivityParticipationBar activityId={Number(activityId)} activityStatus={activityInfo.status.name} isParticipateClosed={activityInfo.closed} />}
         </div>
       
   );

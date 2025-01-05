@@ -94,7 +94,7 @@ export const participate = async (donorId: number, activityId: number, participa
     return newParticipation;
 }
 
-export const informAbsent = async (donorId: number, activityId: number, reason?: string) => {
+export const notAttending = async (donorId: number, activityId: number, reason?: string) => {
     const participant = await db.query.donorsToActivities.findFirst({
         where: (donorsToActivities, { and, eq }) => and(
             eq(donorsToActivities.donorId, donorId),

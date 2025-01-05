@@ -7,13 +7,14 @@ import { useToast } from "../ui/use-toast";
 import { Loading } from '../ui/loading';
 
 interface ActivityStatusSelectionProps {
+  isAdmin: boolean
   options: AttendanceStatus[];
   value: string;
   valueKey: string;
   updateFunc: () => any;
 }
 
-const ActivityStatusSelection: React.FC<ActivityStatusSelectionProps> = ({ options, value, valueKey, updateFunc }) => {
+const ActivityStatusSelection: React.FC<ActivityStatusSelectionProps> = ({ isAdmin, options, value, valueKey, updateFunc }) => {
   const { toast } = useToast();
   const [loading, setLoading] = useState<boolean>(false);
   const [currentValue, setCurrentValue] = useState(value);
@@ -63,9 +64,11 @@ const ActivityStatusSelection: React.FC<ActivityStatusSelectionProps> = ({ optio
         !isEditing ? (
           <div className="flex items-center">
             <div>{capitalizeFirstLetter(currentValue)}</div>
-            <IconButton onClick={() => setIsEditing(true)} className="text-white">
-              <Edit size={15} className="text-white" />
-            </IconButton>
+            {isAdmin && 
+              <IconButton onClick={() => setIsEditing(true)} className="text-white">
+                <Edit size={15} className="text-white" />
+              </IconButton>
+            }
           </div>
         ) : (
           <div className="flex items-center">

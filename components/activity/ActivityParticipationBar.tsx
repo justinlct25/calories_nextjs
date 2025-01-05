@@ -18,9 +18,11 @@ const REQUIRED_DONOR_INFORMATION = ['firstname', 'lastname', 'phone', 'birth', '
 
 interface ActivityParticipationBarProps {
     activityId: number;
+    activityStatus: string;
+    isParticipateClosed: boolean;
 }
 
-const ActivityParticipationBar: React.FC<ActivityParticipationBarProps> = ({ activityId }) => {
+const ActivityParticipationBar: React.FC<ActivityParticipationBarProps> = ({ activityId, activityStatus, isParticipateClosed }) => {
     const { data: session, status } = useSession();
     const router = useRouter();
     const { toast } = useToast();
@@ -230,6 +232,9 @@ const ActivityParticipationBar: React.FC<ActivityParticipationBarProps> = ({ act
                     ) : (
                         <>
                             <Button>Share</Button>
+                            (
+                                
+                            )
                             {participation !== null && participation !== undefined ? (
                                 <>
                                     <Button variant='secondary' onClick={handleAbsent}>Absent</Button>

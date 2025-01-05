@@ -1,6 +1,6 @@
 import { auth } from "@/lib/auth";
 import { NextResponse } from "next/server";
-import { informAbsent } from "@/drizzle/queries/donors-to-activities.query";
+import { notAttending } from "@/drizzle/queries/donors-to-activities.query";
 import { getUser } from "@/drizzle/queries/users.query";
 
 export async function POST(req: Request, { params }: any) {
@@ -20,7 +20,7 @@ export async function POST(req: Request, { params }: any) {
             return NextResponse.json({ message: "Cannot mark absent with donor profile not owned by user" }, { status: 404 });
         }
         const { reason } = await req.json();
-        const absentSuccessfully = await informAbsent(donorId, activityId, reason);
+        const absentSuccessfully = await notAttending(donorId, activityId, reason);
         if (absentSuccessfully) {
             return NextResponse.json(
                 { success: true, message: "Marked as absent successfully" },

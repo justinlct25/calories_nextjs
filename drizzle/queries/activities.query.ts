@@ -35,7 +35,7 @@ export const insertActivity = async (activity: NewActivity) => {
     try {
         return await db.insert(activities).values({
             ...activity,
-        }).returning().then((res) => res[0] ?? null);
+        }).returning().then((res: any) => res[0] ?? null);
     } catch(error) {
         throw new Error(`${error}`)
     }

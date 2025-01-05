@@ -1,6 +1,6 @@
 import { db } from "@/lib/db"
 import { usersToRoles } from "../schemas/users-to-roles.schema"
-import { ROLE_NAMES } from "@/utils/configVariables"
+import { ROLE_NAMES } from "@/utils/constants"
 
 // export const getUserRolesWithId = async (userId: number) => {
 //     const roles = db.query.usersToRoles
