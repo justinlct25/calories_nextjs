@@ -13,6 +13,8 @@ import { Loading } from '../ui/loading';
 import { useToast } from '../ui/use-toast';
 import ActivityQuitConfirmDialog from './ActivityQuitConfirmDialog';
 import ActivityAbsentConfirmDialog from './ActivityAbsentConfirmDialog';
+import { ACTIVITY_STATUS_NAMES } from '@/utils/constants';
+import { capitalize } from '@mui/material';
 
 const REQUIRED_DONOR_INFORMATION = ['firstname', 'lastname', 'phone', 'birth', 'weight'];
 
@@ -232,17 +234,22 @@ const ActivityParticipationBar: React.FC<ActivityParticipationBarProps> = ({ act
                     ) : (
                         <>
                             <Button>Share</Button>
-                            (
-                                
-                            )
-                            {participation !== null && participation !== undefined ? (
-                                <>
-                                    <Button variant='secondary' onClick={handleAbsent}>Absent</Button>
-                                    <Button variant='destructive' onClick={handleQuit}>Quit</Button>
-                                </>
-                            ) : (
-                                <Button variant='secondary' onClick={handleJoin}>Join</Button>
-                            )}
+                            {
+                                activityStatus === ACTIVITY_STATUS_NAMES.UPCOMING ? (
+                                    participation !== null && participation !== undefined ? (
+                                        <>
+                                            <Button variant='secondary' onClick={handleAbsent}>Absent</Button>
+                                            <Button variant='destructive' onClick={handleQuit}>Quit</Button>
+                                        </>
+                                    ) : (
+                                        <Button variant='secondary' onClick={handleJoin}>Join</Button>
+                                    )
+                                ) : (
+                                    <div className="flex items-center justify-center w-28 h-10 text-white text-center ">
+                                        {capitalizeFirstLetter(activityStatus)}
+                                    </div>
+                                )
+                            }
                         </>
                     )}
                 </div>
@@ -252,3 +259,7 @@ const ActivityParticipationBar: React.FC<ActivityParticipationBarProps> = ({ act
 };
 
 export default ActivityParticipationBar;
+
+function capitalizeFirstLetter(string: string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }

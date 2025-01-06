@@ -59,6 +59,18 @@ const ActivityDetailedInfo: React.FC<ActivityDetailedInfoProps> = ({ activityInf
                         <EditBtn editUrl={`/activities/${activityInfo?.id}/edit`} />
                         <ActivityPublicToggleButton isPublic={isActivityPublic} setIsPublic={setIsActivityPublic} activityId={activityInfo?.id} />
                     </div>
+                    <ActivityStatusSelection isAdmin={isAdmin?isAdmin:false} options={activityStatuses} value={activityInfo?.status?.name} valueKey="statusId" 
+                        updateFunc={async () => {
+                            const url = `/api/activities/${activityInfo?.id}/status/${activityInfo?.status?.id}`
+                            console.log(url);
+                            const res = await fetch(url, {
+                                method: 'PUT',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                            });
+                            return res;
+                        }} />
                 </div>
             }
             <div
@@ -73,7 +85,7 @@ const ActivityDetailedInfo: React.FC<ActivityDetailedInfoProps> = ({ activityInf
                 className="w-full aspect-[3] bg-blend-darken bg-black bg-opacity-60 flex justify-center items-center pb-10 pl-10 pr-10"
             >
                 {thumbnailUrl && <img src={thumbnailUrl} alt="Thumbnail" className="mr-6 w-1/6 aspect-[1] rounded-xl" />}
-                <div>
+                <div className="z-[200]">
                     <ActivityStatusSelection isAdmin={isAdmin?isAdmin:false} options={activityStatuses} value={activityInfo?.status?.name} valueKey="statusId" 
                         updateFunc={async () => {
                             const url = `/api/activities/${activityInfo?.id}/status/${activityInfo?.status?.id}`
@@ -113,6 +125,7 @@ const ActivityDetailedInfo: React.FC<ActivityDetailedInfoProps> = ({ activityInf
                         </button>
                     )}
                 </div>
+                
                 {
                     loading ? <Loading /> : (
                          view === 'info' ? (
