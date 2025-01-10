@@ -11,7 +11,7 @@ interface ActivityStatusSelectionProps {
   options: AttendanceStatus[];
   value: string;
   valueKey: string;
-  updateFunc: () => any;
+  updateFunc: (id?: number) => any;
 }
 
 const ActivityStatusSelection: React.FC<ActivityStatusSelectionProps> = ({ isAdmin, options, value, valueKey, updateFunc }) => {
@@ -32,7 +32,7 @@ const ActivityStatusSelection: React.FC<ActivityStatusSelectionProps> = ({ isAdm
   const handleConfirm = async () => {
     if (selectedOption && selectedOption.name !== currentValue) {
       setLoading(true);
-      const res = await updateFunc();
+      const res = await updateFunc(selectedOption.id);
       const data = await res.json();
       if (res.status == 200) {
         toast({

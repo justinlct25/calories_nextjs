@@ -87,9 +87,8 @@ const ActivityDetailedInfo: React.FC<ActivityDetailedInfoProps> = ({ activityInf
                         {thumbnailUrl && <img src={thumbnailUrl} alt="Thumbnail" className="mr-6 w-1/6 aspect-[1] rounded-xl" />}
                         <div>
                             <ActivityStatusSelection isAdmin={isAdmin?isAdmin:false} options={activityStatuses} value={activityInfo?.status?.name} valueKey="statusId" 
-                                updateFunc={async () => {
-                                    const url = `/api/activities/${activityInfo?.id}/status/${activityInfo?.status?.id}`
-                                    console.log(url);
+                                updateFunc={async (id?: number) => {
+                                    const url = `/api/activities/${activityInfo?.id}/status/${id ? id : activityInfo?.status?.id}`
                                     const res = await fetch(url, {
                                         method: 'PUT',
                                         headers: {
