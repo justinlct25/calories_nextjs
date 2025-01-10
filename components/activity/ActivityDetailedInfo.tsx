@@ -59,59 +59,61 @@ const ActivityDetailedInfo: React.FC<ActivityDetailedInfoProps> = ({ activityInf
                         <EditBtn editUrl={`/activities/${activityInfo?.id}/edit`} />
                         <ActivityPublicToggleButton isPublic={isActivityPublic} setIsPublic={setIsActivityPublic} activityId={activityInfo?.id} />
                     </div>
-                    <ActivityStatusSelection isAdmin={isAdmin?isAdmin:false} options={activityStatuses} value={activityInfo?.status?.name} valueKey="statusId" 
-                        updateFunc={async () => {
-                            const url = `/api/activities/${activityInfo?.id}/status/${activityInfo?.status?.id}`
-                            console.log(url);
-                            const res = await fetch(url, {
-                                method: 'PUT',
-                                headers: {
-                                    'Content-Type': 'application/json'
-                                },
-                            });
-                            return res;
-                        }} />
                 </div>
             }
-            <div
-                style={{
-                    backgroundImage: `url("${backgroundUrl}")`,
-                    backgroundRepeat: 'no-repeat',
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center',
-                    clipPath: 'polygon(100% 0, 100% 100%, 90% 100%, 80% 75%, 20% 75%, 10% 100%, 0 100%, 0% 0%)',
-                    filter: 'url(#flt_tag)',
-                }}
-                className="w-full aspect-[3] bg-blend-darken bg-black bg-opacity-60 flex justify-center items-center pb-10 pl-10 pr-10"
-            >
-                {thumbnailUrl && <img src={thumbnailUrl} alt="Thumbnail" className="mr-6 w-1/6 aspect-[1] rounded-xl" />}
-                <div className="z-[200]">
-                    <ActivityStatusSelection isAdmin={isAdmin?isAdmin:false} options={activityStatuses} value={activityInfo?.status?.name} valueKey="statusId" 
-                        updateFunc={async () => {
-                            const url = `/api/activities/${activityInfo?.id}/status/${activityInfo?.status?.id}`
-                            console.log(url);
-                            const res = await fetch(url, {
-                                method: 'PUT',
-                                headers: {
-                                    'Content-Type': 'application/json'
-                                },
-                            });
-                            return res;
-                        }} />
-                    <div className="text-4xl min-w-[40%]">{activityInfo?.name}</div>
+            {/* <div>
+                <div
+                    style={{
+                        backgroundImage: `url("${backgroundUrl}")`,
+                        backgroundRepeat: 'no-repeat',
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                        clipPath: 'polygon(100% 0, 100% 100%, 90% 100%, 80% 75%, 20% 75%, 10% 100%, 0 100%, 0% 0%)',
+                        // filter: 'url(#flt_tag)',
+                    }}
+                    className="w-full aspect-[3] bg-blend-darken bg-black bg-opacity-60 flex justify-center items-center pb-10 pl-10 pr-10"
+                > */}
+                <div className="relative w-full bg-blend-darken bg-black bg-opacity-60 justify-center items-center pb-10 pl-10 pr-10">
+                    {backgroundUrl && (
+                        <div
+                            className="absolute inset-0 w-full h-full bg-cover bg-center z-[-1]"
+                            style={{
+                                backgroundImage: `url(${backgroundUrl})`,
+                                // clipPath: 'polygon(100% 0, 100% 100%, 90% 100%, 80% 75%, 20% 75%, 10% 100%, 0 100%, 0% 0%)',
+                            }}
+                        ></div>
+                    )}
+                    <div className="flex flex-row justify-center items-center pt-20">
+                        {thumbnailUrl && <img src={thumbnailUrl} alt="Thumbnail" className="mr-6 w-1/6 aspect-[1] rounded-xl" />}
+                        <div>
+                            <ActivityStatusSelection isAdmin={isAdmin?isAdmin:false} options={activityStatuses} value={activityInfo?.status?.name} valueKey="statusId" 
+                                updateFunc={async () => {
+                                    const url = `/api/activities/${activityInfo?.id}/status/${activityInfo?.status?.id}`
+                                    console.log(url);
+                                    const res = await fetch(url, {
+                                        method: 'PUT',
+                                        headers: {
+                                            'Content-Type': 'application/json'
+                                        },
+                                    });
+                                    return res;
+                                }} />
+                            <div className="text-4xl min-w-[40%]">{activityInfo?.name}</div>
+                        </div>
+                    </div>
+                    <div className="w-full flex flex-col items-center mt-10">
+                        <div className="bg-black w-9/12 aspect-[10/1] z-10 flex flex-row justify-around items-center rounded-md">
+                            {loading ? <Loading /> : <>
+                                <ActivityDates startAt={activityInfo?.startAt} endAt={activityInfo?.endAt} />
+                                <ActivityLocation location={activityInfo?.location} address={activityInfo?.address} />
+                                <ActivityTimes startAt={activityInfo?.startAt} endAt={activityInfo?.endAt} />
+                            </>}
+                        </div>
+                    </div>  
                 </div>
-            </div>
             
-            <div className=" w-full aspect-[2] absolute top-0 pb-20">
-                <div className="w-full aspect-[4]"></div> {/* padding from top */}
-                <div className="bg-black w-9/12 aspect-[5.5] z-[-10] absolute left-1/2 transform -translate-x-1/2 flex flex-row justify-around items-center rounded-md">
-                    {loading ? <Loading /> : <>
-                        <ActivityDates startAt={activityInfo?.startAt} endAt={activityInfo?.endAt} />
-                        <ActivityLocation location={activityInfo?.location} address={activityInfo?.address} />
-                        <ActivityTimes startAt={activityInfo?.startAt} endAt={activityInfo?.endAt} />
-                    </>}
-                </div>
-                <div className="w-full aspect-[7]"></div> {/* padding from bottom */}
+                
+            <div className="w-full flex flex-col items-center mt-34 mt-16">
                 <div className="flex justify-center items-center w-full p-6 max-w-3/5 space-x-20">
                     <button onClick={() => setView('info')} className={view === 'info' ? '' : 'text-gray-400'} >
                         <InfoIcon size={32} />
@@ -125,9 +127,7 @@ const ActivityDetailedInfo: React.FC<ActivityDetailedInfoProps> = ({ activityInf
                         </button>
                     )}
                 </div>
-                
                 {
-                    loading ? <Loading /> : (
                          view === 'info' ? (
                             <div className="w-full flex flex-col justify-center items-center max-w-screen-xl mx-auto">
                                 <div className="text-4xl">活動詳情 Event Details</div>
@@ -147,7 +147,6 @@ const ActivityDetailedInfo: React.FC<ActivityDetailedInfoProps> = ({ activityInf
                                 </div>
                             )
                         )
-                    )
                 }
             </div>
         </div>
