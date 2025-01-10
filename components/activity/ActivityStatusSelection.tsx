@@ -59,8 +59,8 @@ const ActivityStatusSelection: React.FC<ActivityStatusSelectionProps> = ({ isAdm
   };
 
   return (
-    <div className="text-white">
-      {loading ? <Loading hasText={false} hasHeight={false} /> : (
+    <div className="text-white h-25 flex items-center">
+      {loading ? <div className="pl-6"><Loading hasText={false} hasHeight={false} justifyCenter={false} /></div> : (
         !isEditing ? (
           <div className="flex items-center">
             <div>{capitalizeFirstLetter(currentValue)}</div>
