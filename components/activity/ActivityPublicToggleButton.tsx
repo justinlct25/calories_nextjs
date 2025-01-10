@@ -1,5 +1,5 @@
 import React from 'react';
-import { LockIcon, UnlockIcon} from 'lucide-react';
+import { Ear, EarthIcon, EarthLockIcon, LockIcon, UnlockIcon} from 'lucide-react';
 import ToggleBtn from '../util/ToggleBtn';
 import ActivityPublicConfirm from './ActivityPublicConfirm';
 import { Loading } from '../ui/loading';
@@ -85,11 +85,8 @@ const ActivityPublicToggleButton: React.FC<ActivityPublicToggleButtonProps> = ({
         isToggleOn={isPublic} 
         handleOn={handleOn} 
         handleOff={handleOff}
-        label={
-            <div className="ml-3 mr-1 text-gray-700 font-medium text-white">
-              {isPublic ? <UnlockIcon/> : <LockIcon/>}
-            </div>
-        } 
+        onIcon={<EarthIcon />}
+        offIcon={<EarthLockIcon />}
         />
       )}
         {activityId && <ActivityPublicConfirm open={isActivityPublicConfirmOpen} onClose={() => setIsActivityPublicConfirmOpen(false)} activityId={activityId} confirmSetPublic={setActivityPublic} />}

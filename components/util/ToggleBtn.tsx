@@ -5,10 +5,11 @@ interface ToggleBtnProps {
   isToggleOn: boolean;
   handleOn: () => void;
   handleOff: () => void;
-  label?: JSX.Element;
+  onIcon?: JSX.Element;
+  offIcon?: JSX.Element;
 }
 
-const ToggleBtn: React.FC<ToggleBtnProps> = ({ isToggleOn, handleOn, handleOff, label}) => {
+const ToggleBtn: React.FC<ToggleBtnProps> = ({ isToggleOn, handleOn, handleOff, onIcon, offIcon}) => {
 
   const handleToggle = async () => {
     if (!isToggleOn) {
@@ -22,7 +23,7 @@ const ToggleBtn: React.FC<ToggleBtnProps> = ({ isToggleOn, handleOn, handleOff, 
   return (
     <label className="flex items-center cursor-pointer z-100">
       <div className="ml-3 mr-1 text-gray-700 font-medium text-white">
-        {isToggleOn ? <UnlockIcon/> : <LockIcon/>}
+        {isToggleOn ? onIcon : offIcon}
       </div>
       <div className="relative">
         <input type="checkbox" className="sr-only" checked={isToggleOn} onChange={handleToggle} />
