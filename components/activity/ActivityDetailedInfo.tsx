@@ -73,13 +73,13 @@ const ActivityDetailedInfo: React.FC<ActivityDetailedInfoProps> = ({ activityInf
                     }}
                     className="w-full aspect-[3] bg-blend-darken bg-black bg-opacity-60 flex justify-center items-center pb-10 pl-10 pr-10"
                 > */}
-                <div className="relative w-full bg-blend-darken bg-black bg-opacity-60 justify-center items-center pb-10 pl-10 pr-10">
+                <div className="relative w-full aspect-[8/2]  justify-center items-center  pl-10 pr-10">
                     {backgroundUrl && (
                         <div
-                            className="absolute inset-0 w-full h-full bg-cover bg-center z-[-1]"
+                            className="absolute inset-0 w-full h-full bg-cover bg-center z-[-1] bg-blend-darken bg-black bg-opacity-60"
                             style={{
                                 backgroundImage: `url(${backgroundUrl})`,
-                                // clipPath: 'polygon(100% 0, 100% 100%, 90% 100%, 80% 75%, 20% 75%, 10% 100%, 0 100%, 0% 0%)',
+                                clipPath: 'polygon(100% 0, 100% 100%, 90% 100%, 80% 75%, 20% 75%, 10% 100%, 0 100%, 0% 0%)',
                             }}
                         ></div>
                     )}
@@ -101,18 +101,20 @@ const ActivityDetailedInfo: React.FC<ActivityDetailedInfoProps> = ({ activityInf
                         </div>
                     </div>
                     <div className="w-full flex flex-col items-center mt-10">
-                        <div className="bg-black w-9/12 aspect-[10/1] z-10 flex flex-row justify-around items-center rounded-md">
-                            {loading ? <Loading /> : <>
-                                <ActivityDates startAt={activityInfo?.startAt} endAt={activityInfo?.endAt} />
-                                <ActivityLocation location={activityInfo?.location} address={activityInfo?.address} />
-                                <ActivityTimes startAt={activityInfo?.startAt} endAt={activityInfo?.endAt} />
-                            </>}
+                        <div className="bg-black w-full aspect-[12/1] z-[-10] flex flex-row justify-around items-center rounded-md">
+                            <div className="w-3/5 flex flex-row justify-around items-center">
+                                {loading ? <Loading /> : <>
+                                    <ActivityDates startAt={activityInfo?.startAt} endAt={activityInfo?.endAt} />
+                                    <ActivityLocation location={activityInfo?.location} address={activityInfo?.address} />
+                                    <ActivityTimes startAt={activityInfo?.startAt} endAt={activityInfo?.endAt} />
+                                </>}
+                            </div>
                         </div>
                     </div>  
                 </div>
             
                 
-            <div className="w-full flex flex-col items-center mt-34 mt-16">
+            <div className="w-full flex flex-col items-center">
                 <div className="flex justify-center items-center w-full p-6 max-w-3/5 space-x-20">
                     <button onClick={() => setView('info')} className={view === 'info' ? '' : 'text-gray-400'} >
                         <InfoIcon size={32} />
