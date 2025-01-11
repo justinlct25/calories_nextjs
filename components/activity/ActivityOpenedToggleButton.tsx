@@ -1,23 +1,29 @@
 import React from 'react';
 import { LockIcon, UnlockIcon } from 'lucide-react';
 import ToggleBtn from '../util/ToggleBtn';
+import ActivityOpenedConfirm from './ActivityOpenedConfirm';
 import { Loading } from '../ui/loading';
 import { useToast } from '../ui/use-toast';
 
-interface ActivityLockToggleButtonProps {
-  isLocked: boolean;
-  setIsLocked: React.Dispatch<React.SetStateAction<boolean>>;
+interface ActivityOpenedToggleButtonProps {
+  isOpened: boolean;
+  setIsOpened: React.Dispatch<React.SetStateAction<boolean>>;
   activityId: number | undefined;
 }
 
-const ActivityLockToggleButton: React.FC<ActivityLockToggleButtonProps> = ({ isLocked, setIsLocked, activityId }) => {
+const ActivityOpenedToggleButton: React.FC<ActivityOpenedToggleButtonProps> = ({ isOpened, setIsOpened, activityId }) => {
     const { toast } = useToast();
     const [loading, setLoading] = React.useState<boolean>(false);
+    const [isActivityOpenedConfirmOpen, setIsActivityOpenedConfirmOpen] = React.useState<boolean>(false);
 
     const handleOn = async () => {
+        setIsActivityOpenedConfirmOpen(true);
+    };
+
+    const setActivityOpened = async (activityId: number) => {
         setLoading(true);
         try {
-            const res = await fetch(`/api/activities/${activityId}/lock/on`, {
+            const res = await fetch(`/api/activities/${activityId}/closed/off`, {
                 method: 'POST',
             });
             const data = await res.json();
@@ -26,7 +32,8 @@ const ActivityLockToggleButton: React.FC<ActivityLockToggleButtonProps> = ({ isL
                     title: "Success",
                     description: data.message,
                 });
-                setIsLocked(true);
+                setIsActivityOpenedConfirmOpen(false);
+                setIsOpened(true);
             } else {
                 toast({
                     title: "Error",
@@ -35,7 +42,7 @@ const ActivityLockToggleButton: React.FC<ActivityLockToggleButtonProps> = ({ isL
                 });
             }
         } catch (error) {
-            console.error('Error locking activity:', error);
+            console.error('Error opening activity:', error);
         } finally {
             setLoading(false);
         }
@@ -44,7 +51,7 @@ const ActivityLockToggleButton: React.FC<ActivityLockToggleButtonProps> = ({ isL
     const handleOff = async () => {
         setLoading(true);
         try {
-            const res = await fetch(`/api/activities/${activityId}/lock/off`, {
+            const res = await fetch(`/api/activities/${activityId}/closed/on`, {
                 method: 'POST',
             });
             const data = await res.json();
@@ -53,7 +60,7 @@ const ActivityLockToggleButton: React.FC<ActivityLockToggleButtonProps> = ({ isL
                     title: "Success",
                     description: data.message,
                 });
-                setIsLocked(false);
+                setIsOpened(false);
             } else {
                 toast({
                     title: "Error",
@@ -62,7 +69,7 @@ const ActivityLockToggleButton: React.FC<ActivityLockToggleButtonProps> = ({ isL
                 });
             }
         } catch (error) {
-            console.error('Error unlocking activity:', error);
+            console.error('Error closing activity:', error);
         } finally {
             setLoading(false);
         }
@@ -72,15 +79,16 @@ const ActivityLockToggleButton: React.FC<ActivityLockToggleButtonProps> = ({ isL
         <div className="flex items-center w-24">
             {loading ? <Loading hasText={false} hasHeight={false} /> : (
                 <ToggleBtn 
-                    isToggleOn={isLocked} 
+                    isToggleOn={isOpened} 
                     handleOn={handleOn} 
                     handleOff={handleOff}
-                    onIcon={<LockIcon />}
-                    offIcon={<UnlockIcon />}
+                    onIcon={<UnlockIcon />}
+                    offIcon={<LockIcon />}
                 />
             )}
+            {activityId && <ActivityOpenedConfirm open={isActivityOpenedConfirmOpen} onClose={() => setIsActivityOpenedConfirmOpen(false)} activityId={activityId} confirmSetOpened={setActivityOpened} />}
         </div>
     );
 };
 
-export default ActivityLockToggleButton;
+export default ActivityOpenedToggleButton;

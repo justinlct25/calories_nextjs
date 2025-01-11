@@ -57,9 +57,9 @@ export const updateActivityPublicity = async (activityId: number, isPublic: bool
     }
 }
 
-export const updateActivityClosed = async (activityId: number, isLocked: boolean) => {
+export const updateActivityClosed = async (activityId: number, closed: boolean) => {
     try {
-        await db.update(activities).set({closed: isLocked}).where(eq(activities.id, activityId));
+        await db.update(activities).set({closed: closed}).where(eq(activities.id, activityId));
     } catch(error) {
         throw new Error(`${error}`)
     }

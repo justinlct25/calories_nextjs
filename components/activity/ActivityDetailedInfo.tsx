@@ -12,6 +12,7 @@ import ActivityParticipantList from "./ActivityParticipantList";
 import ActivityParticipantTable from "./ActivityParticipantTable";
 import TopPadding from "../TopPadding";
 import ActivityPublicToggleButton from "./ActivityPublicToggleButton";
+import ActivityClosedToggleButton from "./ActivityOpenedToggleButton";
 import ActivityStatusSelection from "./ActivityStatusSelection";
 import { Loading } from "../ui/loading";
 
@@ -29,7 +30,12 @@ const ActivityDetailedInfo: React.FC<ActivityDetailedInfoProps> = ({ activityInf
     const [loading, setLoading] = useState<boolean>(true);
     const [view, setView] = useState<'info' | 'rank' | 'list' | 'table'>('info');
     const [isActivityPublic, setIsActivityPublic] = useState<boolean>(false);
+    const [isActivityClosed, setIsActivityClosed] = useState<boolean>(false);
     const [activityStatuses, setActivityStatuses] = useState<any[]>([]);
+
+    const setIsActivityOpened: React.Dispatch<React.SetStateAction<boolean>> = (isOpened) => {
+        setIsActivityClosed(prevState => !prevState);
+    }
 
     useEffect(() => {
         fetch(`/api/activities/statuses`)
@@ -43,36 +49,24 @@ const ActivityDetailedInfo: React.FC<ActivityDetailedInfoProps> = ({ activityInf
 
     useEffect(() => {
         setIsActivityPublic(activityInfo?.public ? activityInfo?.public : false);
+        setIsActivityClosed(activityInfo?.closed ? activityInfo?.closed : false);
         setLoading(false);
     }, [activityInfo]);
 
     return (
         <div className="w-full">
             <GoBack isNavbarPad={true} backDirectory='parent' />
-            {
-                isAdmin && 
-                // <div className="mt-24 ml-24">
-                // <div className="absolute top-0 right-0">
-                <div className="absolute top-0 right-10 z-[100]">
-                    <TopPadding />
-                    <div className='flex space-x-5'>
-                        <EditBtn editUrl={`/activities/${activityInfo?.id}/edit`} />
-                        <ActivityPublicToggleButton isPublic={isActivityPublic} setIsPublic={setIsActivityPublic} activityId={activityInfo?.id} />
+                {
+                    isAdmin && 
+                    <div className="absolute top-0 right-10 z-[100] flex flex-col items-end">
+                        <TopPadding />
+                        <div className='flex space-x-5'>
+                            <EditBtn editUrl={`/activities/${activityInfo?.id}/edit`} />
+                            <ActivityPublicToggleButton isPublic={isActivityPublic} setIsPublic={setIsActivityPublic} activityId={activityInfo?.id} />
+                        </div>
+                        <ActivityClosedToggleButton isOpened={!isActivityClosed} setIsOpened={setIsActivityOpened} activityId={activityInfo?.id} />
                     </div>
-                </div>
-            }
-            {/* <div>
-                <div
-                    style={{
-                        backgroundImage: `url("${backgroundUrl}")`,
-                        backgroundRepeat: 'no-repeat',
-                        backgroundSize: 'cover',
-                        backgroundPosition: 'center',
-                        clipPath: 'polygon(100% 0, 100% 100%, 90% 100%, 80% 75%, 20% 75%, 10% 100%, 0 100%, 0% 0%)',
-                        // filter: 'url(#flt_tag)',
-                    }}
-                    className="w-full aspect-[3] bg-blend-darken bg-black bg-opacity-60 flex justify-center items-center pb-10 pl-10 pr-10"
-                > */}
+                }
                 <div className="relative w-full aspect-[8/2]  justify-center items-center  pl-10 pr-10">
                     {backgroundUrl && (
                         <div
