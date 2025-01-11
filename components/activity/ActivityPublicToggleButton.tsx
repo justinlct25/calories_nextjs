@@ -1,5 +1,5 @@
 import React from 'react';
-import { Ear, EarthIcon, EarthLockIcon, LockIcon, UnlockIcon} from 'lucide-react';
+import { EarthIcon, EarthLockIcon} from 'lucide-react';
 import ToggleBtn from '../util/ToggleBtn';
 import ActivityPublicConfirm from './ActivityPublicConfirm';
 import { Loading } from '../ui/loading';

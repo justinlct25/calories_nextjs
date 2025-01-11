@@ -1,6 +1,6 @@
 import { auth } from "@/lib/auth";
 import { NextResponse } from "next/server";
-import { getActivityById, updateActivityPublicity } from "@/drizzle/queries/activities.query";
+import { getActivityById, updateActivityClosed } from "@/drizzle/queries/activities.query";
 import { isAdminRole } from "@/drizzle/queries/users-to-roles.query";
 
 
@@ -18,15 +18,15 @@ export async function POST(req: Request, {params}: any) {
             return NextResponse.json({message: "Activity not found."}, {status: 404})
         }
         if (await isAdminRole(session?.user.id)) {
-            if (targetActivity.public == false) {
+            if (targetActivity.closed == true) {
                 return NextResponse.json(
-                    {message: "Activity is already private."},
+                    {message: "Activity is already closed for application."},
                     {status: 200}
                 )
             } else {
-                await updateActivityPublicity(activityId, false);
+                await updateActivityClosed(activityId, true);
                 return NextResponse.json(
-                    {isPublic: false, message: "Activity is now private."},
+                    {closed: true, message: "Activity is now closed for application."},
                     {status: 200}
                 )
             }
