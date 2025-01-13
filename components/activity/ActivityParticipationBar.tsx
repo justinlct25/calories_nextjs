@@ -14,17 +14,18 @@ import { useToast } from '../ui/use-toast';
 import ActivityQuitConfirmDialog from './ActivityQuitConfirmDialog';
 import ActivityAbsentConfirmDialog from './ActivityAbsentConfirmDialog';
 import { ACTIVITY_STATUS_NAMES } from '@/utils/constants';
-import { capitalize } from '@mui/material';
 
 const REQUIRED_DONOR_INFORMATION = ['firstname', 'lastname', 'phone', 'birth', 'weight'];
 
 interface ActivityParticipationBarProps {
     activityId: number;
     activityStatus: string;
-    isParticipateClosed: boolean;
+    setActivityStatus: React.Dispatch<React.SetStateAction<string>>;
+    activityClosed: boolean;
+    setActivityClosed: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const ActivityParticipationBar: React.FC<ActivityParticipationBarProps> = ({ activityId, activityStatus, isParticipateClosed }) => {
+const ActivityParticipationBar: React.FC<ActivityParticipationBarProps> = ({ activityId, activityStatus, setActivityStatus, activityClosed, setActivityClosed }) => {
     const { data: session, status } = useSession();
     const router = useRouter();
     const { toast } = useToast();
@@ -242,7 +243,13 @@ const ActivityParticipationBar: React.FC<ActivityParticipationBarProps> = ({ act
                                             <Button variant='destructive' onClick={handleQuit}>Quit</Button>
                                         </>
                                     ) : (
-                                        <Button variant='secondary' onClick={handleJoin}>Join</Button>
+                                        !activityClosed ? (
+                                            <Button variant='secondary' onClick={handleJoin}>Join</Button>
+                                        ) : (
+                                            <div className="flex items-center justify-center w-28 h-10 text-white text-center ">
+                                                Not Opened
+                                            </div>
+                                        )
                                     )
                                 ) : (
                                     <div className="flex items-center justify-center w-28 h-10 text-white text-center ">

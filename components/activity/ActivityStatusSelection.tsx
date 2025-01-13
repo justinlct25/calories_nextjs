@@ -9,12 +9,12 @@ import { Loading } from '../ui/loading';
 interface ActivityStatusSelectionProps {
   isAdmin: boolean
   options: AttendanceStatus[];
-  value: string;
-  valueKey: string;
+  value: string | undefined;
   updateFunc: (id?: number) => any;
+  setValueState: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const ActivityStatusSelection: React.FC<ActivityStatusSelectionProps> = ({ isAdmin, options, value, valueKey, updateFunc }) => {
+const ActivityStatusSelection: React.FC<ActivityStatusSelectionProps> = ({ isAdmin, options, value, updateFunc, setValueState }) => {
   const { toast } = useToast();
   const [loading, setLoading] = useState<boolean>(false);
   const [currentValue, setCurrentValue] = useState(value);
@@ -40,6 +40,7 @@ const ActivityStatusSelection: React.FC<ActivityStatusSelectionProps> = ({ isAdm
           description: data.message,
         })
         setCurrentValue(selectedOption.name);
+        setValueState(selectedOption.name);
         setIsEditing(false);
       } else {
         toast({
@@ -98,6 +99,6 @@ const ActivityStatusSelection: React.FC<ActivityStatusSelectionProps> = ({ isAdm
 
 export default ActivityStatusSelection;
 
-function capitalizeFirstLetter(string: string) {
-  return string.charAt(0).toUpperCase() + string.slice(1);
+function capitalizeFirstLetter(string: string | undefined) {
+  return string ? string.charAt(0).toUpperCase() + string.slice(1) : "";
 }

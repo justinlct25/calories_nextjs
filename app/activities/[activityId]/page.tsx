@@ -19,6 +19,9 @@ export default function ActivityInfoPage() {
   const [backgroundUrl, setBackgroundUrl] = useState<string>("")
   const [descriptionHTML, setDescriptionHTML] = useState({ __html: "" })
   const [participants, setParticipants] = useState<any[]>([]);
+  const [activityStatus, setActivityStatus] = useState<string>("");
+  const [activityClosed, setActivityClosed] = useState<boolean>(false);
+
 
   const { user } = useUserStore(
     (state: any) => state,
@@ -32,6 +35,8 @@ export default function ActivityInfoPage() {
         // setLoading(false)
         if (data.activity) {
             setActivityInfo(data.activity);
+            setActivityStatus(data.activity.status.name);
+            setActivityClosed(data.activity.closed);
             setThumbnailUrl(await loadActivityThumbnailUrl(data.activity.thumbnail));
             setBackgroundUrl(await loadActivityBackgroundUrl(data.activity.background));
             const HTMLwithBucketImgUrls: string = await loadActivityDescriptionHTMLImgUrls(data.activity.description);
@@ -50,8 +55,8 @@ export default function ActivityInfoPage() {
 
   return (
         <div className='w-full'>
-          {activityInfo && <ActivityDetailedInfo activityInfo={activityInfo} thumbnailUrl={thumbnailUrl} backgroundUrl={backgroundUrl} descriptionHTML={descriptionHTML} participants={participants} isAdmin={user.isAdmin} />}
-          {activityInfo && <ActivityParticipationBar activityId={Number(activityId)} activityStatus={activityInfo.status.name} isParticipateClosed={activityInfo.closed} />}
+          {activityInfo && <ActivityDetailedInfo activityInfo={activityInfo} thumbnailUrl={thumbnailUrl} backgroundUrl={backgroundUrl} descriptionHTML={descriptionHTML} participants={participants} isAdmin={user.isAdmin} activityStatus={activityStatus} setActivityStatus={setActivityStatus} activityClosed={activityClosed} setActivityClosed={setActivityClosed} />}
+          {activityInfo && <ActivityParticipationBar activityId={Number(activityId)} activityStatus={activityStatus} setActivityStatus={setActivityStatus} activityClosed={activityClosed} setActivityClosed={setActivityClosed} />}
         </div>
       
   );

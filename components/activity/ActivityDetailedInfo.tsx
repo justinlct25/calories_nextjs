@@ -23,18 +23,21 @@ interface ActivityDetailedInfoProps {
     descriptionHTML: { __html: string };
     participants: any;
     isAdmin: boolean | undefined;
+    activityStatus: string;
+    setActivityStatus: React.Dispatch<React.SetStateAction<string>>;
+    activityClosed: boolean;
+    setActivityClosed: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 
-const ActivityDetailedInfo: React.FC<ActivityDetailedInfoProps> = ({ activityInfo, thumbnailUrl, backgroundUrl, descriptionHTML, participants, isAdmin }) => {
+const ActivityDetailedInfo: React.FC<ActivityDetailedInfoProps> = ({ activityInfo, thumbnailUrl, backgroundUrl, descriptionHTML, participants, isAdmin, activityStatus, setActivityStatus, activityClosed, setActivityClosed }) => {
     const [loading, setLoading] = useState<boolean>(true);
     const [view, setView] = useState<'info' | 'rank' | 'list' | 'table'>('info');
     const [isActivityPublic, setIsActivityPublic] = useState<boolean>(false);
-    const [isActivityClosed, setIsActivityClosed] = useState<boolean>(false);
-    const [activityStatuses, setActivityStatuses] = useState<any[]>([]);
+    const [activityAllStatuses, setActivityAllStatuses] = useState<any[]>([]);
 
-    const setIsActivityOpened: React.Dispatch<React.SetStateAction<boolean>> = (isOpened) => {
-        setIsActivityClosed(prevState => !prevState);
+    const setIsActivityOpened: React.Dispatch<React.SetStateAction<boolean>> = () => {
+        setActivityClosed(prevState => !prevState);
     }
 
     useEffect(() => {
@@ -42,14 +45,14 @@ const ActivityDetailedInfo: React.FC<ActivityDetailedInfoProps> = ({ activityInf
         .then((res) => res.json())
         .then(async (data) => {
             if (data) {
-                setActivityStatuses(data);
+                setActivityAllStatuses(data);
             }
         })
     }, [])
 
     useEffect(() => {
         setIsActivityPublic(activityInfo?.public ? activityInfo?.public : false);
-        setIsActivityClosed(activityInfo?.closed ? activityInfo?.closed : false);
+        setActivityClosed(activityInfo?.closed ? activityInfo?.closed : false);
         setLoading(false);
     }, [activityInfo]);
 
@@ -64,7 +67,7 @@ const ActivityDetailedInfo: React.FC<ActivityDetailedInfoProps> = ({ activityInf
                             <EditBtn editUrl={`/activities/${activityInfo?.id}/edit`} />
                             <ActivityPublicToggleButton isPublic={isActivityPublic} setIsPublic={setIsActivityPublic} activityId={activityInfo?.id} />
                         </div>
-                        <ActivityClosedToggleButton isOpened={!isActivityClosed} setIsOpened={setIsActivityOpened} activityId={activityInfo?.id} />
+                        <ActivityClosedToggleButton isOpened={!activityClosed} setIsOpened={setIsActivityOpened} activityId={activityInfo?.id} />
                     </div>
                 }
                 <div className="relative w-full aspect-[8/2]  justify-center items-center  pl-10 pr-10">
@@ -80,17 +83,17 @@ const ActivityDetailedInfo: React.FC<ActivityDetailedInfoProps> = ({ activityInf
                     <div className="flex flex-row justify-center items-center pt-20">
                         {thumbnailUrl && <img src={thumbnailUrl} alt="Thumbnail" className="mr-6 w-1/6 aspect-[1] rounded-xl" />}
                         <div>
-                            <ActivityStatusSelection isAdmin={isAdmin?isAdmin:false} options={activityStatuses} value={activityInfo?.status?.name} valueKey="statusId" 
-                                updateFunc={async (id?: number) => {
-                                    const url = `/api/activities/${activityInfo?.id}/status/${id ? id : activityInfo?.status?.id}`
-                                    const res = await fetch(url, {
-                                        method: 'PUT',
-                                        headers: {
-                                            'Content-Type': 'application/json'
-                                        },
-                                    });
-                                    return res;
-                                }} />
+                            <ActivityStatusSelection isAdmin={isAdmin?isAdmin:false} options={activityAllStatuses} value={activityStatus} setValueState={setActivityStatus}
+                                updateFunc = {async (id?: number) => {
+                                        const url = `/api/activities/${activityInfo?.id}/status/${id ? id : activityInfo?.status?.id}`
+                                        const res = await fetch(url, {
+                                            method: 'PUT',
+                                            headers: {
+                                                'Content-Type': 'application/json'
+                                            },
+                                        });
+                                        return res;
+                                    }} />
                             <div className="text-4xl min-w-[40%]">{activityInfo?.name}</div>
                         </div>
                     </div>
