@@ -19,6 +19,7 @@ export const getAllBriefActivities = async (isAdmin: boolean) => {
             name: true,
             thumbnail: true,
             public: true,
+            closed: true,
             startAt: true,
             endAt: true
         },

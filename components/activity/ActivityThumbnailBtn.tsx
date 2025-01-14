@@ -1,7 +1,7 @@
 "use client";
 
 import { loadActivityThumbnailUrl } from "@/utils/loadBucket/loadBucketUrls";
-import { EarthLockIcon } from "lucide-react";
+import { EarthLockIcon, LockIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 
@@ -35,11 +35,14 @@ const ActivityThumbnailBtn: React.FC<ActivityThumbnailBtnProps> = ({activityInfo
                         style={{ backgroundImage: `url('${thumbnailUrl}')` }}
                         onClick={handleActivityClick}
                     >
-                        {!activityInfo.public && (
-                            <div className="absolute top-0 right-0 bg-black/60 p-1 rounded">
+                        <div className="absolute top-0 right-0 bg-black/60 p-1 rounded flex space-x-1">
+                            {!activityInfo.public && (
                                 <EarthLockIcon className="text-white" />
-                            </div>
-                        )}
+                            )}
+                            {activityInfo.closed && (
+                                <LockIcon className="text-white" />
+                            )}
+                        </div>
                         <div className="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-200 text-center m-4">
                             {activityInfo.name}
                         </div>
