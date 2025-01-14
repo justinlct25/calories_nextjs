@@ -2,7 +2,11 @@ import ActivityThumbnailBtn from "@/components/activity/ActivityThumbnailBtn";
 import { Loading } from "../ui/loading";
 import { useState, useEffect } from "react";
 
-const ActivitiesSelectionPanel = () => {
+interface ActivitiesSelectionPanelProps {
+  isAdmin: boolean;
+}
+
+const ActivitiesSelectionPanel: React.FC<ActivitiesSelectionPanelProps> = ({isAdmin}) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [activities, setActivities] = useState<any[]>([]);
 
@@ -16,23 +20,24 @@ const ActivitiesSelectionPanel = () => {
   }, [])
 
   return (
-    <>
+    <div className="max-w-screen-xl mx-auto">
       {loading && <Loading />}
 
       {activities.length > 0 && (
-        <div className='flex flex-wrap px-20 py-12'>
+        <div className='flex flex-wrap px-20 py-4'>
           {activities.map((activity) => {
-            if (activity.thumbnail)
+            if (!(!isAdmin && !activity.public)) {
               return (
                 <ActivityThumbnailBtn
                   key={activity?.id}
                   activityInfo={activity}
                 />
               );
+            }
           })}
         </div>
       )}
-    </>
+    </div>
   );
 };
 

@@ -1,10 +1,17 @@
+import { auth } from "@/lib/auth";
 import { getAllBriefActivities } from "@/drizzle/queries/activities.query"
+import { isAdminRole } from "@/drizzle/queries/users-to-roles.query";
 import { NextResponse } from "next/server";
 
 
 export async function GET(req: Request) {
     try {
-        const activities = await getAllBriefActivities();
+        const session = await auth();
+        let isAdmin = false;
+        if (session?.user.id) {
+            isAdmin = await isAdminRole(session?.user.id);
+        }
+        const activities = await getAllBriefActivities(isAdmin);
         if (activities) {
             return NextResponse.json(
                 {activities: activities, message: "Activities obtained"},

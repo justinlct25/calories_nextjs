@@ -1,14 +1,33 @@
 import { db } from "@/lib/db"
 import { activities } from "../schemas/activities.schema"
-import { eq } from "drizzle-orm"
+import { eq, desc } from "drizzle-orm"
+import { activityStatus } from "../schemas/activity-status.schema"
 
 export const getAllActivities = async () => {
     const activities = db.query.activities.findMany()
     return activities;
 }
 
-export const getAllBriefActivities = async () => {
-    const result = await db.selectDistinct({id: activities.id, name: activities.name, thumbnail: activities.thumbnail, startAt: activities.startAt, endAt: activities.endAt}).from(activities)
+export const getAllBriefActivities = async (isAdmin: boolean) => {
+    // const result = await db.selectDistinct({id: activities.id, name: activities.name, thumbnail: activities.thumbnail, public: activities.public, startAt: activities.startAt, endAt: activities.endAt})
+    //     .from(activities)
+    //     .leftJoin(activityStatus, eq(activities.statusId, activityStatus.id)) // Join the status table
+    //     .orderBy(desc(activities.startAt));
+    const result = await db.query.activities.findMany({
+        columns: {
+            id: true,
+            name: true,
+            thumbnail: true,
+            public: true,
+            startAt: true,
+            endAt: true
+        },
+        where: isAdmin ? undefined : (activities, { eq }) => eq(activities.public, true),
+        with: {
+            status: true
+        },
+        orderBy: (activities, { desc }) => desc(activities.startAt)
+    });
     return result;
 }
 
