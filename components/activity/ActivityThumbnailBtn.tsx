@@ -1,13 +1,15 @@
 "use client";
 
 import { loadActivityThumbnailUrl } from "@/utils/loadBucket/loadBucketUrls";
+import { EarthLockIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 
+interface ActivityThumbnailBtnProps {
+    activityInfo: any;
+}
 
-
-
-const ActivityThumbnailBtn = ({activityInfo} : any) => {
+const ActivityThumbnailBtn: React.FC<ActivityThumbnailBtnProps> = ({activityInfo} : any) => {
     const router = useRouter();
     const [thumbnailUrl, setThumbnailUrl] = useState<string>('');
 
@@ -33,6 +35,11 @@ const ActivityThumbnailBtn = ({activityInfo} : any) => {
                         style={{ backgroundImage: `url('${thumbnailUrl}')` }}
                         onClick={handleActivityClick}
                     >
+                        {!activityInfo.public && (
+                            <div className="absolute top-0 right-0 bg-black/60 p-1 rounded">
+                                <EarthLockIcon className="text-white" />
+                            </div>
+                        )}
                         <div className="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-200 text-center m-4">
                             {activityInfo.name}
                         </div>

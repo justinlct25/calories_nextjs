@@ -26,7 +26,7 @@ const ActivitiesSelectionPanel: React.FC<ActivitiesSelectionPanelProps> = ({isAd
       {activities.length > 0 && (
         <div className='flex flex-wrap px-20 py-4'>
           {activities.map((activity) => {
-            if (!(!isAdmin && !activity.public)) {
+            if (!(!isAdmin && !activity.public) && activity.thumbnail) {
               return (
                 <ActivityThumbnailBtn
                   key={activity?.id}
