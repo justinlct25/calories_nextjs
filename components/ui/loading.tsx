@@ -10,12 +10,12 @@ interface LoadingProps {
 }
 
 const Loading = React.forwardRef<HTMLInputElement, LoadingProps>(
-  ({ hasText = true, hasHeight = true, justifyCenter = true}, ref) => {
+  ({ hasText = true, hasHeight = true, justifyCenter = true }, ref) => {
     return (
-      <div className={cn('w-full flex-col items-center justify-center', hasHeight && 'my-40')}>
-        { hasText && <h3 className={cn('py-6 text-center font-bold')}>Loading</h3> }
+      <div className={cn('w-full h-full flex flex-col items-center justify-center', hasHeight && 'my-40')}>
+        {hasText && <h3 className={cn('py-6 text-center font-bold')}>Loading</h3>}
         <div className={cn('flex items-center', justifyCenter && 'justify-center')}>
-            <div className='loader'></div>
+          <div className='loader'></div>
         </div>
       </div>
     );

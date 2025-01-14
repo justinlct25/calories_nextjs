@@ -20,12 +20,11 @@ const REQUIRED_DONOR_INFORMATION = ['firstname', 'lastname', 'phone', 'birth', '
 interface ActivityParticipationBarProps {
     activityId: number;
     activityStatus: string;
-    setActivityStatus: React.Dispatch<React.SetStateAction<string>>;
     activityClosed: boolean;
-    setActivityClosed: React.Dispatch<React.SetStateAction<boolean>>;
+    updateParticipantsFunc: () => void;
 }
 
-const ActivityParticipationBar: React.FC<ActivityParticipationBarProps> = ({ activityId, activityStatus, setActivityStatus, activityClosed, setActivityClosed }) => {
+const ActivityParticipationBar: React.FC<ActivityParticipationBarProps> = ({ activityId, activityStatus, activityClosed, updateParticipantsFunc }) => {
     const { data: session, status } = useSession();
     const router = useRouter();
     const { toast } = useToast();
@@ -111,6 +110,7 @@ const ActivityParticipationBar: React.FC<ActivityParticipationBarProps> = ({ act
                     variant: 'destructive'
                 });
             }
+            await updateParticipantsFunc();
             setLoading(false);
         } else {
             router.push(`/sign-in?activityId=${activityId}`);
@@ -180,6 +180,7 @@ const ActivityParticipationBar: React.FC<ActivityParticipationBarProps> = ({ act
                 console.error('Error quitting activity:', error);
             } finally {
                 await fetchParticipantInfo();
+                await updateParticipantsFunc();
                 setLoading(false);
             }
         }

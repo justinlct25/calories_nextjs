@@ -71,17 +71,21 @@ const ActivityDetailedInfo: React.FC<ActivityDetailedInfoProps> = ({ activityInf
                     </div>
                 }
                 <div className="relative w-full aspect-[8/2]  justify-center items-center  pl-10 pr-10">
-                    {backgroundUrl && (
                         <div
                             className="absolute inset-0 w-full h-full bg-cover bg-center z-[-1] bg-blend-darken bg-black bg-opacity-60"
                             style={{
                                 backgroundImage: `url(${backgroundUrl})`,
                                 clipPath: 'polygon(100% 0, 100% 100%, 90% 100%, 80% 75%, 20% 75%, 10% 100%, 0 100%, 0% 0%)',
                             }}
-                        ></div>
-                    )}
+                        >
+                            {!backgroundUrl && <Loading hasHeight={false} hasText={false} />}
+                        </div>
                     <div className="flex flex-row justify-center items-center pt-20">
-                        {thumbnailUrl && <img src={thumbnailUrl} alt="Thumbnail" className="mr-6 w-1/6 aspect-[1] rounded-xl" />}
+                        <div className="mr-6 w-1/6 aspect-[1] rounded-xl">
+                        {!thumbnailUrl ? <Loading hasHeight={false} hasText={false} /> :
+                            <img src={thumbnailUrl} alt="Thumbnail" className="mr-6 rounded-xl" />
+                        }
+                        </div>
                         <div>
                             <ActivityStatusSelection isAdmin={isAdmin?isAdmin:false} options={activityAllStatuses} value={activityStatus} setValueState={setActivityStatus}
                                 updateFunc = {async (id?: number) => {
