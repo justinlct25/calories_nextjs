@@ -22,9 +22,10 @@ interface ActivityParticipationBarProps {
     activityStatus: string;
     activityClosed: boolean;
     updateParticipantsFunc: () => void;
+    attendanceStatus?: string;
 }
 
-const ActivityParticipationBar: React.FC<ActivityParticipationBarProps> = ({ activityId, activityStatus, activityClosed, updateParticipantsFunc }) => {
+const ActivityParticipationBar: React.FC<ActivityParticipationBarProps> = ({ activityId, activityStatus, activityClosed, updateParticipantsFunc, attendanceStatus=undefined }) => {
     const { data: session, status } = useSession();
     const router = useRouter();
     const { toast } = useToast();
@@ -253,9 +254,15 @@ const ActivityParticipationBar: React.FC<ActivityParticipationBarProps> = ({ act
                                         )
                                     )
                                 ) : (
-                                    <div className="flex items-center justify-center w-28 h-10 text-white text-center ">
-                                        {capitalizeFirstLetter(activityStatus)}
-                                    </div>
+                                    activityStatus === ACTIVITY_STATUS_NAMES.COMPLETED ? (
+                                        <div className="flex items-center justify-center w-28 h-10 text-white text-center ">
+                                            {capitalizeFirstLetter(attendanceStatus ? attendanceStatus : 'processing')}  
+                                        </div>
+                                    ) : (
+                                        <div className="flex items-center justify-center w-28 h-10 text-white text-center ">
+                                            {capitalizeFirstLetter(activityStatus)}
+                                        </div>
+                                    )
                                 )
                             }
                         </>
