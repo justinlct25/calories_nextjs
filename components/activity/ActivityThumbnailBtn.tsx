@@ -34,12 +34,12 @@ const ActivityThumbnailBtn: React.FC<ActivityThumbnailBtnProps> = ({activityInfo
             {thumbnailUrl && (
                 <div className="rounded-lg">
                     <div
-                        className="bg-cover bg-center cursor-pointer h-60 w-60 rounded-lg bg-blend-darken bg-black/15 hover:bg-black/60 relative"
+                        className="bg-cover bg-center cursor-pointer h-60 w-60 rounded-lg bg-blend-darken bg-black/15 hover:bg-neutral-700/90 relative"
                         style={{ backgroundImage: `url('${thumbnailUrl}')` }}
                         onClick={handleActivityClick}
                     >
                         {(!activityInfo.public || activityInfo.closed) && (
-                            <div className="absolute top-0 right-0 bg-black/60 p-1 rounded flex space-x-2">
+                            <div className="absolute top-0 right-0 bg-black/60 p-1 rounded-lg flex space-x-2">
                                 {!activityInfo.public && (
                                     <EarthLockIcon className="text-white" />
                                 )}
@@ -48,7 +48,7 @@ const ActivityThumbnailBtn: React.FC<ActivityThumbnailBtnProps> = ({activityInfo
                                 )}
                             </div>
                         )}
-                        <div className="absolute w-full justify-center bottom-0 left-0 bg-black/60 p-0.2 rounded-b-lg flex space-x-1">
+                        <div className="absolute w-full justify-center bottom-0 left-0 bg-neutral-700/90 p-0.2 rounded-b-lg flex space-x-1">
                             {activityInfo.status && (
                                 <>{capitalizeFirstLetter(activityInfo.status.name)}</>
                             )}

@@ -24,7 +24,7 @@ const ActivitiesSelectionPanel: React.FC<ActivitiesSelectionPanelProps> = ({isAd
       {loading && <Loading />}
 
       {activities.length > 0 && (
-        <div className='flex flex-wrap px-20 py-4'>
+        <div className='flex flex-wrap px-20 py-4 justify-center'>
           {activities.map((activity) => {
             // console.log('activity', activity)
             if (!(!isAdmin && !activity.public) && activity.thumbnail) {
