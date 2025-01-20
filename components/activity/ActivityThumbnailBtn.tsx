@@ -34,7 +34,8 @@ const ActivityThumbnailBtn: React.FC<ActivityThumbnailBtnProps> = ({activityInfo
             {thumbnailUrl && (
                 <div className="rounded-lg">
                     <div
-                        className="bg-cover bg-center cursor-pointer h-60 w-60 rounded-lg bg-blend-darken bg-black/15 hover:bg-neutral-700/90 relative"
+                        className={`bg-cover bg-center cursor-pointer h-60 w-60 rounded-lg bg-blend-darken bg-black/15 hover:bg-neutral-700/90 relative
+                            ${activityInfo.status.name === "upcoming" && !activityInfo.closed && "border-2 border-yellow-500"}`}
                         style={{ backgroundImage: `url('${thumbnailUrl}')` }}
                         onClick={handleActivityClick}
                     >
@@ -48,10 +49,14 @@ const ActivityThumbnailBtn: React.FC<ActivityThumbnailBtnProps> = ({activityInfo
                                 )}
                             </div>
                         )}
-                        <div className="absolute w-full justify-center bottom-0 left-0 bg-neutral-700/90 p-0.2 rounded-b-lg flex space-x-1">
-                            {activityInfo.status && (
+                        <div className={`absolute w-full justify-center bottom-0 left-0
+                            ${activityInfo.status.name === "upcoming" && !activityInfo.closed ? "bg-yellow-500/90 text-black" : "bg-neutral-700/90"}
+                            p-0.2 rounded-b-lg flex space-x-1`}>
+                            {activityInfo.status && ( activityInfo.status.name==="upcoming" && !activityInfo.closed ? (
+                                <>Join</>
+                            ) : (
                                 <>{capitalizeFirstLetter(activityInfo.status.name)}</>
-                            )}
+                            ))}
                         </div>
                         <div className="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-200 text-center m-4">
                             {activityInfo.name}
