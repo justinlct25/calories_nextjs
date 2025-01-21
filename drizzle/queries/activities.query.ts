@@ -1,7 +1,9 @@
 import { db } from "@/lib/db"
 import { activities } from "../schemas/activities.schema"
-import { eq, desc } from "drizzle-orm"
+import { eq, desc, and } from "drizzle-orm"
 import { activityStatus } from "../schemas/activity-status.schema"
+import { isAdminRole } from "./users-to-roles.query"
+import { donorsToActivities } from "../schemas/donors-to-activities.schema"
 
 export const getAllActivities = async () => {
     const activities = db.query.activities.findMany()
@@ -9,10 +11,6 @@ export const getAllActivities = async () => {
 }
 
 export const getAllBriefActivities = async (isAdmin: boolean) => {
-    // const result = await db.selectDistinct({id: activities.id, name: activities.name, thumbnail: activities.thumbnail, public: activities.public, startAt: activities.startAt, endAt: activities.endAt})
-    //     .from(activities)
-    //     .leftJoin(activityStatus, eq(activities.statusId, activityStatus.id)) // Join the status table
-    //     .orderBy(desc(activities.startAt));
     const result = await db.query.activities.findMany({
         columns: {
             id: true,
@@ -30,6 +28,26 @@ export const getAllBriefActivities = async (isAdmin: boolean) => {
         orderBy: (activities, { desc }) => desc(activities.startAt)
     });
     return result;
+}
+
+export const getActivitiesList = async (donorId: number | null, isAdmin: boolean = false) => {
+    try {
+        const result = await db.select({
+            ...activities,
+            status: activityStatus,
+            participated: donorsToActivities,
+        })
+            .from(activities)
+            .leftJoin(activityStatus, eq(activities.statusId, activityStatus.id))
+            .leftJoin(donorsToActivities, and(eq(activities.id, donorsToActivities.activityId), eq(donorsToActivities.donorId, donorId))) // if donorId is null, participated will be null as well
+            .where(isAdmin ? undefined : eq(activities.public, true)) // only admin can see all activities including private ones
+            .orderBy(desc(activities.startAt));
+
+        return result;
+    } catch(error) {
+        console.log(error)
+        throw new Error(`${error}`)
+    }
 }
 
 export const getActivityById = async (activityId: number) => {

@@ -3,7 +3,6 @@ import { donorsToActivities } from "../schemas/donors-to-activities.schema"
 import { and, eq } from "drizzle-orm"
 import { NewParticipantInfo, insertParticipantInfo } from "./participant-info.query"
 import { deleteAttendanceRecord, insertAttendanceRecord, updateAttendanceRecord } from "./attendance-record.query"
-import { attendanceRecord } from "../schemas/attendance-record.schema"
 import { findAttendanceStatusByName } from "./attendance-status.query"
 
 export const findAllParticipants = async (activityId: number, withParticipantInfo: boolean) => {

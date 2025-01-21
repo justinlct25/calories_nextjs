@@ -33,7 +33,6 @@ export default function ActivityInfoPage() {
   const fetchParticipantsData = async () => {
     const res = await fetch(`/api/activities/${activityId}/participants`);
     const data = await res.json();
-    console.log("fetchParticipantsData", data);
     if (data.participants) {
       setParticipants(data.participants);
     }

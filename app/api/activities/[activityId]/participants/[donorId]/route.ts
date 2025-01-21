@@ -35,7 +35,6 @@ export async function GET(req: Request, {params}: any) {
 // donor participate in an activity
 export async function POST(req: Request, {params}: any) {
     try {
-        console.log("participate")
         const activityId = params.activityId;
         const session = await auth();
         if (!session?.user.id) { return NextResponse.json({message: "Invalid session"}, {status: 409}) }
