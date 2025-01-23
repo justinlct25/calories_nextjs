@@ -6,6 +6,7 @@ import { EarthLockIcon, LockIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { useSession } from 'next-auth/react';
+import { ACTIVITY_STATUS_NAMES } from "@/utils/constants";
 
 interface ActivityThumbnailBtnProps {
     activityInfo: any;
@@ -30,63 +31,75 @@ const ActivityThumbnailBtn: React.FC<ActivityThumbnailBtnProps> = ({activityInfo
     }, [])
 
     const getStatusColor = () => {
-        if (activityInfo.status.name === "upcoming") {
+        if (activityInfo.status.name === ACTIVITY_STATUS_NAMES.UPCOMING) {
             if (session) {
                 if (activityInfo.participated) {
-                    return "bg-blue-900/70";
+                    return "bg-blue-800/70";
                 } else {
                     return "bg-green-900/70"; 
                 }
             } else {
                 return "bg-yellow-900/70";
             }
+        } else if (activityInfo.status.name === ACTIVITY_STATUS_NAMES.COMPLETED) {
+            if (activityInfo.participated) {
+                return "bg-purple-800/70";
+            } else {
+                return "bg-gray-900/70";
+            }
         }
-        if (activityInfo.status.name === "pending") return "bg-neutral-900/70";
-        if (activityInfo.status.name === "ended") return "bg-gray-900/70";
-        if (activityInfo.status.name === "completed") return "bg-purple-900/70";
+        if (activityInfo.status.name === ACTIVITY_STATUS_NAMES.PENDING) return "bg-neutral-900/70";
         return "bg-neutral-900/90";
     };
 
     const getStatusText = () => {
-        if (activityInfo.status.name === "upcoming") {
+        let statusText = activityInfo.status.name;
+        if (activityInfo.status.name === ACTIVITY_STATUS_NAMES.UPCOMING) {
             if (session) {
                 if (activityInfo.participated) {
-                    return "Joined";
+                    statusText = "joined";
                 } else {
-                    return "Enroll"; 
+                    statusText = "enrolled";
                 }
             } else {
-                return "Upcoming";
+                statusText = ACTIVITY_STATUS_NAMES.UPCOMING;
+            }
+        } else if (activityInfo.status.name === ACTIVITY_STATUS_NAMES.COMPLETED) {
+            if (activityInfo.participated) {
+                statusText = ACTIVITY_STATUS_NAMES.COMPLETED;
+            } else {
+                statusText = "ended";
             }
         }
-        if (activityInfo.status.name === "pending") return "Pending";
-        if (activityInfo.status.name === "ended") return "Ended";
-        if (activityInfo.status.name === "completed") return "Completed";
-        return capitalizeFirstLetter(activityInfo.status.name);
+        return capitalizeFirstLetter(statusText);
     };
 
     const getBorderColor = () => {
-        if (activityInfo.status.name === "upcoming") {
+        if (activityInfo.status.name === ACTIVITY_STATUS_NAMES.UPCOMING) {
             if (session) {
                 if (activityInfo.participated) {
-                    return "border-blue-900/70";
+                    return "border-blue-800/70";
                 } else {
                     return "border-green-900/70"; 
                 }
             } else {
                 return "border-yellow-900/70";
             }
+        } else if (activityInfo.status.name === ACTIVITY_STATUS_NAMES.COMPLETED) {
+            if (activityInfo.participated) {
+                return "border-purple-800/70";
+            } else {
+                return "border-gray-900/70";
+            }
         }
-        if (activityInfo.status.name === "pending") return "border-neutral-900/70";
-        if (activityInfo.status.name === "ended") return "border-gray-900/70";
-        if (activityInfo.status.name === "completed") return "border-purple-900/70";
+        if (activityInfo.status.name === ACTIVITY_STATUS_NAMES.PENDING) return "border-neutral-900/70";
         return "border-neutral-900/90";
     };
 
     return (
         <div className="m-4">
             {thumbnailUrl && (
-                <div className={`rounded-lg ${getBorderColor()} border-2`}>
+                <div className={`rounded-lg ${getBorderColor()} border-4`}>
                     <div
                         className={`bg-cover bg-center cursor-pointer h-60 w-60 rounded-lg bg-blend-darken hover:bg-neutral-700/90 relative`}
                         style={{ backgroundImage: `url('${thumbnailUrl}')` }}
