@@ -18,16 +18,7 @@ const ActivitiesSelectionPanel: React.FC<ActivitiesSelectionPanelProps> = ({isAd
       fetch(`/api/activities`)
       .then((res) => res.json())
       .then((data) => {
-          // Sort activities by pending status
-          const sortedActivities = data.activities.sort((a: any, b: any) => {
-            if (a.status.name === 'pending' && b.status.name !== 'pending') {
-              return -1;
-            }
-            if (a.status.name !== 'pending' && b.status.name === 'pending') {
-              return 1;
-            }
-            return 0;
-          });
+          const sortedActivities = data.activities.sort((a: any, b: any) => a.status.id - b.status.id);
           setActivities(sortedActivities);
           setFilteredActivities(data.activities);
           setLoading(false);
