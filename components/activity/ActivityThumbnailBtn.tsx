@@ -59,7 +59,7 @@ const ActivityThumbnailBtn: React.FC<ActivityThumbnailBtnProps> = ({activityInfo
                 if (activityInfo.participated) {
                     statusText = "joined";
                 } else {
-                    statusText = "enrolled";
+                    statusText = "enroll";
                 }
             } else {
                 statusText = ACTIVITY_STATUS_NAMES.UPCOMING;
