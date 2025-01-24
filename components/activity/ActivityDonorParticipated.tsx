@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react';
 import { loadActivityThumbnailUrl } from "@/utils/loadBucket/loadBucketUrls";
 import { useRouter } from "next/navigation";
 import { format } from 'date-fns';
+import { getBorderColor } from '@/utils/helperFunc';
 
 interface ActivityDonorParticipatedProps {
     activityId: number;
@@ -14,9 +15,11 @@ interface ActivityDonorParticipatedProps {
     location: string;
     address: string;
     background?: string;
+    activityStatus: string;
+    attendanceStatus: string;
 }
 
-const ActivityDonorParticipated: React.FC<ActivityDonorParticipatedProps> = ({ activityId, name, startAt, endAt, location, address, background }) => {
+const ActivityDonorParticipated: React.FC<ActivityDonorParticipatedProps> = ({ activityId, name, startAt, endAt, location, address, background, activityStatus, attendanceStatus }) => {
     const router = useRouter();
     const [backgroundUrl, setThumbnailUrl] = useState<string>('');
 
@@ -56,22 +59,26 @@ const ActivityDonorParticipated: React.FC<ActivityDonorParticipatedProps> = ({ a
         return `Start at: ${formattedStartAt}`;
     }
 
+    const borderColor = getBorderColor(true, activityStatus , true);
+
+
 
     return (
-        <div className="cursor-pointer activity m-4 rounded-lg bg-cover bg-center h-48 w-full max-w-screen-2xl"
+        <div className={`cursor-pointer activity m-4 rounded-lg bg-cover bg-center h-48 w-full max-w-screen-2xl`}
             style={{ backgroundImage: `url('${backgroundUrl}')` }}
             onClick={handleActivityClick}
         >
-            <div className="bg-black bg-opacity-60 p-4 text-sm h-full flex flex-col justify-between rounded-lg hover:bg-neutral-700/90">
-                {/* <div>
-                    <p className="text-white mt-2">{formattedStartAt} - {formattedEndAt}</p>
-                    </div> */}
-                <div className="text-white mt-2">
-                    <h3 className="text-2xl font-bold text-white">{name}</h3>
-                    <p>Date: {getDateString(startAt, endAt)}</p>
-                    <p>{getTimeString(startAt, endAt)}</p>
-                    <p>Location: {location}</p>
-                    {/* <p>Address: {address}</p> */}
+            <div className={`bg-black bg-opacity-60 p-4 text-sm h-full flex flex-col justify-between rounded-lg hover:bg-neutral-700/90 border-8 ${borderColor}`}>
+                <h3 className="text-2xl font-bold text-white">{name}</h3>
+                <div className="flex flex-row justify-between items-center">
+                    <div className="text-white mt-2">
+                        <p>Date: {getDateString(startAt, endAt)}</p>
+                        <p>{getTimeString(startAt, endAt)}</p>
+                        <p>Location: {location}</p>
+                        {/* <p>Address: {address}</p> */}
+                    </div>
+                    <div>{activityStatus && <p className="text-white">Status: {activityStatus}</p>}</div>
+                    <div>{attendanceStatus && <p className="text-white">Attendance: {attendanceStatus}</p>}</div>
                 </div>
             </div>
         </div>

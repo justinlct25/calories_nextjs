@@ -30,17 +30,19 @@ export default function DonorInfoPage() {
         (state: any) => state,
       )
     
-    async function loadDonorInfo() {
-        fetch(`/api/donors/${donorId}`)
-            .then((res) => res.json())
-            .then(async (data) => {
-                if (data && data.donor) {
-                    setDonorInfo(data.donor);
-                    setDonorIconUrl(await loadDonorIconUrl(data.donor.icon));
-                    setDonorBgImgUrl(await loadDonorBgImgUrl(data.donor.background));
-                    console.log(data.donor.activities);
-                }
-            });
+      async function loadDonorInfo() {
+        try {
+            const res = await fetch(`/api/donors/${donorId}`);
+            const data = await res.json();
+            if (data && data.donor) {
+                setDonorInfo(data.donor);
+                setDonorIconUrl(await loadDonorIconUrl(data.donor.icon));
+                setDonorBgImgUrl(await loadDonorBgImgUrl(data.donor.background));
+                console.log(data.donor.activities);
+            }
+        } catch (error) {
+            console.error("Failed to load donor info:", error);
+        }
     }
 
     function checkIsDonorProfileOfUser() {
@@ -50,9 +52,14 @@ export default function DonorInfoPage() {
     }
 
     useEffect(() => {
-        loadDonorInfo();
+        if (donorId) {
+            loadDonorInfo();
+        }
+    }, [donorId]);
+
+    useEffect(() => {
         checkIsDonorProfileOfUser();
-    } , [session, Object.keys(user).length]);
+    }, [session, user, donorId]);
     
     const handleQRCodeClose = () => {
         setIsQRCodeOpen(false);
@@ -66,7 +73,7 @@ export default function DonorInfoPage() {
         if (donorInfo) {
             setQRCodeValue(donorInfo.id);
         }
-    })
+    }, [donorInfo]);;
 
     return (
         <div className="w-full">
@@ -126,7 +133,18 @@ export default function DonorInfoPage() {
                     )}
                     <h2 className="text-4xl">Activities Participated</h2>
                     {donorInfo?.activities && donorInfo.activities.map((activity: any, index: number) => (
-                        <ActivityDonorParticipated activityId={activity.activity.id} name={activity.activity.name} startAt={activity.activity.startAt} endAt={activity.activity.endAt} location={activity.activity.location} address={activity.activity.address} background={activity.activity.thumbnail} />
+                        <ActivityDonorParticipated
+                            key={index}
+                            activityId={activity.activity.id}
+                            name={activity.activity.name}
+                            startAt={activity.activity.startAt}
+                            endAt={activity.activity.endAt}
+                            location={activity.activity.location}
+                            address={activity.activity.address}
+                            background={activity.activity.thumbnail}
+                            activityStatus={activity.activity.status.name}
+                            attendanceStatus={activity.activity.participants[0].attendanceRecord.attendanceStatus.name}
+                        />
                     ))}
                 </div>
             </div>
