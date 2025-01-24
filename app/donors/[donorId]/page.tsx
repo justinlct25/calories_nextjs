@@ -34,10 +34,11 @@ export default function DonorInfoPage() {
         fetch(`/api/donors/${donorId}`)
             .then((res) => res.json())
             .then(async (data) => {
-                if (data.donor) {
+                if (data && data.donor) {
                     setDonorInfo(data.donor);
                     setDonorIconUrl(await loadDonorIconUrl(data.donor.icon));
                     setDonorBgImgUrl(await loadDonorBgImgUrl(data.donor.background));
+                    console.log(data.donor.activities);
                 }
             });
     }

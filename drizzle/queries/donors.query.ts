@@ -1,5 +1,6 @@
 import { db } from "@/lib/db"
 import { donors } from "../schemas/donors.schema"
+import { donorsToActivities } from "../schemas/donors-to-activities.schema"
 import { eq } from "drizzle-orm"
 
 export const getDonor = async (donorId: number) => {
@@ -11,6 +12,19 @@ export const getDonor = async (donorId: number) => {
                     activity: {
                         columns: {
                             description: false
+                        },
+                        with: {
+                            status: true,
+                            participants: {
+                                where: (donorsToActivities: any, { eq }) => eq(donorsToActivities.donorId, donorId),
+                                with: {
+                                    attendanceRecord: {
+                                        with: {
+                                            attendanceStatus: true
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                 }
