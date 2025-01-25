@@ -5,9 +5,12 @@ import React, { useEffect, useState } from 'react';
 import { loadActivityThumbnailUrl } from "@/utils/loadBucket/loadBucketUrls";
 import { useRouter } from "next/navigation";
 import { format } from 'date-fns';
-import { getBorderColor } from '@/utils/helperFunc';
+import { capitalizeFirstLetter, getBorderColor, getStatusColor, getStatusText } from '@/utils/helperFunc';
+import { Calendar, Clock, MapPin } from 'lucide-react';
+import { ATTENDANCE_STATUS_NAMES } from '@/utils/constants';
 
 interface ActivityDonorParticipatedProps {
+    isDonorUser: boolean;
     activityId: number;
     name: string;
     startAt: string;
@@ -16,10 +19,10 @@ interface ActivityDonorParticipatedProps {
     address: string;
     background?: string;
     activityStatus: string;
-    attendanceStatus: string;
+    attendanceRecord: any
 }
 
-const ActivityDonorParticipated: React.FC<ActivityDonorParticipatedProps> = ({ activityId, name, startAt, endAt, location, address, background, activityStatus, attendanceStatus }) => {
+const ActivityDonorParticipated: React.FC<ActivityDonorParticipatedProps> = ({ isDonorUser, activityId, name, startAt, endAt, location, address, background, activityStatus, attendanceRecord }) => {
     const router = useRouter();
     const [backgroundUrl, setThumbnailUrl] = useState<string>('');
 
@@ -55,12 +58,28 @@ const ActivityDonorParticipated: React.FC<ActivityDonorParticipatedProps> = ({ a
         const endAtDate = format(new Date(endAt), 'yyyy-MM-dd');
         const formattedStartAt = format(new Date(startAt), 'HH:mm');
         const formattedEndAt = format(new Date(endAt), 'HH:mm');
-        if (startAtDate == endAtDate) return `Time: ${formattedStartAt} - ${formattedEndAt}`;
-        return `Start at: ${formattedStartAt}`;
+        if (startAtDate == endAtDate) return `${formattedStartAt} - ${formattedEndAt}`;
+        return `${formattedStartAt}`;
     }
 
     const borderColor = getBorderColor(true, activityStatus , true);
+    const statusColor = getStatusColor(true, activityStatus, true);
 
+    const getAttendanceDOM = (attendanceRecord: any): JSX.Element => {
+        let attendanceString = attendanceRecord.attendanceStatus.name;
+        if (attendanceString == ATTENDANCE_STATUS_NAMES.ATTENDED) {
+            attendanceString = attendanceRecord.attendanceStatus.calories;
+            return (
+                <div className="text-white">
+                    <div>Record: {attendanceRecord.record} </div>
+                    <div>Calories: {attendanceRecord.calories}</div>
+                </div>
+            )
+        }
+        return (
+            <div className="text-white">{capitalizeFirstLetter(attendanceString)}</div>
+        );
+    }
 
 
     return (
@@ -71,14 +90,15 @@ const ActivityDonorParticipated: React.FC<ActivityDonorParticipatedProps> = ({ a
             <div className={`bg-black bg-opacity-60 p-4 text-sm h-full flex flex-col justify-between rounded-lg hover:bg-neutral-700/90 border-8 ${borderColor}`}>
                 <h3 className="text-2xl font-bold text-white">{name}</h3>
                 <div className="flex flex-row justify-between items-center">
-                    <div className="text-white mt-2">
-                        <p>Date: {getDateString(startAt, endAt)}</p>
-                        <p>{getTimeString(startAt, endAt)}</p>
-                        <p>Location: {location}</p>
-                        {/* <p>Address: {address}</p> */}
+                    <div className="text-white mt-2 w-1/2">
+                        <p className="flex items-center mb-2"><Calendar className="mr-2" /> {getDateString(startAt, endAt)}</p>
+                        <p className="flex items-center mb-2"><Clock className="mr-2" /> {getTimeString(startAt, endAt)}</p>
+                        <p className="flex items-center mb-2"><MapPin className="mr-2" /> {location}</p>
                     </div>
-                    <div>{activityStatus && <p className="text-white">Status: {activityStatus}</p>}</div>
-                    <div>{attendanceStatus && <p className="text-white">Attendance: {attendanceStatus}</p>}</div>
+                    <div className="flex flex-row justify-between items-center w-1/2 justify-end pr-10">
+                        <div>{activityStatus && <p className={`text-white p-2 rounded-lg ${statusColor}`}>{capitalizeFirstLetter(activityStatus)}</p>}</div>
+                        <div>{attendanceRecord && attendanceRecord.attendanceStatus.name && <p className="text-white">{ getAttendanceDOM(attendanceRecord) }</p>}</div>
+                    </div>
                 </div>
             </div>
         </div>
