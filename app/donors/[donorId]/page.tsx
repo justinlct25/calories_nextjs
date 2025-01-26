@@ -5,7 +5,7 @@ import { useSession } from "next-auth/react";
 import { useParams, useRouter } from 'next/navigation';
 import { loadDonorBgImgUrl, loadDonorIconUrl } from "@/utils/loadBucket/loadBucketUrls";
 import GoBack from "@/components/util/GoBack";
-import { BookUser, QrCode } from "lucide-react";
+import { Bike, BookUser, QrCode, Users } from "lucide-react";
 import DonorQRCode from "@/components/donor/DonorQRCode";
 import ActivityDonorParticipated from "@/components/activity/ActivityDonorParticipated";
 import DonorPersonalDetail from "@/components/donor/DonorPersonlDetail";
@@ -28,6 +28,7 @@ export default function DonorInfoPage() {
     const [filteredActivities, setFilteredActivities] = useState<any[]>([]);
     const [statusFilter, setStatusFilter] = useState<keyof typeof ACTIVITY_FILTER_STATUS_MAPPING>('ALL');
     const [loadingActivities, setLoadingActivities] = useState<boolean>(true);
+    const [view, setView] = useState<'activities' | 'friends'>('activities');
 
     
     const { user } = useUserStore((state: any) => state);
@@ -108,7 +109,7 @@ export default function DonorInfoPage() {
                 }}
                 className="w-full aspect-[3] bg-blend-darken bg-black bg-opacity-60 flex flex-col justify-center items-center"
             >
-                {!donorBgImgUrl && <Loading hasHeight={false} hasText={false} />}
+                {!donorBgImgUrl && <div className="absolute "><Loading hasHeight={false} hasText={false} /></div>}
                 <div>Level {donorInfo?.levels}</div>
                 <div className="text-4xl">{donorInfo?.username}</div>
                 <div className="h-1/4"></div>
@@ -135,39 +136,60 @@ export default function DonorInfoPage() {
                         <div className="text-4xl">{donorInfo?.activities?.length}</div>
                     </div>
                 </div>
-                <div className="w-full aspect-[5]"></div>
+                <div className="w-full aspect-[9]"></div>
                 <div className="w-full flex flex-col justify-center items-center mx-auto p-10">
                     <DonorQRCode open={isQRCodeOpen} value={qrCodeValue} onClose={handleQRCodeClose} />
                     {isDonorProfileOfUser && (
                         <DonorPersonalDetail open={isPersonalDetailOpen} onClose={handlePersonalDetailClose} user={user} />
                     )}
-                    <h2 className="text-4xl">Activities Record</h2>
-                    <div className="flex justify-center py-4">
-                        <ActivitiesStatusFilterSelection
-                            value={statusFilter}
-                            setValueState={setStatusFilter}
-                        />
+                    <div className="flex justify-center items-center w-full p-6 max-w-3/5 space-x-20">
+                        <button onClick={() => setView('activities')} className={view === 'activities' ? '' : 'text-gray-400'}>
+                            <Bike size={32} />
+                        </button>
+                        <button onClick={() => setView('friends')} className={view === 'friends' ? '' : 'text-gray-400'}>
+                            <Users size={32} />
+                        </button>
                     </div>
-                    {loadingActivities ? <Loading /> : 
-                        <>
-                            {filteredActivities.length > 0 && (
-                                    filteredActivities.map((activity: any) => (
-                                        <ActivityDonorParticipated
-                                            key={activity.activity.id}
-                                            isDonorUser={isDonorProfileOfUser}
-                                            activityId={activity.activity.id}
-                                            name={activity.activity.name}
-                                            startAt={activity.activity.startAt}
-                                            endAt={activity.activity.endAt}
-                                            location={activity.activity.location}
-                                            address={activity.activity.address}
-                                            background={activity.activity.thumbnail}
-                                            activityStatus={activity.activity.status.name}
-                                            attendanceRecord={activity.activity.participants[0].attendanceRecord}
-                                        />
-                                    ))
-                            )}
-                        </>}
+
+                    <>
+                        {view === 'activities' && (
+                            <>
+                                <h2 className="text-4xl">Activities Record</h2>
+                                <div className="flex justify-center py-4">
+                                    <ActivitiesStatusFilterSelection
+                                        value={statusFilter}
+                                        setValueState={setStatusFilter}
+                                    />
+                                </div>
+                                {loadingActivities ? <Loading /> : 
+                                    <>
+                                        {filteredActivities.length > 0 && (
+                                                filteredActivities.map((activity: any) => (
+                                                    <ActivityDonorParticipated
+                                                        key={activity.activity.id}
+                                                        isDonorUser={isDonorProfileOfUser}
+                                                        activityId={activity.activity.id}
+                                                        name={activity.activity.name}
+                                                        startAt={activity.activity.startAt}
+                                                        endAt={activity.activity.endAt}
+                                                        location={activity.activity.location}
+                                                        address={activity.activity.address}
+                                                        background={activity.activity.thumbnail}
+                                                        activityStatus={activity.activity.status.name}
+                                                        attendanceRecord={activity.activity.participants[0].attendanceRecord}
+                                                    />
+                                                ))
+                                        )}
+                                    </>}
+                            </>
+                        )}
+                        {view === 'friends' && (
+                            <div className="w-full flex flex-col justify-center items-center max-w-screen-xl mx-auto">
+                            <h2 className="text-4xl">Friends</h2>
+                            {/* Add your friends component here */}
+                        </div>
+                        )}
+                    </>
                 </div>
             </div>
         </div>
