@@ -70,6 +70,7 @@ const ActivityCreateForm = () => {
     const [descriptionHTML, setDescriptionHTML] = useState<string>('');
     const [thumbnailPreview, setThumbnailPreview] = useState<string | null>(null);
     const [backgroundPreview, setBackgroundPreview] = useState<string | null>(null);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const handleThumbnailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
@@ -104,6 +105,7 @@ const ActivityCreateForm = () => {
     const onSubmit = async (values: z.infer<typeof activityCreateForm>) => {
         const userConfirmed = window.confirm("Are you sure you want to submit the form?");
         if (!userConfirmed) return;
+        setIsLoading(true);
         const formData = new FormData();
         formData.append('name', values.name);
         formData.append('startAt', values.startAt);
@@ -121,7 +123,8 @@ const ActivityCreateForm = () => {
             method: 'POST',
             body: formData
         });
-        const data = await response.json()
+        const data = await response.json();
+        setIsLoading(false);
         if (response.ok) {
             const createdActivityId = data.activityId
             toast({
@@ -141,6 +144,9 @@ const ActivityCreateForm = () => {
 
     return (
         <div className="max-w-5xl mx-auto p-6 rounded-lg shadow-md">
+            {isLoading && (
+                <Loading hasText={true} hasHeight={true} justifyCenter={true} absolute={false} fullScreen={true} />
+            )}
             <h2 className="text-2xl font-bold mb-6 text-center">Create New Activity</h2>
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -170,6 +176,7 @@ const ActivityCreateForm = () => {
                                                 <DatePicker
                                                     placeholderText="Select Start Date"
                                                     className="text-black"
+                                                    wrapperClassName="w-full"
                                                     selected={field.value ? new Date(field.value) : null}
                                                     showTimeSelect
                                                     dateFormat="yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
@@ -192,6 +199,7 @@ const ActivityCreateForm = () => {
                                                 <DatePicker
                                                     placeholderText="Select End Date"
                                                     className="text-black"
+                                                    wrapperClassName="w-full"
                                                     selected={field.value ? new Date(field.value) : null}
                                                     showTimeSelect
                                                     dateFormat="yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"

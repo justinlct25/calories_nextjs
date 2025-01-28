@@ -54,7 +54,6 @@ export default function ActivityEditPage() {
         <PageUnderNavbarWrapper>
             <IsSignedIn adminCheck={true} />
             <GoBack isNavbarPad={false} backDirectory="parent"/>  
-            <h2>Edit Activity</h2>
             {activityInfo && <ActivityEditForm activityId={Number(activityId)} activity={activityInfo} thumbnailUrl={thumbnailUrl} backgroundUrl={backgroundUrl} description={descriptionHTML} />}
         </PageUnderNavbarWrapper>
     )

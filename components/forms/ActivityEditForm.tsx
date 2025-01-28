@@ -20,6 +20,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Tiptap from "@/components/rich-txt-editor/Tiptap";
 import DatePicker from "react-datepicker";
 import 'react-datepicker/dist/react-datepicker.css';
+import { Loading } from "../ui/loading";
 
 
 const MAX_FILE_SIZE = 500000;
@@ -78,6 +79,7 @@ const ActivityEditForm: React.FC<ActivityEditFormProps> = ({ activityId, activit
     const [descriptionHTML, setDescriptionHTML] = useState<string>('');
     const [thumbnailPreview, setThumbnailPreview] = useState<string | null>(null);
     const [backgroundPreview, setBackgroundPreview] = useState<string | null>(null);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     useEffect(() => {
         setDescriptionHTML(description);
@@ -119,6 +121,7 @@ const ActivityEditForm: React.FC<ActivityEditFormProps> = ({ activityId, activit
         // event.preventDefault();
         const userConfirmed = window.confirm("Are you sure you want to submit the form?");
         if (!userConfirmed) return;
+        setIsLoading(true);
         const formData = new FormData();
         formData.append('name', values.name);
         formData.append('startAt', values.startAt);
@@ -135,6 +138,7 @@ const ActivityEditForm: React.FC<ActivityEditFormProps> = ({ activityId, activit
             body: formData
         });
         const data = await response.json()
+        setIsLoading(false);
         if (response.ok) {
             const updatedActivityId = data.activityId
             toast({
@@ -153,7 +157,11 @@ const ActivityEditForm: React.FC<ActivityEditFormProps> = ({ activityId, activit
     }
 
     return (
-        <div>
+        <div className="max-w-5xl mx-auto p-6 rounded-lg shadow-md">
+            {isLoading && (
+                <Loading hasText={true} hasHeight={true} justifyCenter={true} absolute={false} fullScreen={true} />
+            )}
+            <h2 className="text-2xl font-bold mb-6 text-center">Edit Activity</h2>
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="w-full">
                     <div className='space-y-2'>
@@ -170,18 +178,19 @@ const ActivityEditForm: React.FC<ActivityEditFormProps> = ({ activityId, activit
                                 </FormItem>
                             )}
                         />
-                        <div className="flex items-center justify-between">
-                            <div>
+                        <div className="flex items-center justify-around">
+                            <div className="flex flex-col space-y-4 w-1/2 items-center justify-center">
                                 <FormField
                                     control={form.control}
                                     name="startAt"
                                     render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel>Start At</FormLabel>
-                                            <FormControl>
+                                        <FormItem className="flex flex-col md:flex-row md:items-center w-full">
+                                            <FormLabel className="md:w-1/5">Start At</FormLabel>
+                                            <FormControl className="md:w-4/5">
                                                 <DatePicker
                                                     placeholderText="Select Start Date"
                                                     className="text-black"
+                                                    wrapperClassName="w-full"
                                                     selected={field.value ? new Date(field.value) : null}
                                                     showTimeSelect
                                                     dateFormat="yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
@@ -198,12 +207,13 @@ const ActivityEditForm: React.FC<ActivityEditFormProps> = ({ activityId, activit
                                     control={form.control}
                                     name="endAt"
                                     render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel>End At</FormLabel>
-                                            <FormControl>
+                                        <FormItem className="flex flex-col md:flex-row md:items-center w-full">
+                                            <FormLabel className="md:w-1/5">End At</FormLabel>
+                                            <FormControl className="md:w-4/5">
                                                 <DatePicker
                                                     placeholderText="Select End Date"
                                                     className="text-black"
+                                                    wrapperClassName="w-full"
                                                     selected={field.value ? new Date(field.value) : null}
                                                     showTimeSelect
                                                     dateFormat="yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
@@ -315,25 +325,18 @@ const ActivityEditForm: React.FC<ActivityEditFormProps> = ({ activityId, activit
                                 </FormItem>
                             )}
                         />
-                    {/* </div> */}
-                    {/* <div> */}
                         <FormLabel>Description</FormLabel>
-                        {/* <div>Description</div> */}
                         {(descriptionHTML!=='') && <Tiptap
                             content={descriptionHTML}
                             onChange={(newContent: string) => {handleDescriptionEditorChange(newContent)}}
                         />
                         }
-                        {/* <Tiptap
-                            content={descriptionHTML}
-                            onChange={(newContent: string) => {handleDescriptionEditorChange(newContent)}}
-                        /> */}
                     </div>
                     <Button className='w-full mt-6' type="submit">Edit</Button>
-                    
                 </form>
             </Form>
         </div>
+        
     )
 }
 
