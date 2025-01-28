@@ -15,7 +15,6 @@ export default function ActivityCreationPage() {
         <PageUnderNavbarWrapper>
             <IsSignedIn adminCheck={true} />
             <GoBack isNavbarPad={false} backDirectory="parent" />  
-            <h2>Create Activity</h2>
             <ActivityCreateForm />
         </PageUnderNavbarWrapper>
     )

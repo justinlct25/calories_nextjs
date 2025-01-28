@@ -140,10 +140,10 @@ const ActivityCreateForm = () => {
     }
 
     return (
-        <div>
-
+        <div className="max-w-5xl mx-auto p-6 rounded-lg shadow-md">
+            <h2 className="text-2xl font-bold mb-6 text-center">Create New Activity</h2>
             <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="w-full">
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                     <div className='space-y-2'>
                         <FormField
                             control={form.control}
@@ -158,15 +158,15 @@ const ActivityCreateForm = () => {
                                 </FormItem>
                             )}
                         />
-                        <div className="flex items-center justify-between">
-                            <div>
+                        <div className="flex items-center justify-around">
+                            <div className="flex flex-col space-y-4 w-1/2 items-center justify-center">
                                 <FormField
                                     control={form.control}
                                     name="startAt"
                                     render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel>Start At</FormLabel>
-                                            <FormControl>
+                                        <FormItem className="flex flex-col md:flex-row md:items-center w-full">
+                                            <FormLabel className="md:w-1/5">Start At</FormLabel>
+                                            <FormControl className="md:w-4/5">
                                                 <DatePicker
                                                     placeholderText="Select Start Date"
                                                     className="text-black"
@@ -186,9 +186,9 @@ const ActivityCreateForm = () => {
                                     control={form.control}
                                     name="endAt"
                                     render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel>End At</FormLabel>
-                                            <FormControl>
+                                        <FormItem className="flex flex-col md:flex-row md:items-center w-full">
+                                            <FormLabel className="md:w-1/5">End At</FormLabel>
+                                            <FormControl className="md:w-4/5">
                                                 <DatePicker
                                                     placeholderText="Select End Date"
                                                     className="text-black"
