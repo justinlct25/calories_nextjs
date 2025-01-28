@@ -21,6 +21,7 @@ import Tiptap from "@/components/rich-txt-editor/Tiptap";
 import DatePicker from "react-datepicker";
 import 'react-datepicker/dist/react-datepicker.css';
 import { format } from 'date-fns';
+import { Loading } from "../ui/loading";
 
 
 const MAX_FILE_SIZE = 500000;
