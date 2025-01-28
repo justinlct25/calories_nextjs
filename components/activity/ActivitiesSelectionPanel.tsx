@@ -2,7 +2,8 @@ import ActivityThumbnailBtn from "@/components/activity/ActivityThumbnailBtn";
 import { Loading } from "../ui/loading";
 import { useState, useEffect } from "react";
 import ActivitiesStatusFilterSelection from "./ActivitiesStatusFilterSelection";
-import { ACTIVITY_FILTER_STATUS_MAPPING, ACTIVITY_FILTER_STATUSES } from "@/utils/constants";
+import { ACTIVITY_COLORS, ACTIVITY_FILTER_STATUS_MAPPING, ACTIVITY_FILTER_STATUSES } from "@/utils/constants";
+import TailwindColorLoader from "../ui/TailwindColorLoader";
 
 interface ActivitiesSelectionPanelProps {
   isAdmin: boolean;
@@ -33,6 +34,8 @@ const ActivitiesSelectionPanel: React.FC<ActivitiesSelectionPanelProps> = ({isAd
   return (
     <div className="max-w-screen-xl mx-auto">
 
+      <TailwindColorLoader />
+      
       <div className="flex justify-center py-4">
         <ActivitiesStatusFilterSelection
           value={statusFilter}
