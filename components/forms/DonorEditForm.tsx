@@ -19,6 +19,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import DatePicker from "react-datepicker";
 import 'react-datepicker/dist/react-datepicker.css';
 import { useUserStore } from "@/app/stores/user-store-provider";
+import { Loading } from "../ui/loading";
 
 
 const MAX_FILE_SIZE = 500000;
@@ -73,6 +74,7 @@ const DonorEditForm: React.FC<DonorEditFormProps> = ({ donorId, donor, iconUrl, 
     const backgroundFileRef = form.register('background', { required: true });
     const [iconPreview, setIconPreview] = useState<string | null>(null);
     const [backgroundPreview, setBackgroundPreview] = useState<string | null>(null);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     useEffect(() => {
         setIconPreview(iconUrl);
@@ -120,6 +122,7 @@ const DonorEditForm: React.FC<DonorEditFormProps> = ({ donorId, donor, iconUrl, 
     const onSubmit = async (values: z.infer<typeof donorEditForm>) => {
         const userConfirmed = window.confirm("Are you sure you want to submit the form?");
         if (!userConfirmed) return;
+        setIsLoading(true);
         const formData = new FormData();
         if (values.username) {
             formData.append('username', values.username);
@@ -169,6 +172,7 @@ const DonorEditForm: React.FC<DonorEditFormProps> = ({ donorId, donor, iconUrl, 
         });
 
         const data = await response.json()
+        setIsLoading(false);
         if (response.ok) {
             const updatedDonor = data.updatedDonor;
             setUser({
@@ -199,7 +203,11 @@ const DonorEditForm: React.FC<DonorEditFormProps> = ({ donorId, donor, iconUrl, 
     }
 
     return (
-        <div>
+        <div className="max-w-5xl mx-auto p-6 rounded-lg shadow-md">
+            {isLoading && (
+                <Loading hasText={true} hasHeight={true} justifyCenter={true} absolute={false} fullScreen={true} />
+            )}
+            <h2 className="text-2xl font-bold mb-6 text-center">Edit Donor Details</h2>
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="w-full">
                     <div className='space-y-2'>

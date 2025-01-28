@@ -38,7 +38,6 @@ export default function DonorEditPage() {
     return (
         <PageUnderNavbarWrapper>
             <GoBack isNavbarPad={false} backDirectory={activityId? `/activities/${activityId}` : "parent"} />
-            <h1>Donor Edit Page</h1>
             {donorInfo && <DonorEditForm donorId={user?.donor.id} donor={donorInfo} iconUrl={iconUrl} backgroundUrl={backgroundUrl} redirectRoute={activityId ? `/activities/${activityId}` : null} />}
         </PageUnderNavbarWrapper>
     );
