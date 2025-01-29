@@ -28,7 +28,7 @@ const Navbar = () => {
         <div className='navbar py-2 border-s-zinc-200 fixed w-full top-0 z-50 h-14'>
             <div className='container flex items-center justify-between'>
                 <Link href='/' className={`flex items-center space-x-2 ${activeTab === '/' ? 'text-[#25ad91]' : ''}`} onClick={() => handleTabClick('/')}>
-                    <img src='/images/foodsport_icon.png' alt='Logo' className='h-8' />
+                    <img src='/images/foodsport_icon.png' alt='Logo' className='h-11' />
                     {/* <HandMetal /> */}
                     {/* <span>Home</span> */}
                 </Link>
