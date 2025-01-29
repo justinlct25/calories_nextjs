@@ -6,12 +6,22 @@ import { buttonVariants } from './ui/button';
 import { HandMetal, CircleUserRound } from 'lucide-react'
 import SignOutBtn from './SignOutBtn';
 import { useUserStore } from '@/app/stores/user-store-provider';
+import { useActiveTabStore } from '@/app/stores/active-tab-store';
 
 
 const Navbar = () => {
     const { user } = useUserStore(
         (state: any) => state,
       )
+
+    const { activeTab, setActiveTab } = useActiveTabStore((state: any) => ({
+        activeTab: state.activeTab,
+        setActiveTab: state.setActiveTab,
+    }));
+
+    const handleTabClick = (tab: string) => {
+        setActiveTab(tab);
+    };
 
 
     return (
