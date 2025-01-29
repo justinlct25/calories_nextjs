@@ -15,6 +15,8 @@ import ActivityPublicToggleButton from "./ActivityPublicToggleButton";
 import ActivityClosedToggleButton from "./ActivityOpenedToggleButton";
 import ActivityStatusSelection from "./ActivityStatusSelection";
 import { Loading } from "../ui/loading";
+import ActivityDateTime from "./ActivtyDateTime";
+import BottomPadding from "../BottomPadding";
 
 interface ActivityDetailedInfoProps {
     activityInfo: typeof activities.$inferInsert;
@@ -105,9 +107,10 @@ const ActivityDetailedInfo: React.FC<ActivityDetailedInfoProps> = ({ activityInf
                         <div className="bg-black w-full aspect-[12/1] z-[-10] flex flex-row justify-around items-center rounded-md">
                             <div className="w-3/5 flex flex-row justify-around items-center">
                                 {loading ? <Loading /> : <>
-                                    <ActivityDates startAt={activityInfo?.startAt} endAt={activityInfo?.endAt} />
-                                    <ActivityLocation location={activityInfo?.location} address={activityInfo?.address} />
-                                    <ActivityTimes startAt={activityInfo?.startAt} endAt={activityInfo?.endAt} />
+                                    {/* <ActivityDates startAt={activityInfo?.startAt} endAt={activityInfo?.endAt} /> */}
+                                    <ActivityDateTime className="w-1/5" startAt={(new Date(activityInfo?.startAt)).toISOString()} endAt={(new Date(activityInfo?.endAt)).toISOString()} />
+                                    <ActivityLocation className="w-4/5" location={activityInfo?.location} address={activityInfo?.address} />
+                                    {/* <ActivityTimes startAt={activityInfo?.startAt} endAt={activityInfo?.endAt} /> */}
                                 </>}
                             </div>
                         </div>
@@ -151,6 +154,7 @@ const ActivityDetailedInfo: React.FC<ActivityDetailedInfoProps> = ({ activityInf
                         )
                 }
             </div>
+            <BottomPadding />
         </div>
     );
 };

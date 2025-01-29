@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { loadActivityThumbnailUrl } from "@/utils/loadBucket/loadBucketUrls";
 import { useRouter } from "next/navigation";
-import { format } from 'date-fns';
+import { getDateString, getTimeString } from '@/utils/helperFunc';
 import { capitalizeFirstLetter, getBorderColor, getStatusColor, getStatusText } from '@/utils/helperFunc';
 import { Calendar, Clock, MapPin } from 'lucide-react';
 import { ATTENDANCE_STATUS_NAMES } from '@/utils/constants';
@@ -39,30 +39,7 @@ const ActivityDonorParticipated: React.FC<ActivityDonorParticipatedProps> = ({ i
 
     useEffect(() => {
         fetchThumbnail();
-    }, []);
-
-    const getDateString = (startAt: string, endAt: string): string => {
-        const startAtDate = format(new Date(startAt), 'yyyy-MM-dd');
-        const endAtDate = format(new Date(endAt), 'yyyy-MM-dd');
-        let formattedDate = '';
-        if (startAtDate === format(new Date(), 'yyyy-MM-dd')) {
-            formattedDate = 'Today';
-        } else if (startAtDate === endAtDate) {
-            formattedDate = startAtDate;
-        } else {
-            formattedDate = `${startAtDate} - ${endAtDate}`;
-        }
-        return formattedDate;
-    }
-
-    const getTimeString = (startAt: string, endAt: string): string => {
-        const startAtDate = format(new Date(startAt), 'yyyy-MM-dd');
-        const endAtDate = format(new Date(endAt), 'yyyy-MM-dd');
-        const formattedStartAt = format(new Date(startAt), 'HH:mm');
-        const formattedEndAt = format(new Date(endAt), 'HH:mm');
-        if (startAtDate == endAtDate) return `${formattedStartAt} - ${formattedEndAt}`;
-        return `${formattedStartAt}`;
-    }
+    }, []);    
 
     const borderColor = getBorderColor(true, activityStatus , true);
     const statusColor = getStatusColor(true, activityStatus, true);

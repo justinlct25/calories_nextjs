@@ -1,4 +1,6 @@
 import { ACTIVITY_STATUS_NAMES, ACTIVITY_COLORS } from "./constants";
+import { format } from 'date-fns';
+
 
 export function capitalizeFirstLetter(string: string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
@@ -69,3 +71,26 @@ export const getBorderColor = (isUser: boolean, activityStatus: string, particip
     if (activityStatus === ACTIVITY_STATUS_NAMES.PENDING) return ACTIVITY_COLORS.BORDER_NEUTRAL;
     return ACTIVITY_COLORS.BORDER_NEUTRAL_DARK;
 };
+
+export const getDateString = (startAt: string, endAt: string): string => {
+        const startAtDate = format(new Date(startAt), 'yyyy-MM-dd');
+        const endAtDate = format(new Date(endAt), 'yyyy-MM-dd');
+        let formattedDate = '';
+        if (startAtDate === format(new Date(), 'yyyy-MM-dd')) {
+            formattedDate = 'Today';
+        } else if (startAtDate === endAtDate) {
+            formattedDate = startAtDate;
+        } else {
+            formattedDate = `${startAtDate} - ${endAtDate}`;
+        }
+        return formattedDate;
+    }
+
+export const getTimeString = (startAt: string, endAt: string): string => {
+    const startAtDate = format(new Date(startAt), 'yyyy-MM-dd');
+    const endAtDate = format(new Date(endAt), 'yyyy-MM-dd');
+    const formattedStartAt = format(new Date(startAt), 'HH:mm');
+    const formattedEndAt = format(new Date(endAt), 'HH:mm');
+    if (startAtDate == endAtDate) return `${formattedStartAt} - ${formattedEndAt}`;
+    return `${formattedStartAt}`;
+}
