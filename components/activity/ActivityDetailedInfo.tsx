@@ -84,9 +84,9 @@ const ActivityDetailedInfo: React.FC<ActivityDetailedInfoProps> = ({ activityInf
                         </div>
                     <div className="flex flex-row justify-center items-center pt-20">
                         <div className="mr-6 w-1/6 aspect-[1] rounded-xl">
-                        {!thumbnailUrl ? <Loading hasHeight={false} hasText={false} /> :
-                            <img src={thumbnailUrl} alt="Thumbnail" className="mr-6 rounded-xl" />
-                        }
+                            {!thumbnailUrl ? <Loading hasHeight={false} hasText={false} /> :
+                                <img src={thumbnailUrl} alt="Thumbnail" className="mr-6 rounded-xl w-full h-full object-cover" />
+                            }
                         </div>
                         <div>
                             <ActivityStatusSelection isAdmin={isAdmin?isAdmin:false} options={activityAllStatuses} value={activityStatus} setValueState={setActivityStatus}
@@ -135,18 +135,20 @@ const ActivityDetailedInfo: React.FC<ActivityDetailedInfoProps> = ({ activityInf
                 {
                          view === 'info' ? (
                             <div className="w-full flex flex-col justify-center items-center max-w-screen-xl mx-auto">
-                                <div className="text-4xl">活動詳情 Event Details</div>
-                                <div className="mt-4" dangerouslySetInnerHTML={descriptionHTML} />
+                                {/* <div className="text-4xl">活動詳情 Event Details</div> */}
+                                {descriptionHTML.__html == "" ? <Loading /> :
+                                    <div className="mt-4" dangerouslySetInnerHTML={descriptionHTML} />
+                                }
                             </div>
                         ) : view === 'list' ? (
                             <div className="w-full flex flex-col justify-center items-center max-w-screen-xl mx-auto">
-                                <h2 className="text-4xl">Participated Donors</h2>
+                                {/* <h2 className="text-4xl">Participated Donors</h2> */}
                                 <ActivityParticipantList participants={participants} />
                             </div>
                         ) : (
                             isAdmin && (
                                 <div className="w-full flex flex-col justify-center items-center max-w-screen-xl mx-auto">
-                                    <h2 className="text-4xl">Participated Donors</h2>
+                                    {/* <h2 className="text-4xl">Participated Donors</h2> */}
                                     {/* <>{JSON.stringify(participants)}</> */}
                                     <ActivityParticipantTable data={participants} />
                                 </div>
