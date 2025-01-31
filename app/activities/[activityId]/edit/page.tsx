@@ -34,8 +34,7 @@ export default function ActivityEditPage() {
                 if (data.activity.endAt) {
                     data.activity.endAt = (new Date(data.activity.endAt)).toISOString();
                 }
-                const HTMLwithBucketImgUrls: string = await loadActivityDescriptionHTMLImgUrls(data.activity.description);
-                console.log("HTMLwithBucketImgUrls: ", HTMLwithBucketImgUrls) 
+                const HTMLwithBucketImgUrls: string = await loadActivityDescriptionHTMLImgUrls(data.activity.description); 
                 if (HTMLwithBucketImgUrls !== "") {
                     setDescriptionHTML(HTMLwithBucketImgUrls)
                 } else {

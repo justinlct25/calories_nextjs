@@ -137,7 +137,7 @@ const ActivityDetailedInfo: React.FC<ActivityDetailedInfoProps> = ({ activityInf
                             <div className="w-full flex flex-col justify-center items-center max-w-screen-xl mx-auto">
                                 {/* <div className="text-4xl">活動詳情 Event Details</div> */}
                                 {descriptionHTML.__html == "" ? <Loading /> :
-                                    <div className="mt-4" dangerouslySetInnerHTML={descriptionHTML} />
+                                    <div className="mt-4 leading-loose" dangerouslySetInnerHTML={descriptionHTML} />
                                 }
                             </div>
                         ) : view === 'list' ? (

@@ -10,6 +10,7 @@ import ActivityParticipationBar from '@/components/activity/ActivityParticipatio
 import { useUserStore } from '@/app/stores/user-store-provider';
 import { useToast } from '@/components/ui/use-toast';
 import { Loading } from '@/components/ui/loading';
+import { htmlProcessBlankLines } from '@/utils/helperFunc';
 
 
 export default function ActivityInfoPage() {
@@ -57,7 +58,8 @@ export default function ActivityInfoPage() {
       setActivityClosed(data.activity.closed);
       setThumbnailUrl(await loadActivityThumbnailUrl(data.activity.thumbnail));
       setBackgroundUrl(await loadActivityBackgroundUrl(data.activity.background));
-      const HTMLwithBucketImgUrls: string = await loadActivityDescriptionHTMLImgUrls(data.activity.description);
+      let descriptionHTML: string = htmlProcessBlankLines(data.activity.description);
+      const HTMLwithBucketImgUrls: string = await loadActivityDescriptionHTMLImgUrls(descriptionHTML);
       setDescriptionHTML({ __html: HTMLwithBucketImgUrls });
     } else {
       router.push("/activities");

@@ -94,3 +94,7 @@ export const getTimeString = (startAt: string, endAt: string): string => {
     if (startAtDate == endAtDate) return `${formattedStartAt} - ${formattedEndAt}`;
     return `${formattedStartAt}`;
 }
+
+export const htmlProcessBlankLines = (html: string): string => {
+    return html.replace(/<p style="text-align: center"><\/p>/g, '<p>&nbsp;</p>');
+}

@@ -187,7 +187,6 @@ const DonorEditForm: React.FC<DonorEditFormProps> = ({ donorId, donor, iconUrl, 
                 description: `${data.message}`,
                 variant: 'primary'
             })
-            console.log('edit redirectRoute', redirectRoute)
             if (redirectRoute) {
                 router.push(redirectRoute);
             } else {
