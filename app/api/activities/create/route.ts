@@ -1,4 +1,4 @@
-import { getActivityByName, updateActivity } from "@/drizzle/queries/activities.query";
+import { getActivityByName, updateActivity, updateActivityStatus } from "@/drizzle/queries/activities.query";
 import { insertActivity } from "@/drizzle/queries/activities.query";
 import { NextResponse } from "next/server";
 import * as z from 'zod';
@@ -7,6 +7,8 @@ import { getUserByEmail } from "@/drizzle/queries/auth-users.query";
 import { isAdminRole } from "@/drizzle/queries/users-to-roles.query";
 import { processTipTapBase64Images } from "@/utils/uploadBucket/tiptapImageHelper";
 import { uploadBufferToBucketStorage } from "@/utils/uploadBucket/uploadBucketStorage";
+import { getActivityStatusByName } from "@/drizzle/queries/activity-status.query";
+import { ACTIVITY_STATUS_NAMES } from "@/utils/constants";
 
 
 
@@ -76,7 +78,14 @@ export async function POST(req: Request) {
                     const descriptionWithUploadedImgLinks = await processTipTapBase64Images(newActivity.id, description);
                     activityUpdateObj = {...activityUpdateObj, description: descriptionWithUploadedImgLinks}
                 }
+                
                 await updateActivity(newActivity.id, activityUpdateObj);
+
+                const pendingStatusId = (await getActivityStatusByName(ACTIVITY_STATUS_NAMES.PENDING));
+                if (pendingStatusId) {
+                    await updateActivityStatus(newActivity.id, pendingStatusId.id);
+                }
+
                 return NextResponse.json(
                     {activityId: newActivity.id, message: "Activity created successfully"}, 
                     {status: 201}
