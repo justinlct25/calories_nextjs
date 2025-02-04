@@ -5,7 +5,7 @@ import {
     primaryKey,
    integer
   } from "drizzle-orm/pg-core"
-import type { AdapterAccount } from '@auth/core/adapters'
+// import type { AdapterAccount } from '@auth/core/adapters'
 import { users } from "./users.schema"
 
 
@@ -15,7 +15,8 @@ export const accounts = pgTable(
       userId: text("userId")
         .notNull()
         .references(() => users.id, { onDelete: "cascade" }),
-      type: text("type").$type<AdapterAccount["type"]>().notNull(),
+      // type: text("type").$type<AdapterAccount["type"]>().notNull(),
+      type: text("type").notNull(),
       provider: text("provider").notNull(),
       providerAccountId: text("providerAccountId").notNull(),
       refresh_token: text("refresh_token"),
