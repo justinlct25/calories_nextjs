@@ -5,7 +5,7 @@ import { useSession } from "next-auth/react";
 import { useParams, useRouter } from 'next/navigation';
 import { loadDonorBgImgUrl, loadDonorIconUrl } from "@/utils/loadBucket/loadBucketUrls";
 import GoBack from "@/components/util/GoBack";
-import { Bike, BookUser, QrCode, Users } from "lucide-react";
+import { Bike, BookUser, QrCode, Trophy, Users } from "lucide-react";
 import DonorQRCode from "@/components/donor/DonorQRCode";
 import ActivityDonorParticipated from "@/components/activity/ActivityDonorParticipated";
 import DonorPersonalDetail from "@/components/donor/DonorPersonlDetail";
@@ -28,7 +28,7 @@ export default function DonorInfoPage() {
     const [filteredActivities, setFilteredActivities] = useState<any[]>([]);
     const [statusFilter, setStatusFilter] = useState<keyof typeof ACTIVITY_FILTER_STATUS_MAPPING>('ALL');
     const [loadingActivities, setLoadingActivities] = useState<boolean>(true);
-    const [view, setView] = useState<'activities' | 'friends'>('activities');
+    const [view, setView] = useState<'activities' | 'friends' | 'trophies'>('activities');
     const [totalCalories, setTotalCalories] = useState<number>(0);
 
     
@@ -137,15 +137,15 @@ export default function DonorInfoPage() {
             </div>
             <div className="w-full aspect-[2] absolute top-0">
                 <div className="w-full aspect-[4]"></div> {/* padding from top */}
-                <div className="bg-black w-9/12 aspect-[5.5] z-[-10] absolute left-1/2 transform -translate-x-1/2 flex flex-row justify-between items-center rounded-md">
-                    <div className="flex flex-col justify-center items-center text-center w-1/4 pl-20">
-                        <div className="text-2xl">Donated<br />Calories</div>
+                <div className="bg-black w-9/12 aspect-[6] z-[-10] absolute left-1/2 transform -translate-x-1/2 flex flex-row justify-around items-center rounded-md">
+                    <div className="flex flex-col justify-center items-center text-center w-1/4 pr-10">
+                        <div className="text-xl">Donated<br />Calories</div>
                         {/* <div className="text-4xl">{donorInfo?.calories}</div> */}
-                        <div className="text-4xl">{totalCalories}</div>
+                        <div className="text-3xl">{totalCalories}</div>
                     </div>
-                    <div className="flex flex-col justify-center items-center text-center w-1/4 pr-20">
-                        <div className="text-2xl">Participated<br />Events</div>
-                        <div className="text-4xl">{donorInfo?.activities?.length}</div>
+                    <div className="flex flex-col justify-center items-center text-center w-1/4 pl-10 ">
+                        <div className="text-xl">Participated<br />Events</div>
+                        <div className="text-3xl">{donorInfo?.activities?.length}</div>
                     </div>
                 </div>
                 <div className="w-full aspect-[9]"></div>
@@ -161,12 +161,15 @@ export default function DonorInfoPage() {
                         <button onClick={() => setView('friends')} className={view === 'friends' ? '' : 'text-gray-400'}>
                             <Users size={32} />
                         </button>
+                        <button onClick={() => setView('trophies')} className={view === 'trophies' ? '' : 'text-gray-400'}>
+                            <Trophy size={32} />
+                        </button>
                     </div>
 
                     <>
                         {view === 'activities' && (
                             <>
-                                <h2 className="text-4xl">Activities Record</h2>
+                                {/* <h2 className="text-4xl">Activities Record</h2> */}
                                 <div className="flex justify-center py-4">
                                     <ActivitiesStatusFilterSelection
                                         value={statusFilter}
@@ -197,7 +200,7 @@ export default function DonorInfoPage() {
                         )}
                         {view === 'friends' && (
                             <div className="w-full flex flex-col justify-center items-center max-w-screen-xl mx-auto">
-                            <h2 className="text-4xl">Friends</h2>
+                            {/* <h2 className="text-4xl">Friends</h2> */}
                             {/* Add your friends component here */}
                         </div>
                         )}
