@@ -15,7 +15,7 @@ export const getDonor = async (donorId: number) => {
                         with: {
                             status: true,
                             participants: {
-                                where: (donorsToActivities: any, { eq }) => eq(donorsToActivities.donorId, donorId),
+                                where: (donorsToActivities: any, { eq }: any) => eq(donorsToActivities.donorId, donorId),
                                 with: {
                                     attendanceRecord: {
                                         with: {
