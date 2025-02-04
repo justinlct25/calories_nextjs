@@ -22,10 +22,11 @@ interface ActivityParticipationBarProps {
     activityStatus: string;
     activityClosed: boolean;
     updateParticipantsFunc: () => void;
+    quota?: number | null;
     attendanceStatus?: string;
 }
 
-const ActivityParticipationBar: React.FC<ActivityParticipationBarProps> = ({ activityId, activityStatus, activityClosed, updateParticipantsFunc, attendanceStatus=undefined }) => {
+const ActivityParticipationBar: React.FC<ActivityParticipationBarProps> = ({ activityId, activityStatus, activityClosed, updateParticipantsFunc, quota, attendanceStatus=undefined }) => {
     const { data: session, status } = useSession();
     const router = useRouter();
     const { toast } = useToast();
@@ -39,6 +40,7 @@ const ActivityParticipationBar: React.FC<ActivityParticipationBarProps> = ({ act
     const [fieldsRequiredUpdated, setFieldsRequiredUpdated] = useState<String[]>([]);
 
     const { user } = useUserStore((state) => state);
+
 
     const fetchParticipantInfo = async () => {
         if (session && user && Object.keys(user).length !== 0) {
@@ -227,7 +229,7 @@ const ActivityParticipationBar: React.FC<ActivityParticipationBarProps> = ({ act
                     {!loading && (
                         <div className='flex '>
                             <User />
-                            {numOfParticipants}
+                            {numOfParticipants } {user.isAdmin && quota ? '/ ' + quota : ''} 
                         </div>
                     )}
                 </div>

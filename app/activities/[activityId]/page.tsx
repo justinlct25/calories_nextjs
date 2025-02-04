@@ -88,7 +88,7 @@ export default function ActivityInfoPage() {
             backgroundUrl={backgroundUrl}
             descriptionHTML={descriptionHTML}
             participants={participants}
-            isAdmin={user.isAdmin}
+            isAdmin={user ? user.isAdmin : false}
             activityStatus={activityStatus}
             setActivityStatus={setActivityStatus}
             activityClosed={activityClosed}
@@ -99,6 +99,7 @@ export default function ActivityInfoPage() {
             activityStatus={activityStatus}
             activityClosed={activityClosed}
             updateParticipantsFunc={fetchParticipantsData}
+            quota={activityInfo.quota}
           />
         </>
       )}

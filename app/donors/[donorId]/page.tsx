@@ -29,6 +29,7 @@ export default function DonorInfoPage() {
     const [statusFilter, setStatusFilter] = useState<keyof typeof ACTIVITY_FILTER_STATUS_MAPPING>('ALL');
     const [loadingActivities, setLoadingActivities] = useState<boolean>(true);
     const [view, setView] = useState<'activities' | 'friends'>('activities');
+    const [totalCalories, setTotalCalories] = useState<number>(0);
 
     
     const { user } = useUserStore((state: any) => state);
@@ -38,6 +39,7 @@ export default function DonorInfoPage() {
             const res = await fetch(`/api/donors/${donorId}`);
             const data = await res.json();
             if (data && data.donor) {
+                calculateTotalCalories(data.donor.activities);
                 const sortedActivities = data.donor.activities.sort((a: any, b: any) => a.activity.status.id - b.activity.status.id);
                 setDonorInfo(data.donor);
                 setFilteredActivities(sortedActivities);
@@ -55,6 +57,15 @@ export default function DonorInfoPage() {
             setIsDonorProfileOfUser(true);
         }
     }
+
+    function calculateTotalCalories(activities: any) {
+        let total = 0;
+        activities.forEach((activity: any) => {
+            total += activity.activity.participants[0].attendanceRecord.calories;
+        });
+        setTotalCalories(total);
+    }
+
 
     useEffect(() => {
         if (donorId) {
@@ -129,7 +140,8 @@ export default function DonorInfoPage() {
                 <div className="bg-black w-9/12 aspect-[5.5] z-[-10] absolute left-1/2 transform -translate-x-1/2 flex flex-row justify-between items-center rounded-md">
                     <div className="flex flex-col justify-center items-center text-center w-1/4 pl-20">
                         <div className="text-2xl">Donated<br />Calories</div>
-                        <div className="text-4xl">{donorInfo?.calories}</div>
+                        {/* <div className="text-4xl">{donorInfo?.calories}</div> */}
+                        <div className="text-4xl">{totalCalories}</div>
                     </div>
                     <div className="flex flex-col justify-center items-center text-center w-1/4 pr-20">
                         <div className="text-2xl">Participated<br />Events</div>
