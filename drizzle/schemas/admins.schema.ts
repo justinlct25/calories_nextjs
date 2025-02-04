@@ -9,7 +9,7 @@ import {
     decimal,
     primaryKey
 } from "drizzle-orm/pg-core"
-import { relations } from 'drizzle-orm'
+import { InferSelectModel, relations } from 'drizzle-orm'
 import { users } from "./users.schema";
 import { activities } from "./activities.schema";
 
@@ -28,3 +28,5 @@ export const adminsRelations = relations(admins, ({ one, many }) => ({
     }),
     createdActivities: many(activities)
 }));
+
+export type Admin = InferSelectModel<typeof admins>;

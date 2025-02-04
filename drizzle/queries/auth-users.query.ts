@@ -56,7 +56,7 @@ export const insertUser = async (user: NewUserWithoutId, roleName: string = ROLE
             if (roleName == ROLE_NAMES.ADMIN){
                 await db.insert(admins).values({ userId: newUser.id, name: newUser.name || '' }).returning().then((res) => res[0] ?? null);
             }
-            await db.insert(donors).values({userId: newUser.id, name: newUser.name || '', }).returning().then((res) => res[0] ?? null)
+            await db.insert(donors).values({userId: newUser.id, username: newUser.name || '', }).returning().then((res) => res[0] ?? null)
             return newUser;
         })
         return newUser;

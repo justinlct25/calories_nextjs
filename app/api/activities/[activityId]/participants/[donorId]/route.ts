@@ -3,15 +3,7 @@ import { NextResponse } from "next/server";
 import { findNumberOfParticipants, findParticipant, participate, quit } from "@/drizzle/queries/donors-to-activities.query";
 import { getUser } from "@/drizzle/queries/users.query";
 
-interface Donor {
-    id: number;
-    firstname?: string;
-    lastname?: string;
-    phone?: string;
-    weight?: number;
-    birth?: string;
-}
-
+import { Donor } from "@/drizzle/schemas/donors.schema";
 
 export async function GET(req: Request, {params}: any) {
     try {

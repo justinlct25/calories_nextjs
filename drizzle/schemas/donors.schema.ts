@@ -9,7 +9,7 @@ import {
     decimal,
     primaryKey
 } from "drizzle-orm/pg-core"
-import { relations } from 'drizzle-orm'
+import { InferSelectModel, relations } from 'drizzle-orm'
 import { users } from "./users.schema";
 import { genderOptions } from "./gender-options.schema";
 import { friends } from "./friends.schema";
@@ -48,3 +48,5 @@ export const donorsRelations = relations(donors, ({ one, many }) => ({
     friends: many(friends),
     activities: many(donorsToActivities)
 }));
+
+export type Donor = InferSelectModel<typeof donors>;

@@ -2,6 +2,8 @@ import { auth } from "@/lib/auth";
 import { NextResponse } from "next/server";
 import { notAttending } from "@/drizzle/queries/donors-to-activities.query";
 import { getUser } from "@/drizzle/queries/users.query";
+import { Donor } from "@/drizzle/schemas/donors.schema";
+
 
 export async function POST(req: Request, { params }: any) {
     try {
@@ -14,7 +16,7 @@ export async function POST(req: Request, { params }: any) {
         if (!user?.donor) {
             return NextResponse.json({ message: "Donor not found" }, { status: 404 });
         }
-        const donorInfo = user.donor;
+        const donorInfo = user.donor as Donor;
         const donorId = Number(params.donorId);
         if (donorId !== donorInfo.id) {
             return NextResponse.json({ message: "Cannot mark absent with donor profile not owned by user" }, { status: 404 });

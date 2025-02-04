@@ -3,6 +3,7 @@ import { getActivitiesList, getAllBriefActivities } from "@/drizzle/queries/acti
 import { isAdminRole } from "@/drizzle/queries/users-to-roles.query";
 import { NextResponse } from "next/server";
 import { getUser } from "@/drizzle/queries/users.query";
+import { Donor } from "@/drizzle/schemas/donors.schema";
 
 
 export async function GET(req: Request) {
@@ -12,7 +13,8 @@ export async function GET(req: Request) {
         let isAdmin = false;
         if (session?.user.id) {
             const user = await getUser(session?.user.id);
-            if (user?.donor) donorId = user.donor.id;
+            const donorInfo = user?.donor as Donor;
+            if (user?.donor) donorId = donorInfo.id;
             isAdmin = await isAdminRole(session?.user.id);
         }
         const activities = await getActivitiesList(donorId, isAdmin? true : false);

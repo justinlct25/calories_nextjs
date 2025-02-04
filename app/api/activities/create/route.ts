@@ -9,6 +9,7 @@ import { processTipTapBase64Images } from "@/utils/uploadBucket/tiptapImageHelpe
 import { uploadBufferToBucketStorage } from "@/utils/uploadBucket/uploadBucketStorage";
 import { getActivityStatusByName } from "@/drizzle/queries/activity-status.query";
 import { ACTIVITY_STATUS_NAMES } from "@/utils/constants";
+import { Admin } from "@/drizzle/schemas/admins.schema";
 
 
 
@@ -46,8 +47,9 @@ export async function POST(req: Request) {
                     return NextResponse.json({message: "Activity with this name already exists"}, {status: 409})
                 }
                 const existingUser = await getUserByEmail(session?.user.email)
+                const adminInfo = existingUser?.admin as Admin;
                 let activityDetails: any = {
-                    creatorId: existingUser?.admin!.id,
+                    creatorId: adminInfo.id,
                     name: activityName,
                     startAt: new Date(String(formData.get("startAt"))),
                     endAt: new Date(String(formData.get("endAt"))), 
