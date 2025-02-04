@@ -1,6 +1,5 @@
 import { db } from "@/lib/db"
 import { donors } from "../schemas/donors.schema"
-import { donorsToActivities } from "../schemas/donors-to-activities.schema"
 import { eq } from "drizzle-orm"
 
 export const getDonor = async (donorId: number) => {

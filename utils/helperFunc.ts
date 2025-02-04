@@ -1,5 +1,4 @@
 import { ACTIVITY_STATUS_NAMES, ACTIVITY_COLORS } from "./constants";
-import { format } from 'date-fns';
 
 
 export function capitalizeFirstLetter(string: string) {
@@ -73,27 +72,48 @@ export const getBorderColor = (isUser: boolean, activityStatus: string, particip
 };
 
 export const getDateString = (startAt: string, endAt: string): string => {
-        const startAtDate = format(new Date(startAt), 'yyyy-MM-dd');
-        const endAtDate = format(new Date(endAt), 'yyyy-MM-dd');
-        let formattedDate = '';
-        if (startAtDate === format(new Date(), 'yyyy-MM-dd')) {
-            formattedDate = 'Today';
-        } else if (startAtDate === endAtDate) {
-            formattedDate = startAtDate;
-        } else {
-            formattedDate = `${startAtDate} - ${endAtDate}`;
-        }
-        return formattedDate;
+    const startAtDate = new Date(startAt);
+    const endAtDate = new Date(endAt);
+
+    const formatDate = (date: Date): string => {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    };
+
+    const startAtFormatted = formatDate(startAtDate);
+    const endAtFormatted = formatDate(endAtDate);
+
+    let formattedDate = '';
+    if (startAtFormatted === formatDate(new Date())) {
+        formattedDate = 'Today';
+    } else if (startAtFormatted === endAtFormatted) {
+        formattedDate = startAtFormatted;
+    } else {
+        formattedDate = `${startAtFormatted} - ${endAtFormatted}`;
     }
+    return formattedDate;
+};
 
 export const getTimeString = (startAt: string, endAt: string): string => {
-    const startAtDate = format(new Date(startAt), 'yyyy-MM-dd');
-    const endAtDate = format(new Date(endAt), 'yyyy-MM-dd');
-    const formattedStartAt = format(new Date(startAt), 'HH:mm');
-    const formattedEndAt = format(new Date(endAt), 'HH:mm');
-    if (startAtDate == endAtDate) return `${formattedStartAt} - ${formattedEndAt}`;
-    return `${formattedStartAt}`;
-}
+    const startAtDate = new Date(startAt);
+    const endAtDate = new Date(endAt);
+
+    const formatTime = (date: Date): string => {
+        const hours = String(date.getHours()).padStart(2, '0');
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+        return `${hours}:${minutes}`;
+    };
+
+    const startAtFormatted = formatTime(startAtDate);
+    const endAtFormatted = formatTime(endAtDate);
+
+    if (startAtDate.toDateString() === endAtDate.toDateString()) {
+        return `${startAtFormatted} - ${endAtFormatted}`;
+    }
+    return `${startAtFormatted}`;
+};
 
 export const htmlProcessBlankLines = (html: string): string => {
     return html.replace(/<p style="text-align: center"><\/p>/g, '<p>&nbsp;</p>');
