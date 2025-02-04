@@ -201,7 +201,6 @@ export default function DonorInfoPage() {
                         {view === 'friends' && (
                             <div className="w-full flex flex-col justify-center items-center max-w-screen-xl mx-auto">
                             {/* <h2 className="text-4xl">Friends</h2> */}
-                            {/* Add your friends component here */}
                         </div>
                         )}
                     </>
