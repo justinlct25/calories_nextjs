@@ -44,7 +44,6 @@ export const getDonorByUserId = async (userId: string) => {
                             description: false
                         }
                     }
-                    // activity: true
                 }
             }
         }
