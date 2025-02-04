@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import DonorEditForm, { donorEditForm } from "@/components/forms/DonorEditForm";
 import { useUserStore } from "@/app/stores/user-store-provider";
 import * as z from "zod"
@@ -36,9 +36,11 @@ export default function DonorEditPage() {
 
 
     return (
-        <PageUnderNavbarWrapper>
-            <GoBack isNavbarPad={false} backDirectory={activityId? `/activities/${activityId}` : "parent"} />
-            {donorInfo && <DonorEditForm donorId={user?.donor.id} donor={donorInfo} iconUrl={iconUrl} backgroundUrl={backgroundUrl} redirectRoute={activityId ? `/activities/${activityId}` : null} />}
-        </PageUnderNavbarWrapper>
+        <Suspense fallback={<div>Loading...</div>}>
+            <PageUnderNavbarWrapper>
+                <GoBack isNavbarPad={false} backDirectory={activityId? `/activities/${activityId}` : "parent"} />
+                {donorInfo && <DonorEditForm donorId={user?.donor.id} donor={donorInfo} iconUrl={iconUrl} backgroundUrl={backgroundUrl} redirectRoute={activityId ? `/activities/${activityId}` : null} />}
+            </PageUnderNavbarWrapper>
+        </Suspense>
     );
 }

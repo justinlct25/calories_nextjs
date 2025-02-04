@@ -1,5 +1,6 @@
 "use client";
 
+import { Suspense } from "react";
 import TopPadding from "@/components/TopPadding";
 import SignInForm from "@/components/forms/SignInForm";
 import { useSearchParams } from "next/navigation";
@@ -11,12 +12,14 @@ export default function Page() {
     // console.log(JSON.stringify(activityParams))
 
     return (
-        <div className='w-full h-screen flex items-center justify-center'>
-            <TopPadding />
-            <div className='w-full'>
-                <SignInForm activityId={numActivityId} />  
+        <Suspense fallback={<div>Loading...</div>}>
+            <div className='w-full h-screen flex items-center justify-center'>
+                <TopPadding />
+                <div className='w-full'>
+                    <SignInForm activityId={numActivityId} />  
+                </div>
             </div>
-        </div>
+        </Suspense>
     )
 };
 
