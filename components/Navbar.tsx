@@ -3,7 +3,7 @@
 
 import Link from 'next/link';
 import { buttonVariants } from './ui/button';
-import { HandMetal, CircleUserRound } from 'lucide-react'
+import { HandMetal, CircleUserRound, Settings } from 'lucide-react'
 import SignOutBtn from './SignOutBtn';
 import { useUserStore } from '@/app/stores/user-store-provider';
 import { useActiveTabStore } from '@/app/stores/active-tab-store';
@@ -43,8 +43,14 @@ const Navbar = () => {
                 </Link>
                 {user && Object.keys(user).length !== 0 ? (
                     <>
-                        <Link href={`/donors/${user.donor.id}`} className={`${activeTab === `/donors/${user.donor.id}` ? 'text-[#25ad91]' : ''}`} onClick={() => handleTabClick(`/donors/${user.donor.id}`)}>
-                            <CircleUserRound />
+                        <Link href={`/donors/${user.donor.id}`} className={`relative flex items-center ${activeTab === `/donors/${user.donor.id}` ? 'text-[#25ad91]' : ''}`} onClick={() => handleTabClick(`/donors/${user.donor.id}`)}>
+                            <CircleUserRound className="mr-2" />
+                            {/* <div className='justify-center items-center flex flex-col'> */}
+                                <span>{user.name}</span>
+                                    {user.isAdmin && <span className='text-sm'>(admin)</span>}
+                            {/* </div> */}
+                            {/* <CircleUserRound className="w-6 h-6 absolute inset-0 m-auto" /> */}
+                            {/* <Settings className="w-10 h-10 " /> */}
                         </Link>
                         <SignOutBtn />
                     </>

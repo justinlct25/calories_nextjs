@@ -10,12 +10,23 @@ import { useUserStore } from './user-store-provider';
 export interface UserGlobalStateLoaderProps {
     children: ReactNode
   }
+
+  export interface UserGlobalState {
+    id: string;
+    name: string;
+    email: string;
+    emailVerified: string | null;
+    image: string | null;
+    donor: any;
+    admin: any;
+    isAdmin: boolean;
+}
   
   export const UserGlobalStateLoader = ({
     children,
   }: UserGlobalStateLoaderProps) => {
     const { data: session, status } = useSession()
-    const { user, setUser } = useUserStore(
+    const { setUser } = useUserStore(
       (state: any) => state,
     )
   
@@ -24,7 +35,7 @@ export interface UserGlobalStateLoaderProps {
         fetch(`/api/user`)
         .then((res) => res.json())
         .then((data) => {
-            setUser(data.user)
+            setUser(data.user as UserGlobalState)
         })
       }
     }, [session])
