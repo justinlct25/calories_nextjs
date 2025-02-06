@@ -19,6 +19,7 @@ import GoogleSignInBtn from "../GoogleSignInBtn";
 import { signIn } from 'next-auth/react';
 import { useRouter } from "next/navigation";
 import { useToast } from "../ui/use-toast";
+import Image from "next/image";
 
 
 
@@ -72,7 +73,16 @@ const SignInForm: React.FC<SignInFormProps> = ({ activityId }) => {
     }
 
     return (
-        <div className='bg-slate-200 p-10 rounded-md w-96'>
+        // <div className='bg-[#25ad91] bg-opacity-70 p-10 rounded-md w-96'>
+        <div className='bg-[#c0eddd] bg-opacity-100 p-10 rounded-lg shadow-lg w-96'>
+        {/* <div className='bg-slate-200 p-10 rounded-md w-96'> */}
+            <Image
+                    src="/images/foodsport_icon.png"
+                    alt="Foodsport Icon"
+                    width={500}
+                    height={500}
+                    className="mb-10"
+                />
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="w-full">
                     <div className='space-y-2'>
@@ -81,9 +91,13 @@ const SignInForm: React.FC<SignInFormProps> = ({ activityId }) => {
                             name="email"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Email</FormLabel>
+                                    <FormLabel className="text-black">Email</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="mail@example.com" {...field} />
+                                        <Input
+                                            placeholder="mail@example.com"
+                                            {...field}
+                                            className="text-black" // Set text color to black
+                                        />
                                     </FormControl>
                                     {/* <FormDescription>
                                         This is your public display name.
@@ -97,9 +111,14 @@ const SignInForm: React.FC<SignInFormProps> = ({ activityId }) => {
                             name="password"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Password</FormLabel>
+                                    <FormLabel className="text-black">Password</FormLabel>
                                     <FormControl>
-                                        <Input type='password' placeholder="Enter your password" {...field} />
+                                        <Input
+                                            type="password"
+                                            placeholder="********"
+                                            {...field}
+                                            className="text-black" // Set text color to black
+                                        />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -108,7 +127,7 @@ const SignInForm: React.FC<SignInFormProps> = ({ activityId }) => {
                     </div>
                     <Button className='w-full mt-6' type="submit">Sign in</Button>
                 </form>
-                <div className='mx-auto my-4 flex w-full items-center justify-evenly before:mr-4 before:block before:h-px before:flex-grow before:bg-stone-400 after:ml-4 after:block after:h-px after:flex-grow after:bg-stone-400'>
+                <div className='mx-auto my-4 flex w-full items-center justify-evenly before:mr-4 before:block before:h-px before:flex-grow before:bg-stone-400 after:ml-4 after:block after:h-px after:flex-grow after:bg-stone-400 text-black'>
                     or
                 </div>
                 <GoogleSignInBtn>Sign in with Google</GoogleSignInBtn>
