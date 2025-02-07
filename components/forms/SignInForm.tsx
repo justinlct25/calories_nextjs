@@ -32,7 +32,7 @@ const FormSchema = z.object({
 })
 
 interface SignInFormProps {
-    activityId: number | null;
+    activityId?: number | null;
 }
 
 
@@ -60,7 +60,11 @@ const SignInForm: React.FC<SignInFormProps> = ({ activityId }) => {
                 variant: 'destructive'
             })
         } else {
-            console.log(JSON.stringify(signInData, null, 2));
+            // console.log(JSON.stringify(signInData, null, 2));
+            toast({
+                title: "Success",
+                description: "You have successfully signed in!",
+            })
             router.refresh();
             if (activityId) {
                 router.push(`/activities/${activityId}`);

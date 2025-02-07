@@ -14,6 +14,7 @@ import { useToast } from '../ui/use-toast';
 import ActivityQuitConfirmDialog from './ActivityQuitConfirmDialog';
 import ActivityAbsentConfirmDialog from './ActivityAbsentConfirmDialog';
 import { ACTIVITY_STATUS_NAMES } from '@/utils/constants';
+import SignInRequiredDialog from './SignInRequiredDialog';
 
 const REQUIRED_DONOR_INFORMATION = ['firstname', 'lastname', 'phone', 'birth', 'weight'];
 
@@ -38,6 +39,7 @@ const ActivityParticipationBar: React.FC<ActivityParticipationBarProps> = ({ act
     const [isActivityAbsentConfirmDialogOpen, setIsActivityAbsentConfirmDialogOpen] = useState(false);
     const [isActivityQuitConfirmDialogOpen, setIsActivityQuitConfirmDialogOpen] = useState(false);
     const [fieldsRequiredUpdated, setFieldsRequiredUpdated] = useState<String[]>([]);
+    const [isSignInRequiredDialogOpen, setIsSignInRequiredDialogOpen] = useState(false);
 
     const { user } = useUserStore((state) => state);
 
@@ -88,7 +90,7 @@ const ActivityParticipationBar: React.FC<ActivityParticipationBarProps> = ({ act
                 setIsActivityParticipateConfirmDialogOpen(true);
             }
         } else {
-            router.push(`/sign-in?activityId=${activityId}`);
+            setIsSignInRequiredDialogOpen(true);
         }
     };
 
@@ -219,6 +221,12 @@ const ActivityParticipationBar: React.FC<ActivityParticipationBarProps> = ({ act
                     />
                 </>
             )}
+            <SignInRequiredDialog
+                operation={'join this activity'}
+                open={isSignInRequiredDialogOpen}
+                onClose={() => setIsSignInRequiredDialogOpen(false)}
+                confirmFunc={() => router.push(`/sign-in?activityId=${activityId}`)}
+            />
             <div
                 className='fixed bottom-0 w-full h-24 bg-blend-darken bg-black bg-opacity-90 flex justify-center items-center'
                 style={{
@@ -243,12 +251,12 @@ const ActivityParticipationBar: React.FC<ActivityParticipationBarProps> = ({ act
                                 activityStatus === ACTIVITY_STATUS_NAMES.UPCOMING ? (
                                     participation !== null && participation !== undefined ? (
                                         <>
-                                            <Button variant='secondary' onClick={handleAbsent}>Absent</Button>
-                                            <Button variant='destructive' onClick={handleQuit}>Quit</Button>
+                                            <Button className="ml-2" variant='secondary' onClick={handleAbsent}>Absent</Button>
+                                            {user.isAdmin && <Button className="ml-2" variant='destructive' onClick={handleQuit}>Quit</Button>}
                                         </>
                                     ) : (
                                         !activityClosed ? (
-                                            <Button variant='secondary' onClick={handleJoin}>Join</Button>
+                                            <Button className="ml-2" variant='secondary' onClick={handleJoin}>Join</Button>
                                         ) : (
                                             <div className="flex items-center justify-center w-28 h-10 text-white text-center ">
                                                 Not Opened
