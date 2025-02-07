@@ -183,6 +183,7 @@ export default function DonorInfoPage() {
                                                     <ActivityDonorParticipated
                                                         key={activity.activity.id}
                                                         isDonorUser={isDonorProfileOfUser}
+                                                        donorId={donorId[0]}
                                                         activityId={activity.activity.id}
                                                         name={activity.activity.name}
                                                         startAt={activity.activity.startAt}

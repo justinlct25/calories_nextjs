@@ -21,7 +21,10 @@ const GoBack: React.FC<GoBackProps> = ({ isNavbarPad, backDirectory }) => {
         } else if (backDirectory === "home") {
             router.push("/activities");
         } else if (backDirectory) {
+            console.log(backDirectory);
             router.push(backDirectory);
+        } else {
+            router.back();
         }
     };
 

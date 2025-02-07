@@ -29,10 +29,11 @@ interface ActivityDetailedInfoProps {
     setActivityStatus: React.Dispatch<React.SetStateAction<string>>;
     activityClosed: boolean;
     setActivityClosed: React.Dispatch<React.SetStateAction<boolean>>;
+    navigatedFromDonorId?: string | null;
 }
 
 
-const ActivityDetailedInfo: React.FC<ActivityDetailedInfoProps> = ({ activityInfo, thumbnailUrl, backgroundUrl, descriptionHTML, participants, isAdmin, activityStatus, setActivityStatus, activityClosed, setActivityClosed }) => {
+const ActivityDetailedInfo: React.FC<ActivityDetailedInfoProps> = ({ activityInfo, thumbnailUrl, backgroundUrl, descriptionHTML, participants, isAdmin, activityStatus, setActivityStatus, activityClosed, setActivityClosed, navigatedFromDonorId }) => {
     const [loading, setLoading] = useState<boolean>(true);
     const [view, setView] = useState<'info' | 'rank' | 'list' | 'table'>('info');
     const [isActivityPublic, setIsActivityPublic] = useState<boolean>(false);
@@ -60,7 +61,7 @@ const ActivityDetailedInfo: React.FC<ActivityDetailedInfoProps> = ({ activityInf
 
     return (
         <div className="w-full">
-            <GoBack isNavbarPad={true} backDirectory='parent' />
+            <GoBack isNavbarPad={true} backDirectory={navigatedFromDonorId ? `/donors/${navigatedFromDonorId} `: 'parent'} />
                 {
                     isAdmin && 
                     <div className="absolute top-0 right-10 z-[100] flex flex-col items-end">

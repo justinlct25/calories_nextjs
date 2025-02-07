@@ -28,7 +28,7 @@ export const findAllParticipants = async (activityId: number, withParticipantInf
                     donor: {
                         columns: {
                             userId: false,
-                            username: false,
+                            // username: false,
                             firstname: false,
                             lastname: false,
                             phone: false,

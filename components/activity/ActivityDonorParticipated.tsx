@@ -11,6 +11,7 @@ import { Loading } from "@/components/ui/loading";
 
 interface ActivityDonorParticipatedProps {
     isDonorUser: boolean;
+    donorId: string;
     activityId: number;
     name: string;
     startAt: string;
@@ -22,7 +23,7 @@ interface ActivityDonorParticipatedProps {
     attendanceRecord: any
 }
 
-const ActivityDonorParticipated: React.FC<ActivityDonorParticipatedProps> = ({ isDonorUser, activityId, name, startAt, endAt, location, address, background, activityStatus, attendanceRecord }) => {
+const ActivityDonorParticipated: React.FC<ActivityDonorParticipatedProps> = ({ isDonorUser, donorId, activityId, name, startAt, endAt, location, address, background, activityStatus, attendanceRecord }) => {
     const router = useRouter();
     const [backgroundUrl, setThumbnailUrl] = useState<string>('');
     const [loadingBackground, setLoadingBackground] = useState<boolean>(true);
@@ -34,7 +35,7 @@ const ActivityDonorParticipated: React.FC<ActivityDonorParticipatedProps> = ({ i
     }
 
     const handleActivityClick = () => {
-        router.push(`/activities/${activityId}`);
+        router.push(`/activities/${activityId}?donorId=${donorId}`);
     };
 
     useEffect(() => {

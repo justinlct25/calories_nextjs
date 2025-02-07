@@ -1,7 +1,7 @@
 'use client';
 
 
-import { useParams, useRouter } from 'next/navigation';
+import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import { activities } from "@/drizzle/schemas/activities.schema"
 import { loadActivityThumbnailUrl, loadActivityDescriptionHTMLImgUrls, loadActivityBackgroundUrl } from '@/utils/loadBucket/loadBucketUrls';
 import ActivityDetailedInfo from '@/components/activity/ActivityDetailedInfo';
@@ -16,6 +16,8 @@ import { htmlProcessBlankLines } from '@/utils/helperFunc';
 export default function ActivityInfoPage() {
   const { activityId } = useParams();
   const router = useRouter();
+  const donorId = useSearchParams().get('donorId');
+
   const [activityInfo, setActivityInfo] = useState<typeof activities.$inferInsert>();
   const [thumbnailUrl, setThumbnailUrl] = useState<string>("");
   const [backgroundUrl, setBackgroundUrl] = useState<string>("");
@@ -93,6 +95,7 @@ export default function ActivityInfoPage() {
             setActivityStatus={setActivityStatus}
             activityClosed={activityClosed}
             setActivityClosed={setActivityClosed}
+            navigatedFromDonorId={donorId}
           />
           <ActivityParticipationBar
             activityId={Number(activityId)}

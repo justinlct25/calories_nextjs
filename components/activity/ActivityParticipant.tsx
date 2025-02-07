@@ -22,6 +22,7 @@ const ActivityParticipant: React.FC<ActivityParticipantProps> = ({ donorInfo }) 
         router.push(`/donors/${donorInfo?.id}`);
     };
 
+
     useEffect(() => {
         fetchIcon();
     }, []);
