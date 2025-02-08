@@ -69,15 +69,20 @@ const Navbar = () => {
                 <div className='hidden md:flex items-center space-x-4'>
                     {user && Object.keys(user).length !== 0 ? (
                         <>
-                            <div className=''>
+                            <div className='relative'>
                                 <button onClick={toggleUserMenu} className={`relative flex items-center ${activeTab === `/donors/${user.donor.id}` ? 'text-[#25ad91]' : ''}`}>
                                     <CircleUserRound className="mr-2" />
                                     <span>{user.name}</span>
                                     {user.isAdmin && <span className='text-sm ml-1'>(admin)</span>}
                                 </button>
                                 {isUserMenuOpen && (
-                                    <div className='absolute right-0 mt-3 p-4 navbar shadow-lg'>
-                                        <SignOutBtn />
+                                    <div className='absolute right-0 mt-4 w-full pl-4 pr-4 navbar shadow-lg flex flex-col items-center'>
+                                        <Link href={`/donors/${user.donor.id}`} className={`py-2 relative flex items-center ${activeTab === `/donors/${user.donor.id}` ? 'text-[#25ad91]' : ''}`} onClick={() => handleTabClick(`/donors/${user.donor.id}`)}>
+                                            Profile
+                                        </Link>
+                                        <div className="py-2">
+                                            <SignOutBtn />
+                                        </div>
                                     </div>
                                 )}
                             </div>
