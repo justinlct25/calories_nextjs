@@ -47,7 +47,7 @@ const ActivityParticipationBar: React.FC<ActivityParticipationBarProps> = ({ act
     const fetchParticipantInfo = async () => {
         if (session && user && Object.keys(user).length !== 0) {
             try {
-                const res = await fetch(`/api/activities/${activityId}/participants/${user.donor.id}`);
+                const res = await fetch(`/api/activities/${activityId}/participants/${user?.donor.id}`);
                 const data = await res.json();
                 setParticipation(data.participation);
                 setNumOfParticipants(data.numOfParticipants);
@@ -73,7 +73,7 @@ const ActivityParticipationBar: React.FC<ActivityParticipationBarProps> = ({ act
     const getFieldsRequiredUpdated = () => {
         const fieldsRequiredUpdated: String[] = [];
         REQUIRED_DONOR_INFORMATION.forEach((field) => {
-            if (!user.donor[field]) {
+            if (!user?.donor[field]) {
                 fieldsRequiredUpdated.push(field);
             }
         });
@@ -82,7 +82,7 @@ const ActivityParticipationBar: React.FC<ActivityParticipationBarProps> = ({ act
 
     const handleJoin = async () => {
         if (session && user && Object.keys(user).length !== 0) {
-            if (!user.donor.firstname || !user.donor.lastname || !user.donor.phone || !user.donor.birth || !user.donor.weight) {
+            if (!user?.donor.firstname || !user?.donor.lastname || !user?.donor.phone || !user?.donor.birth || !user?.donor.weight) {
                 const fields = getFieldsRequiredUpdated();
                 setFieldsRequiredUpdated(fields);
                 setIsDonorProfileUpdateRequestDialogOpen(true);
@@ -98,7 +98,7 @@ const ActivityParticipationBar: React.FC<ActivityParticipationBarProps> = ({ act
         if (session && user && Object.keys(user).length !== 0) {
             setLoading(true);
             setIsActivityParticipateConfirmDialogOpen(false);
-            const res = await fetch(`/api/activities/${activityId}/participants/${user.donor.id}`, {
+            const res = await fetch(`/api/activities/${activityId}/participants/${user?.donor.id}`, {
                 method: 'POST',
             });
             const data = await res.json();
@@ -130,7 +130,7 @@ const ActivityParticipationBar: React.FC<ActivityParticipationBarProps> = ({ act
         if (session) {
             setLoading(true);
             try {
-                const res = await fetch(`/api/activities/${activityId}/participants/${user.donor.id}/absent`, {
+                const res = await fetch(`/api/activities/${activityId}/participants/${user?.donor.id}/absent`, {
                     method: 'POST',
                 });
                 const data = await res.json();
@@ -164,7 +164,7 @@ const ActivityParticipationBar: React.FC<ActivityParticipationBarProps> = ({ act
         if (session) {
             setLoading(true);
             try {
-                const res = await fetch(`/api/activities/${activityId}/participants/${user.donor.id}`, {
+                const res = await fetch(`/api/activities/${activityId}/participants/${user?.donor.id}`, {
                     method: 'DELETE',
                 });
                 const data = await res.json();
@@ -193,20 +193,20 @@ const ActivityParticipationBar: React.FC<ActivityParticipationBarProps> = ({ act
 
     return (
         <div>
-            {user.donor && (
+            {user?.donor && (
                 <>
                     <DonorProfileUpdateRequestDialog
                         open={isDonorProfileUpdateRequestDialogOpen}
                         onClose={() => setIsDonorProfileUpdateRequestDialogOpen(false)}
                         activityId={activityId}
-                        donorId={user.donor.id}
+                        donorId={user?.donor.id}
                         fieldsRequiredUpdated={fieldsRequiredUpdated}
                     />
                     <ActivityParticipateConfirmDialog
                         open={isActivityParticipateConfirmDialogOpen}
                         onClose={() => setIsActivityParticipateConfirmDialogOpen(false)}
                         activityId={activityId}
-                        donorInfo={user.donor}
+                        donorInfo={user?.donor}
                         confirmFunc={handleJoinConfirm}
                     />
                     <ActivityAbsentConfirmDialog
@@ -251,8 +251,7 @@ const ActivityParticipationBar: React.FC<ActivityParticipationBarProps> = ({ act
                                 activityStatus === ACTIVITY_STATUS_NAMES.UPCOMING ? (
                                     participation !== null && participation !== undefined ? (
                                         <>
-                                            <Button className="ml-2" variant='secondary' onClick={handleAbsent}>Absent</Button>
-                                            {user.isAdmin && <Button className="ml-2" variant='destructive' onClick={handleQuit}>Quit</Button>}
+                                            {user.isAdmin ? <Button className="ml-2" variant='destructive' onClick={handleQuit}>Quit</Button> : <Button className="ml-2" variant='secondary' onClick={handleAbsent}>Absent</Button>}
                                         </>
                                     ) : (
                                         !activityClosed ? (
