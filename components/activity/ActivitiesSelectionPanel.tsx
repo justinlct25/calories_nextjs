@@ -19,9 +19,11 @@ const ActivitiesSelectionPanel: React.FC<ActivitiesSelectionPanelProps> = ({isAd
       fetch(`/api/activities`)
       .then((res) => res.json())
       .then((data) => {
+        if (data.activities && Array.isArray(data.activities)) {
           const sortedActivities = data.activities.sort((a: any, b: any) => a.status.id - b.status.id);
           setActivities(sortedActivities);
           setFilteredActivities(data.activities);
+        }
           setLoading(false);
       })
   }, [])

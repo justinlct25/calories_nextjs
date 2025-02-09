@@ -17,10 +17,10 @@ const ActivityDateTime: React.FC<ActivityDateTimeProps> = ({ startAt, endAt, cla
     }
 
     return (
-        <div className={`flex flex-col justify-center items-center ${className}`}>
-            <div className="mt-4 justify-center items-center">
-                <p className="flex items-center mb-2"><Calendar className="mr-2" /> {getDateString(startAt, endAt)}</p>
-                <p className="flex items-center mb-2"><Clock className="mr-2" /> {getTimeString(startAt, endAt)}</p>
+        <div className={`justify-center items-center w-full ${className}`}>
+            <div className="mt-4 w-full justify-center  flex ">
+                <div className="flex items-center mb-2 mr-4"><Calendar className="mr-2" /> {getDateString(startAt, endAt)}</div>
+                <div className="flex items-center mb-2 ml-4"><Clock className="mr-2" /> {getTimeString(startAt, endAt)}</div>
             </div>
         </div>
     );

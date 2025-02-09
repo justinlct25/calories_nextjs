@@ -12,9 +12,10 @@ interface ActivityStatusSelectionProps {
   value: string | undefined;
   updateFunc: (id?: number) => any;
   setValueState: React.Dispatch<React.SetStateAction<string>>;
+  className?: string;
 }
 
-const ActivityStatusSelection: React.FC<ActivityStatusSelectionProps> = ({ isAdmin, options, value, updateFunc, setValueState }) => {
+const ActivityStatusSelection: React.FC<ActivityStatusSelectionProps> = ({ isAdmin, options, value, updateFunc, setValueState, className }) => {
   const { toast } = useToast();
   const [loading, setLoading] = useState<boolean>(false);
   const [currentValue, setCurrentValue] = useState(value);
@@ -60,7 +61,8 @@ const ActivityStatusSelection: React.FC<ActivityStatusSelectionProps> = ({ isAdm
   };
 
   return (
-    <div className="text-white h-25 flex items-center">
+    // <div className="text-white h-25 flex items-center">
+    <div className={`text-white h-25 flex items-center ${className}`}>
       {loading ? <div className="pl-6"><Loading hasText={false} hasHeight={false} justifyCenter={false} /></div> : (
         !isEditing ? (
           <div className="flex items-center">

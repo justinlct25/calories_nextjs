@@ -22,7 +22,7 @@ const EditBtn: React.FC<EditProps> = ({ isNavbarPad, bottom, absolute, editUrl }
         // <div>
             // {/* {isTopPadding && <div className='w-full'><TopPadding /></div>} */}
             <button className={`${absolute? 'absolute transform -translate-y-1/2 ml-5 mr-10' : ''} right-0 ${bottom? "bottom-0" : "top-0"}  z-10 ${isNavbarPad? "mt-24 mb-24" :"mt-2 mb-2"}`} onClick={handleEdit}>
-                <Pencil size={32} />
+                <Pencil size={30} />
             </button>
         // </div>
     );

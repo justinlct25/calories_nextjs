@@ -50,7 +50,7 @@ const Navbar = () => {
     }, []);
 
     return (
-        <div className='navbar py-2 border-s-zinc-200 fixed w-full top-0 z-50 h-14 bg-white'>
+        <div className='navbar py-2 border-s-zinc-200 fixed w-full top-0 z-50 h-14 '>
             <div className='container flex items-center justify-between'>
                 <Link href='/' className={`flex items-center space-x-2 ${activeTab === '/' ? 'text-[#25ad91]' : ''}`} onClick={() => handleTabClick('/')}>
                     <img src='/images/foodsport_icon.png' alt='Logo' className='h-11' />
@@ -76,7 +76,8 @@ const Navbar = () => {
                                     {user.isAdmin && <span className='text-sm ml-1'>(admin)</span>}
                                 </button>
                                 {isUserMenuOpen && (
-                                    <div className='absolute right-0 mt-4 w-full pl-4 pr-4 navbar shadow-lg flex flex-col items-center'>
+                                    // <div className='absolute right-0 mt-4 w-full pl-4 pr-4 navbar shadow-lg flex flex-col items-center'>
+                                    <div className='absolute dropdown right-0 mt-4 w-full pl-4 pr-4 shadow-lg flex flex-col items-center bg-white/30 backdrop-blur-lg'>
                                         <Link href={`/donors/${user.donor.id}`} className={`py-2 relative flex items-center ${activeTab === `/donors/${user.donor.id}` ? 'text-[#25ad91]' : ''}`} onClick={() => handleTabClick(`/donors/${user.donor.id}`)}>
                                             Profile
                                         </Link>
@@ -98,7 +99,7 @@ const Navbar = () => {
                 </div>
             </div>
             {isMobileMenuOpen && (
-                <div className='fixed top-14 right-0 navbar p-4 pl-10 pr-10 bg-white bg-opacity-90 flex flex-col items-center space-y-4 p-4 shadow-lg'>
+                <div className='fixed top-14 right-0 dropdown p-4 pl-6 pr-6 bg-white bg-opacity-90 flex flex-col items-center space-y-4 p-4 shadow-lg'>
                     <Link href='/activities' className={`${activeTab === '/activities' ? 'text-[#25ad91]' : ''}`} onClick={() => handleTabClick('/activities')}>
                         Activities
                     </Link>
