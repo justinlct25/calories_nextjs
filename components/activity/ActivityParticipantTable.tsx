@@ -234,11 +234,13 @@ const ActivityParticipantTable: React.FC<ActivityParticipantTableProps> = ({ dat
   })
 
   return (
-    <div className="flex justify-center mb-24">
+    // <div className="flex justify-center mb-24  overflow-x-auto">
+    <div className="w-full max-w-screen-xl overflow-x-auto">
+      
       {
         loading ? <Loading /> :
           <table 
-            className="my-auto border"
+            className="border border-collapse table-auto w-full lg:table-fixed"
           >
             <thead>
               {table.getHeaderGroups().map(headerGroup => (

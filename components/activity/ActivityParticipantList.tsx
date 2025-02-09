@@ -10,11 +10,14 @@ const ActivityParticipantList: React.FC<ActivityParticipantListProps> = ({ parti
 
     return (
         <>
-            {participants.map((participant: any) => (
-                <>
-                    {participant.donor && <ActivityParticipant donorInfo={participant.donor} />}
-                </>
-            ))}
+            {participants.map((participant: any) =>
+                participant.donor ? (
+                    <ActivityParticipant 
+                        key={participant.donor.id} 
+                        donorInfo={participant.donor} 
+                    />
+                ) : null
+            )}
         </>
     );
 }

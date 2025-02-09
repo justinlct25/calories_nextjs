@@ -7,7 +7,7 @@ import ActivityDates from './ActivityDates';
 import ActivityTimes from './ActivityTimes';
 import EditBtn from '../util/EditBtn';
 import ActivityLocation from './ActivityLocation';
-import { InfoIcon, TableIcon, UsersIcon } from "lucide-react";
+import { InfoIcon, Settings, TableIcon, UsersIcon } from "lucide-react";
 import ActivityParticipantList from "./ActivityParticipantList";
 import ActivityParticipantTable from "./ActivityParticipantTable";
 import TopPadding from "../TopPadding";
@@ -38,6 +38,7 @@ const ActivityDetailedInfo: React.FC<ActivityDetailedInfoProps> = ({ activityInf
     const [view, setView] = useState<'info' | 'rank' | 'list' | 'table'>('info');
     const [isActivityPublic, setIsActivityPublic] = useState<boolean>(false);
     const [activityAllStatuses, setActivityAllStatuses] = useState<any[]>([]);
+    const [isSettingMenuOpen, setIsSettingMenuOpen] = useState(false);
 
     const { isAboveXl, isBelowXl } = useBreakpoint("xl");
     const { isAboveMd, isBelowMd } = useBreakpoint("md");
@@ -63,6 +64,10 @@ const ActivityDetailedInfo: React.FC<ActivityDetailedInfoProps> = ({ activityInf
         setLoading(false);
     }, [activityInfo]);
 
+    const toggleSettingMenu = () => {
+        setIsSettingMenuOpen(prevState => !prevState);
+    };
+
 
     return (
         <div className="w-full">
@@ -70,12 +75,30 @@ const ActivityDetailedInfo: React.FC<ActivityDetailedInfoProps> = ({ activityInf
             {isAdmin && (
                 <div className="absolute top-0 right-10 z-[100] flex flex-col items-end space-y-2">
                     <TopPadding />
-                    <div className='flex space-x-5'>
-                        {isAboveMd && <EditBtn editUrl={`/activities/${activityInfo?.id}/edit`} /> }
-                        <ActivityPublicToggleButton isPublic={isActivityPublic} setIsPublic={setIsActivityPublic} activityId={activityInfo?.id} />
-                    </div>
-                    <ActivityClosedToggleButton isOpened={!activityClosed} setIsOpened={setIsActivityOpened} activityId={activityInfo?.id} />
-                    {isBelowMd && <EditBtn editUrl={`/activities/${activityInfo?.id}/edit`} />}
+                    {isBelowSm ? (
+                        <div className="relative">
+                            <button onClick={toggleSettingMenu} className="focus:outline-none">
+                                <Settings className="w-6 h-6" />
+                            </button>
+                            {isSettingMenuOpen && (
+                                <div className="absolute right-0  mt-0 p-2 pl-0 pr-1 dropdown shadow-lg rounded-md flex flex-col items-center space-y-2">
+                                    <ActivityPublicToggleButton isPublic={isActivityPublic} setIsPublic={setIsActivityPublic} activityId={activityInfo?.id} />
+                                    <ActivityClosedToggleButton isOpened={!activityClosed} setIsOpened={setIsActivityOpened} activityId={activityInfo?.id} />
+                                    <EditBtn editUrl={`/activities/${activityInfo?.id}/edit`} />
+                                </div>
+                            )}
+                        </div>
+                    ) : (
+                        <>
+                            <div className='flex space-x-5'>
+                                {isAboveMd && <EditBtn editUrl={`/activities/${activityInfo?.id}/edit`} />}
+                                <ActivityPublicToggleButton isPublic={isActivityPublic} setIsPublic={setIsActivityPublic} activityId={activityInfo?.id} />
+                            </div>
+                            <ActivityClosedToggleButton isOpened={!activityClosed} setIsOpened={setIsActivityOpened} activityId={activityInfo?.id} />
+                            {isBelowMd && <EditBtn editUrl={`/activities/${activityInfo?.id}/edit`} />}
+                        </>
+                    )}
+                    
                 </div>
             )}
             <div className="relative w-full aspect-[8/2] justify-center items-center  xl:pl-10 xl:pr-10">
@@ -106,7 +129,7 @@ const ActivityDetailedInfo: React.FC<ActivityDetailedInfoProps> = ({ activityInf
                                 });
                                 return res;
                             }} />
-                        <div className="text-2xl xl:text-4xl min-w-[40%]">{activityInfo?.name}</div>
+                        <div className="text-2xl xl:text-4xl min-w-[40%] pl-2 pr-2">{activityInfo?.name}</div>
                     </div>
                 </div>
                 <div className="w-full flex flex-col items-center mt-10">
@@ -115,7 +138,7 @@ const ActivityDetailedInfo: React.FC<ActivityDetailedInfoProps> = ({ activityInf
                                 {loading ? <Loading /> : <>
                                     {/* <ActivityDates startAt={activityInfo?.startAt} endAt={activityInfo?.endAt} /> */}
                                     <ActivityDateTime className=" pl-4 pr-4 xl:p-0" startAt={(new Date(activityInfo?.startAt)).toISOString()} endAt={(new Date(activityInfo?.endAt)).toISOString()} />
-                                    <ActivityLocation className="" location={activityInfo?.location} address={activityInfo?.address} />
+                                    <ActivityLocation className="pl-4 pr-4" location={activityInfo?.location} address={activityInfo?.address} />
                                     {/* <ActivityTimes startAt={activityInfo?.startAt} endAt={activityInfo?.endAt} /> */}
                                 </>}
                             </div>
@@ -123,7 +146,7 @@ const ActivityDetailedInfo: React.FC<ActivityDetailedInfoProps> = ({ activityInf
                     </div>  
             </div>
             <div className="w-full flex flex-col items-center">
-                <div className="flex justify-center items-center w-full p-6 max-w-3/5 space-x-4 xl:space-x-20">
+                <div className="flex justify-center items-center w-full p-6 max-w-3/5 space-x-20">
                     <button onClick={() => setView('info')} className={view === 'info' ? '' : 'text-gray-400'}>
                         <InfoIcon size={32} />
                     </button>
@@ -137,7 +160,7 @@ const ActivityDetailedInfo: React.FC<ActivityDetailedInfoProps> = ({ activityInf
                     )}
                 </div>
                 {view === 'info' ? (
-                    <div className="w-full flex flex-col justify-center items-center max-w-screen-xl mx-auto pl-6 pr-6">
+                    <div className="w-full flex flex-col justify-center items-center max-w-screen-xl mx-auto pl-6 pr-6 html-container">
                         {descriptionHTML.__html === "" ? <Loading /> :
                             <div className="mt-4 leading-loose" dangerouslySetInnerHTML={descriptionHTML} />
                         }
