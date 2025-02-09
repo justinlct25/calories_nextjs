@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from "next/navigation";
 import { useSession } from 'next-auth/react';
 import { donorsToActivities } from '@/drizzle/schemas/donors-to-activities.schema';
-import { User } from 'lucide-react';
+import { Share2, User } from 'lucide-react';
 import { Button } from '../ui/button';
 import { useUserStore } from "@/app/stores/user-store-provider";
 import DonorProfileUpdateRequestDialog from '../donor/DonorProfileUpdateRequestDialog';
@@ -15,6 +15,7 @@ import ActivityQuitConfirmDialog from './ActivityQuitConfirmDialog';
 import ActivityAbsentConfirmDialog from './ActivityAbsentConfirmDialog';
 import { ACTIVITY_STATUS_NAMES } from '@/utils/constants';
 import SignInRequiredDialog from './SignInRequiredDialog';
+import { useBreakpoint } from '@/hooks/useBreakpoint';
 
 const REQUIRED_DONOR_INFORMATION = ['firstname', 'lastname', 'phone', 'birth', 'weight'];
 
@@ -42,6 +43,7 @@ const ActivityParticipationBar: React.FC<ActivityParticipationBarProps> = ({ act
     const [isSignInRequiredDialogOpen, setIsSignInRequiredDialogOpen] = useState(false);
 
     const { user } = useUserStore((state) => state);
+    const { isBelowMd } = useBreakpoint("md");
 
 
     const fetchParticipantInfo = async () => {
@@ -228,25 +230,25 @@ const ActivityParticipationBar: React.FC<ActivityParticipationBarProps> = ({ act
                 confirmFunc={() => router.push(`/sign-in?activityId=${activityId}`)}
             />
             <div
-                className='fixed bottom-0 w-full h-24 bg-blend-darken bg-black bg-opacity-90 flex justify-center items-center'
+                className={`fixed bottom-0 w-full ${isBelowMd ? 'h-16' : 'h-24'} bg-blend-darken bg-black bg-opacity-90 flex justify-center items-center pr-4`}
                 style={{
-                    clipPath: 'polygon(100% 100%, 100% 0, 85% 0, 75% 45%, 0 45%, 0% 100%)'
+                    clipPath: isBelowMd ? 'none' : 'polygon(100% 100%, 100% 0, 85% 0, 75% 45%, 0 45%, 0% 100%)'
                 }}
             >
-                <div className="w-5/6 flex justify-center items-end pt-10">
+                <div className="w-full flex justify-between items-center px-4 ">
                     {!loading && (
-                        <div className='flex '>
+                        <div className='flex items-center md:pt-10 w-full justify-center'>
                             <User />
-                            {numOfParticipants } {user.isAdmin && quota ? '/ ' + quota : ''} 
+                            {numOfParticipants} {user.isAdmin && quota ? '/ ' + quota : ''}
                         </div>
                     )}
-                </div>
-                <div className="w-1/6 flex justify-center">
+                    <div className="flex items-center">
                     {loading ? (
                         <Loading hasText={false} hasHeight={false} />
                     ) : (
                         <>
-                            <Button>Share</Button>
+                            {/* <Button>Share</Button> */}
+                            <Share2 />
                             {
                                 activityStatus === ACTIVITY_STATUS_NAMES.UPCOMING ? (
                                     participation !== null && participation !== undefined ? (
@@ -276,6 +278,7 @@ const ActivityParticipationBar: React.FC<ActivityParticipationBarProps> = ({ act
                             }
                         </>
                     )}
+                    </div>
                 </div>
             </div>
         </div>

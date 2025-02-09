@@ -240,7 +240,7 @@ const ActivityParticipantTable: React.FC<ActivityParticipantTableProps> = ({ dat
       {
         loading ? <Loading /> :
           <table 
-            className="border border-collapse table-auto w-full lg:table-fixed"
+            className="border border-collapse table-auto w-full "
           >
             <thead>
               {table.getHeaderGroups().map(headerGroup => (
